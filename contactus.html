@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Bayon' rel='stylesheet'>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <style>
+        label{
+            font-size: 2vh;
+            font-weight:500;
+        }
+        form{
+            box-sizing: border-box;
+            width: 50vw ;
+            margin-left: 100px;
+        }
+        
+        a{
+            text-decoration: none;
+            color:#fff !important;
+        }
+
+        </style>
+    <title>Contact Us</title>
+</head>
+<body>
+        <h1 class="text-success display-1 p-xl-5 " style="font-family:'Bayon'; font-size: 3em; " id="contactus">Contact Us </h1>
+        <div class=" d-flex flex-row ">
+            <div class="form">
+        <form action="/action_page.php">
+            <div class="row d-flex justify-content-between p-0">
+                <div class="col">
+                    <label for="FirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control  py-3 " placeholder="Enter First Name" name="FirstName">
+                </div>
+                <br>
+                <div class="col">
+                    <label for="LastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control  py-3" placeholder="Enter Last Name" name="LastName">
+                </div>
+            </div>
+            <br>
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control p-3" placeholder="Enter email" name="email">
+            <br>
+            <label for="Phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control p-3" placeholder="Enter Phone Number" name="Phone">
+            <br>
+            <label for="complain" class="form-label">Complain/Inquiry</label>
+            <textarea class="form-control p-3" rows="5" id="comment" name="complain"></textarea>
+            <div class="d-grid my-5">
+            <button type="submit" class="btn btn-success btn-lg btn-block" style="font-family:'Bayon'; font-size: 2rem;"><a
+                    href="#">Submit</a></button>
+                </div>
+        </form>
+    </div>
+    <div class="contact align-self-center mx-auto">
+        Hospital contact information:
+        <br>
+        xxx-xxx-xxx
+        <br>
+        example@gmail.com
+        <br>
+        example.com
+    </div>
+    </div>
+</body>
+</html>
