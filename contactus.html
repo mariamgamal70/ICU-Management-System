@@ -14,8 +14,8 @@
         }
         form{
             box-sizing: border-box;
-            width: 50vw ;
-            margin-left: 100px;
+            width: 55vw ;
+            margin-left: 20px;
         }
         
         a{
@@ -27,20 +27,19 @@
     <title>Contact Us</title>
 </head>
 <body>
-        <h1 class="text-success display-1 p-xl-5 " style="font-family:'Bayon'; font-size: 3em; " id="contactus">Contact Us </h1>
-        <div class=" d-flex flex-row ">
-            <div class="form">
+        <h1 class="text-success display-2 p-5 container-fluid" style="font-family:'Bayon';  " id="contactus">Contact Us </h1>
+        <div class=" d-flex flex-row flex-wrap justify-content-around">
+        <div class="form">
         <form action="/action_page.php">
-            <div class="row d-flex justify-content-between p-0">
-                <div class="col">
+            <div class=" d-flex justify-content-between flex-wrap p-0">
+                <span class="col-md-5">
                     <label for="FirstName" class="form-label">First Name</label>
                     <input type="text" class="form-control  py-3 " placeholder="Enter First Name" name="FirstName">
-                </div>
-                <br>
-                <div class="col">
+                </span>
+                <span class="col-md-5">
                     <label for="LastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control  py-3" placeholder="Enter Last Name" name="LastName">
-                </div>
+                </span>
             </div>
             <br>
             <label for="email" class="form-label">Email</label>
@@ -50,15 +49,15 @@
             <input type="tel" class="form-control p-3" placeholder="Enter Phone Number" name="Phone">
             <br>
             <label for="complain" class="form-label">Complain/Inquiry</label>
-            <textarea class="form-control p-3" rows="5" id="comment" name="complain"></textarea>
+            <textarea class="form-control p-3" rows="5" id="comment" name="complain" placeholder="Please enter your complaint or inquiry here"></textarea>
             <div class="d-grid my-5">
             <button type="submit" class="btn btn-success btn-lg btn-block" style="font-family:'Bayon'; font-size: 2rem;"><a
                     href="#">Submit</a></button>
                 </div>
         </form>
     </div>
-    <div class="contact align-self-center mx-auto">
-        Hospital contact information:
+    <div class="contact align-self-center text-center display-5 p">
+        <b>Hospital contact information:</b>
         <br>
         xxx-xxx-xxx
         <br>
