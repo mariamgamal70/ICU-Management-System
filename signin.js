@@ -39,6 +39,10 @@ function checkuserchangevalue(){
     if (this.value=='Patient'){
         patientform.style.display='block';
         staffselectdiv.style.display='none';
+        doctorform.style.display='none'
+        nurseform.style.display='none';
+        adminform.style.display='none';
+        receptionistform.style.display='none';
     }
     else {
         patientform.style.display='none';
