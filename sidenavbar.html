@@ -22,15 +22,25 @@
         padding:10px;
         display: block;
     }
+    @media only screen and (min-width: 600px) {
+        #navbardiv{
+            position: fixed;
+            z-index: 1;
+            width: 200px;
+            overflow-x: hidden;
+            text-align: left !important;
+        }
+        .navbarcontent{
+            margin-left: 200px;
+        }
+    }
     #navbardiv{
-        height: 100%;
-        position: fixed;
-        z-index: 1;
-        width: 200px;
-        overflow-x: hidden;
+        display: none;
+        height: 100vh;
+        text-align: center;
     }
     .navbarcontent{
-        margin-left: 200px;
+        margin-left: 0px;
         padding: 20px;
     }
     #navbardiv a:hover {
@@ -48,7 +58,7 @@
     <div id="navbardiv" class="bg-primary">
         <aside>
             <ul>
-                <i class="fi fi-rr-cross-small" style="color:white; font-size:xx-large; cursor: pointer; float: right; padding-top:10px;" id="xicon" onclick="togglenavbar()"></i>
+                <i class="fi fi-rr-cross-small" style="color:white; font-size:xx-large; cursor: pointer; float: right; padding-top:10px;" id="xicon" onclick="closemenu()"></i>
                 <br>
                 <br>
                 <li><a href=""><i class="fi fi-rr-home" style=" font-size: 20px;"> Home</i></a></li>
@@ -61,8 +71,7 @@
         </aside>
     </div>
     <div class="navbarcontent">
-        
-            <i class="fi fi-rr-menu-burger" style="color:black; font-size:xx-large; cursor: pointer; display: none;" id="menuicon" onclick="togglenavbar()"></i>
+            <i class="fi fi-rr-menu-burger" style="color:black; font-size:xx-large; cursor: pointer;" id="menuicon" onclick="openmenu()"></i>
         </div>
     <script src="navbar.js"></script>
 </body>
