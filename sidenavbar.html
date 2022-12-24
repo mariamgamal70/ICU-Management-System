@@ -13,15 +13,14 @@
             margin:0;
         }
     ul{
-        padding:20px 0px 0px 0px;
         list-style: none;
+        padding: 0;
     }
     a{
         text-decoration: none;
         color: white !important;
-    }
-    li{
         padding:10px;
+        display: block;
     }
     #navbardiv{
         height: 100%;
@@ -34,7 +33,7 @@
         margin-left: 200px;
         padding: 20px;
     }
-    #navbardiv li:hover {
+    #navbardiv a:hover {
         background-color:#0275d8 ;
     }
     #logout{
@@ -49,8 +48,11 @@
     <div id="navbardiv" class="bg-primary">
         <aside>
             <ul>
+                <i class="fi fi-rr-cross-small" style="color:white; font-size:xx-large; cursor: pointer; float: right; padding-top:10px;" id="xicon" onclick="togglenavbar()"></i>
+                <br>
+                <br>
                 <li><a href=""><i class="fi fi-rr-home" style=" font-size: 20px;"> Home</i></a></li>
-                <li><a href=""><i class="fi fi-rr-ballot" style=" font-size: 20px;"> Patient Record</i><a></li>
+                <li><a href=""><i class="fi fi-rr-ballot" style=" font-size: 20px;"> Patient Record</i></a></li>
                 <li><a href=""> <i class="fi fi-rr-test-tube" style=" font-size: 20px;"> Lab Results</i></a></li>
                 <li><a href=""><i class="fi fi-rr-picture" style=" font-size: 20px;"> Radiology</i></a></li>
                 <li><a href=""><i class="fi fi-rr-bars-progress" style=" font-size: 20px;"> Current progress</i></a></li>
@@ -59,7 +61,7 @@
         </aside>
     </div>
     <div class="navbarcontent">
-        <i class="fi fi-rr-cross-small" style="color:black; font-size:xx-large; cursor: pointer;" id="xicon" onclick="togglenavbar()"></i>
+        
             <i class="fi fi-rr-menu-burger" style="color:black; font-size:xx-large; cursor: pointer; display: none;" id="menuicon" onclick="togglenavbar()"></i>
         </div>
     <script src="navbar.js"></script>
