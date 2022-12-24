@@ -25,25 +25,25 @@
     </div>
 
     <div class=" container d-flex flex-column gap-3 p-5 " style="width: 500px;">
-        <a href="/receptionist/newrecord.html" class="btn btn-primary btn-lg w-100">Add new record</a>
+        <a href="/website/receptionist/newrecord.html" class="btn btn-primary btn-lg w-100" style="box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);">Add new record</a>
 
-        <button class="btn btn-primary btn-lg w-100" id="updatebutton" onclick="toggleupdate()">Update existing record</button>
+        <button class="btn btn-primary btn-lg w-100" id="updatebutton" onclick="toggleupdate()" style="box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);">Update existing record</button>
         <form action="" id="updateform" style="display: none;">
             <div class="form-floating mb-3 ">
                 <input type="text" class="form-control" placeholder="Patient ID">
                 <label for="floatingInput">Patient ID</label>
             </div>
-            <div class="text-center " ><input type="submit" value="Get patient record" class=" btn btn-light btn-lg text-primary"></div>
+            <div class="text-center " ><input type="submit" value="Get patient record" class=" btn btn-light btn-lg text-primary fw-bold" style="box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);"></div>
         </form>
 
-        <button class="btn btn-primary btn-lg w-100" id="retrievebutton" onclick="toggleretrieve()">Retrieve an existing record</button>
+        <button class="btn btn-primary btn-lg w-100" id="retrievebutton" onclick="toggleretrieve()" style="box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);">Retrieve an existing record</button>
 
         <form action="" id="retrieveform" style="display: none;">
             <div class="form-floating mb-3 ">
                 <input type="text" class="form-control" placeholder="Patient ID">
                 <label for="floatingInput">Patient ID</label>
             </div>
-            <div class="text-center"><input type="submit" value="Retrieve patient record" class=" btn btn-light btn-lg text-primary" ></div>
+            <div class="text-center"><input type="submit" value="Retrieve patient record" class=" btn btn-light btn-lg text-primary fw-bold" style="box-shadow: inset -5px -5px 9px rgba(255,255,255,0.45), inset 5px 5px 9px rgba(94,104,121,0.3);"></div>
         </form>
     </div>
 
