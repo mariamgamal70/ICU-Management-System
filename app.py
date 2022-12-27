@@ -1,5 +1,13 @@
-from flask import Flask,render_template,request
+from flask import Flask, render_template, request
+import mysql.connector
 app = Flask(__name__)
+mydb = mysql.connector.connect(
+   host="localhost",
+   user="root",
+   passwd="root",
+   database="icu"
+)
+mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
 #get function route('route)
 #functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
