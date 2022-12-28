@@ -4,7 +4,7 @@ app = Flask(__name__)
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   password="whatever",
+   password="lovelygirl12",
    database="quiztrial1"
 )
 mycursor = mydb.cursor()
@@ -90,4 +90,4 @@ def contactus():
    return render_template('contactus.html')
 
 if __name__ == '__main__':
-   app.run()
+   app.run(debug=False)
