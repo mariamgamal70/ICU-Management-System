@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="sidebar.css">
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="preconnect" href="https:/fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" 
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" 
+  integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+   
+</head>
+   
+<body>
+    <!-- {%extends sidebarhtml %}  -->
+    <div class="main-container mt-3 mx-3">
+        
+        <div class="row row-bordered">
+      <h1 class="font-weight-bold text-primary">Manage Records</h1>
+    </div>
+        <div class="d-flex justify-content-between mt-5">
+                <button type="button" class="btn btn-primary border border-primary">
+                    <i class="fa-solid fa-user-plus p-1"></i>
+                    Add New Records</button>
+            <form class="form-inline">
+            <div class="d-flex" style="width: 400px;">
+              <input class="form-control mr-sm-2 border-primary" type="search" placeholder="Search" aria-label="Search"
+                v-model="search" />
+              <button class="btn btn-primary my-2 my-sm-0 mx-3 fw-bold border" type="submit" @click.prevent="searchData()">
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="row justify-content-center mt-3">
+              <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Record ID</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Date admitted</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>      
+                    <button type="button" class="btn btn-outline-primary border border-primary">
+                    <i class="fa-solid fa-user-pen"></i>
+                </button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>      
+                    <button type="button" class="btn btn-outline-primary border border-primary">
+                    <i class="fa-solid fa-user-pen"></i>
+                </button>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+                <td>      
+                    <button type="button" class="btn btn-outline-primary border border-primary">
+                    <i class="fa-solid fa-user-pen"></i>
+                </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    </div>
+</body>
+</html>
