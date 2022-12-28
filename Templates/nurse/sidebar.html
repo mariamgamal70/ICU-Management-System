@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet"> 
+    <link href='https://unpkg.com/boxicons@2.1.4/dist/boxicons.js' rel='stylesheet'>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,39 +19,41 @@
         </div>
         <ul class="nav-list">
           <li>
-            <a href="#">
+            <a href="http://127.0.0.1:5000/nursehome">
                 <i class='bx bx-home'></i>
               <span class="links_name">Home</span>
             </a>
             <span class="tooltip">Home</span>
           </li>
           <li>
-          <a href="#">
-            <i class="fa-solid fa-hospital-user"></i>
-            <span class="links_name">Manage Records</span>
+          <a href="http://127.0.0.1:5000/viewpatients">
+            <i class='bx bx-folder-open'></i>
+            <span class="links_name">View Patients Records</span>
           </a>
-          <span class="tooltip">Manage Records</span>
+          <span class="tooltip">View Patients Records</span>
         </li>
         <li>
-          <a href="#">
-            <i class="fa-solid fa-person-circle-question"></i>
-            <span class="links_name">View Iniquiries</span>
+          <a href="http://127.0.0.1:5000/requests">
+            <i class='bx bx-export'></i>
+            <span class="links_name">Lab/Scan requests</span>
           </a>
-          <span class="tooltip">View Iniquiries</span>
+          <span class="tooltip">Lab/Scan requests</span>
         </li> 
-        <li class="Logout1">
-            <div class="Logout2">
-              <div class="Logout3">
-                <div class="name">Log Out</div>
-              </div>
+        <a href="http://127.0.0.1:5000/">
+          <li class="Logout1">
+          <div class="Logout2">
+            <div class="Logout3">
+              <div class="name">Log Out</div>
             </div>
-            <i class='bx bx-log-out' id="log_out" ></i>
+          </div>
+          <i class='bx bx-log-out' id="log_out"></i>
         </li>
+      </a>
         </ul>
       </div>
-      <section class="home-section">
+      <!-- <section class="home-section">
           <div class="text">Home Page</div>
-      </section>
+      </section> -->
       
       <script>
       let sidebar = document.querySelector(".sidebar");
