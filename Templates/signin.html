@@ -65,15 +65,15 @@
         <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/profile.png') }}" alt="doctorimg"></div>
         <h4>Enter the following</h4>
         <div class="form-floating mb-3 ">
-            <input type="text" class="form-control" name="patientID" placeholder="Patient ID">
+            <input type="text" class="form-control" name="patientID" placeholder="Patient ID" required>
             <label for="floatingInput">Patient ID</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" name="patientpassword" placeholder="Password">
+            <input type="password" class="form-control" name="patientpassword" placeholder="Password" required>
             <label for="floatingPassword">Password</label>
         </div>
         <br>
-        <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"></div>
+        <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg" name="patient"></div>
         <br>
         <div class="text-center"><a href="http://127.0.0.1:5000" class=" h6"> Go Back?</a></div>
     </form>
@@ -95,15 +95,15 @@
                     <h2 class="text-center" style="color: black;">DOCTOR SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/doctor.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="doctorID" placeholder="Doctor ID">
+                <input type="text" class="form-control" name="doctorID" placeholder="Doctor ID" required>
                 <label for="floatingInput" id="stafflabel">Doctor ID</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" name="doctorpassword" placeholder="Password" id="doctorpassword">
+                <input type="password" class="form-control" name="doctorpassword" placeholder="Password" id="doctorpassword" required>
                 <label for="floatingPassword">Password</label>
             </div>
             <br>
-            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"></div>
+            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg" name="doctor"></div>
             <br>
             <div class="text-center"><a href="http://127.0.0.1:5000" class=" h6"> Go Back?</a></div>
         </form>
@@ -114,15 +114,15 @@
             <h2 class="text-center" style="color: black;">NURSE SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/nurse.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control"  placeholder="Nurse ID">
+                <input type="text" class="form-control" placeholder="Nurse ID" required>
                 <label for="floatingInput" name="nurseID" id="stafflabel">Nurse ID</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" name="nursepassword" placeholder="Password" id="nursepassword">
+                <input type="password" class="form-control" name="nursepassword" placeholder="Password" id="nursepassword" required>
                 <label for="floatingPassword">Password</label>
             </div>
             <br>
-            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"></div>
+            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg" name="nurse"></div>
             <br>
             <div class="text-center"><a href="http://127.0.0.1:5000" class=" h6"> Go Back?</a></div>
         </form>
@@ -133,15 +133,15 @@
             <h2 class="text-center" style="color: black;">ADMIN SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/admin.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="adminID" placeholder="Admin ID">
+                <input type="text" class="form-control" name="adminID" placeholder="Admin ID" required>
                 <label for="floatingInput" id="stafflabel">Admin ID</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" name="adminpassword" placeholder="Password" id="adminpassword">
+                <input type="password" class="form-control" name="adminpassword" placeholder="Password" id="adminpassword" required>
                 <label for="floatingPassword">Password</label>
             </div>
             <br>
-            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"></div>
+            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"  name="admin"></div>
             <br>
             <div class="text-center"><a href="http://127.0.0.1:5000" class=" h6"> Go Back?</a></div>
         </form>
@@ -152,20 +152,20 @@
                     <h2 class="text-center" style="color: black;">RECPTIONIST SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/receptionist.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="receptionistID" placeholder="Receptionist ID">
+                <input type="text" class="form-control" name="receptionistID" placeholder="Receptionist ID" required>
                 <label for="floatingInput" id="stafflabel">Receptionist ID</label>
             </div>
             <div class="form-floating">
-                <input type="password" class="form-control" name="receptionistpassword" placeholder="Password" id="receptionistpassword">
+                <input type="password" class="form-control" name="receptionistpassword" placeholder="Password" id="receptionistpassword" required>
                 <label for="floatingPassword">Password</label>
             </div>
             <br>
-            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg"></div>
+            <div class="text-center"><input type="submit" value="Sign in" class="btn btn-primary btn-lg" name="receptionist"></div>
             <br>    
             <div class="text-center"><a href="http://127.0.0.1:5000" class=" h6"> Go Back?</a></div>
         </form>
     </div>
     </div>
-    <script src="{{ url_for('static', filename='signin.js') }}"></script>
+    <script src="{{ url_for('static', filename='signin.js')}}"></script>
 </body>
 </html>
