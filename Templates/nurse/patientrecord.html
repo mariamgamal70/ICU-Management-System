@@ -17,49 +17,63 @@
     </style>
     <title>Patient Record</title>
 </head>
-<body class="m-5">
-    <div class="display-5"><b>Record ID</b><span></span></div>
+<body >
+    <div class="m-5">
+    <dl class="row display-5">
+        <dt class="col-sm-3">Record ID</dt>
+        <dd class="col-sm-9">XXXXXXX</dd>
+    </dl>
     <fieldset class="border p-2">
         <legend class="text-primary float-none w-auto">Personal Information</legend>
-        <div class="mb-2"><b>Name:</b><span></span></div>
-        <div class="mb-2"><b>Birthdate:</b><span></span></div>
-        <div class="mb-2"><b>Gender:</b><span></span></div>
-        <div class="mb-2"><b>Social Security Number:</b><span></span></div>
-        <div class="mb-2"><b>Address:</b><span></span></div>
-        <div class="mb-2"><b>Phone Number:</b><span></span></div>
-        <div class="mb-2"><b>Emergency Contact:</b><span></span></div>
+        <dl class="row">
+        <dt class="col-sm-3">Name</dt> 
+        <dd class="col-sm-9">whatever name</dd>
+        <dt class="col-sm-3">Birthdate</dt>
+        <dd class="col-sm-9">DD/MM/YYYY </dd>
+        <dt class="col-sm-3">Gender</dt>
+        <dd class="col-sm-9">whatever gender</dd>
+        <dt class="col-sm-3">Social Security Number</dt>
+        <dd class="col-sm-9">XXXXXXXX</dd>
+        <dt class="col-sm-3">Address</dt>
+        <dd class="col-sm-9">whatever address</dd>
+        <dt class="col-sm-3">Phone Number</dt>
+        <dd class="col-sm-9">XXX-XXX-XXX</dd>
+        <dt class="col-sm-3">Emergency Contact</dt>
+        <dd class="col-sm-9">XXX-XXX-XXX</dd>
+    </dl>
     </fieldset>
     <fieldset class="border p-2">
         <legend class="text-primary float-none w-auto">Medical Information</legend>
-        <div class="mb-2"><b>Medical Status:</b><span></span></div>
-        <div class="mb-2"><b>Admission Reason:</b><span></span></div>
-        <div class="mb-2"><b>Date of Admittance: </b><span></span></div>
-        <div class="mb-2"><b>Medical Diagnosis:</b><span></span></div>
+        <dl class="row">
+        <dt class="col-sm-3">Medical Status</dt>
+        <dd class="col-sm-9">whatever Medical Status</dd>
+        <dt class="col-sm-3">Admission Reason</dt>
+        <dd class="col-sm-9">whatever Admission Reason</dd>
+        <dt class="col-sm-3">Date of Admittance</dt>
+        <dd class="col-sm-9">DD/MM/YYYY</dd>
+        <dt class="col-sm-3">Medical Diagnosis</dt>
+        <dd class="col-sm-9">whatever Medical Diagnosis</dd>
+    </dl>
     </fieldset>
     <fieldset class="border p-2">
         <legend class="text-primary float-none w-auto">ICU Information</legend>
-        <div class="mb-2"><b>Bed Number:</b><span></span></div>
-        <div class="mb-2">
-        <div><b>Attending Physician:</b><span></span></div>
-        <div><b>Attending Physician ID:</b><span></span></div>
-        </div>
-        <div class="mb-2">
-        <div><b>Attending Nurse:</b><span></span></div>
-        <div><b>Attending Nurse ID:</b><span></span></div>
-        </div>
+        <dl class="row">
+            <dt class="col-sm-3">Bed Number</dt>
+            <dd class="col-sm-9">XX</dd>
+            <dt class="col-sm-3">Attending Physician</dt>
+            <dd class="col-sm-9">whatever Attending Physician</dd>
+            <dt class="col-sm-3">Attending Physician ID</dt>
+            <dd class="col-sm-9">XXXXXXXX</dd>
+            <dt class="col-sm-3">Attending Nurse</dt>
+            <dd class="col-sm-9">whatever Attending Nurse</dd>
+            <dt class="col-sm-3">Attending Nurse ID</dt>
+            <dd class="col-sm-9">XXXXXXXX</dd>
+        </dl>
     </fieldset>
-    <fieldset class="border p-2">
-        <legend class="text-primary float-none w-auto">Patient Progress</legend>
-    </fieldset>
-<button class="btn btn-primary">Update ICU Information</button>
-<button class="btn btn-primary">View Procedures </button>
-
-
-
-
-
-
-
-
+    <div class="d-flex justify-content-center m-5" >
+    <a class="btn btn-primary mx-3">Update ICU Information</a>
+    <a class="btn btn-primary mx-3">View Procedures </a>
+    </div>
+</div>
 </body>
 </html>

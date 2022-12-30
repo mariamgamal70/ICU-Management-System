@@ -4,8 +4,8 @@ app = Flask(__name__)
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   password="Eng_8730667",
-   database="icu_management_system"
+   password="lovelygirl12",
+   database="quiztrial1"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
