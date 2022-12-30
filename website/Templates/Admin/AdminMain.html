@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Main Page </title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="/website/Static/css/Adminbase.css">
+</head>
+
+<body>
+
+  <nav class="menu bg-primary" tabindex="0">
+    <header class="Header ">
+<h1><a href="#" class="navbar-brand">ICU MANAGEMENT</a></h1>
+
+    </header>
+    <div class="smartphone-menu-trigger"></div>
+    <header class="avatar bg-primary">
+      <img src="/website/Static/images/Admin-Profile-PNG-Clipart.png" >
+      <br><br>
+      <h6 id="Admin">Admin</h6>
+      <h2>{{}}</h2>
+    </header>
+    <ul>
+      <li tabindex="0" class="icon-dashboard" > <a style="color:white; text-decoration:none;" href="#"><span>Dashboard</span></a> </li>
+      <li tabindex="0" class="icon-customers"> <a style="color:white; text-decoration:none;" href="#"><span>Doctor</span></a></li>
+      <li tabindex="0" class="icon-users"> <a style="color:white; text-decoration:none;" href="#"><span>Patient</span></a></li>
+      <li tabindex="0" class="icon-calendar"> <a style="color:white; text-decoration:none;" href="#"><span>Appointments</span></a></li>
+      <li tabindex="0" class="icon-department">  <a style="color:white; text-decoration:none;" href="#"><span>Departments</span></a></li>
+      <li tabindex="0" class="icon-payment"> <a style="color:white; text-decoration:none;" href="#"><span>Payments</span></a></li>
+      <li tabindex="0" class="icon-logout" > <a id="sign_out" style="color:white; text-decoration: none; font-size: 1.3rem;" href="/website/Templates/index.html"><span>Sign Out</span></a></li>
+    </ul>
+   
+  </nav>
+
+  <main>
+
+    
+
+    <!-- content start-->
+    {% block content %}
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-blue order-card">
+            <div class="card-block">
+              <a href="#">
+                <h6 class="m-b-20">Nurses</h6>
+              </a>
+              <br>
+              <h2 class="text-right"><i class="fas fa-user-nurse f-left" data-after="number" id="nurseicon"></i> 
+                
+              </h2>
+    
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-green order-card">
+            <div class="card-block">
+              <a href="#">
+                <h6 class="m-b-20">Patients</h6>
+              </a>
+              <br>
+              <h2 class="text-right"><i class="fas fa-user-plus f-left" data-after="number" id="patienticon"></i></h2>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-yellow order-card">
+            <div class="card-block">
+              <a href="#">
+                <h6 class="m-b-20">Receptionists</h6>
+              </a>
+              <br>
+              <h2 class="text-right"><i class="fas fa-phone f-left" data-after="number" id="Recepicon"></i></h2>
+            </div>
+          </div>
+        </div>
+    
+        <div class="col-md-4 col-xl-3">
+          <div class="card bg-c-pink order-card">
+            <div class="card-block">
+              <a href="#">
+                <h6 class="m-b-20">Doctors</h6>
+              </a>
+              <br>
+              <h2 class="text-right"><i class="fas fa-user-md f-left" data-after="number" id="Doctoricon"></i></h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endblock %}
+    <!-- content end-->
+
+  
+  
+
+  </main>
+
+</body>
+
+</html>
