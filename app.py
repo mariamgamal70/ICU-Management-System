@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request, render_template
+from flask import Flask, render_template, redirect, url_for, request
 import mysql.connector
 app = Flask(__name__)
 mydb = mysql.connector.connect(
@@ -13,10 +13,23 @@ mycursor = mydb.cursor()
 #functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
 #route('route',methods=['POST','GET'])
 # in case it is GET and POST you should check inside the function whether the incoming is a get or post request , if its a get ,return template, if its a post , send data do changes
+
 @app.route('/')#GET METHOD
 def index():
    return render_template('index.html')
 
+
+@app.route('/adminhome')
+def Adminhome():
+   diction={"name":"sharif"}
+  # sql="SELECT "  
+
+   return render_template('/admin/adminDashboard.html',x=diction)
+
+
+
+
+"""
 @app.route('/signin',methods=['POST','GET'])  # GET METHOD
 def signin():
    msg = 'Incorrect username/password!'
@@ -89,14 +102,9 @@ def signin():
 def contactus():
    return render_template('contactus.html')
 
+"""
 
-
-@app.route('/AdminMain')
-def AdminMain():
-
-   
-   return render_template('AdminMain.html')
 
 
 if __name__ == '__main__':
-   app.run(debug=False)
+   app.run(debug=True)
