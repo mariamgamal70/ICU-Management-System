@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="lovelygirl12",
-   database="quiztrial1"
+   database="icu_management_system"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -88,6 +88,15 @@ def signin():
 @app.route('/contactus')  # GET METHOD
 def contactus():
    return render_template('contactus.html')
+
+
+
+@app.route('/AdminMain')
+def AdminMain():
+
+   
+   return render_template('AdminMain.html')
+
 
 if __name__ == '__main__':
    app.run(debug=False)
