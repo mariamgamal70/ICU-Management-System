@@ -1,8 +1,18 @@
 from flask import Flask, render_template, redirect, url_for, request,session,flash
 from flask_session import Session
-from datetime import datetime
 import mysql.connector
 from flask_mail import Mail, Message
+# from flask_socketio import SocketIO
+# from apiclient.discovery import build #builds service object for any google api
+# from google_auth_oauthlib.flow import InstalledAppFLow
+# scopes = ['https://www.googleapis.com/auth/calendar.events']
+
+# app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+# socketio = SocketIO(app)
+
+from datetime import datetime
+now = datetime.now()
+formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
 
 app = Flask(__name__)
 
@@ -42,13 +52,15 @@ def sendmessage(result):
 def index():
    return render_template("index.html")
 
-
 @app.route('/adminhome')
 def Adminhome():
+   return render_template('/admin/adminDashboard.html',x=diction)
+
+@app.route("/AdminMain")
+def AdminMain():
+   return render_template("AdminMain.html")
    diction={"name":"sharif"}
    # sql="SELECT "  
-
-   return render_template('/admin/adminDashboard.html',x=diction)
 
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
@@ -154,9 +166,22 @@ def contactus():
    return render_template("contactus.html")
 
 
-@app.route("/AdminMain")
-def AdminMain():
-   return render_template("AdminMain.html")
+@app.route("/nursehome", methods=["POST", "GET"])
+def getnursepatientdata():
+   nurseid=session['id']
+   result={}
+   mycursor.execute('SELECT FirstName,LastName,Birthdate,SSN,Gender from nurse where NurseID=%s',(nurseid))
+   nurse=mycursor.fetchone()
+   result['nurseid']=session['id']
+   result['nursename'] = nurse[0] + nurse[1]
+   result['nursebirthdate']=nurse[2]
+   result['nursessn']=nurse[3]
+   result['nursegender']=nurse[4]
+   mycursor.execute('SELECT FirstName,LastName,patientID from inpatient join nurse on nurseID=nurseID where nurseID=%s',(nurseid))
+   patient=mycursor.fetchone()
+   result['patientname']= patient[0] +patient[1]
+   result['patientid']= patient[2]
+   render_template('/nursehome',data=result)
 
 @app.route("/logout")
 def LogOut():
@@ -165,3 +190,4 @@ def LogOut():
 
 if __name__ == "__main__":
    app.run(debug=True)
+   #socketio.run(app, debug=True)

@@ -21,50 +21,51 @@
 </head>
 <body>
     { % extends "index.html" % }
-    {% if nursename %}
-    <h1><b>Welcome Nurse <span class="text-primary">{{nursename}}</span></b></h1>
-    {% endif %}
+    {%block content%}
+    {% if data %}
+    <h1><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
                 <dt class="col-sm-4 text-primary">Nurse ID</dt>
-                <dd class="col-sm-6">XXXXXXXXX</dd>
+                <dd class="col-sm-6">{{data['nurseid']}}</dd>
                 <dt class="col-sm-4 text-primary">Name</dt>
                 <dd class="col-sm-6">whatever Name</dd>
-                <dt class="col-sm-4 text-primary">Age</dt>
-                <dd class="col-sm-6">whatever Age</dd>
+                <dt class="col-sm-4 text-primary">Birthdate</dt>
+                <dd class="col-sm-6">{{data['nursebirthdate']}}</dd>
                 <dt class="col-sm-4 text-primary">Social Security Number</dt>
-                <dd class="col-sm-6">XXXXXXXXXXXXXXXXXX</dd>
+                <dd class="col-sm-6">{{data['nursessn']}}</dd>
                 <dt class="col-sm-4 text-primary">Gender</dt>
-                <dd class="col-sm-6">whatever Gender</dd>
+                <dd class="col-sm-6">{{data['nursegender']}}</dd>
                 <dt class="col-sm-10 text-primary">Patient you're in charge of</dt>
                 <dt class="col-sm-4 text-primary">Patient Name</dt>
-                <dd class="col-sm-6">whatever patient name</dd>
+                <dd class="col-sm-6">{{data['patientname']}}</dd>
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
-                <dd class="col-sm-6">XXXXXXX</dd>
+                <dd class="col-sm-6">{{data['patientid']}}</dd>
             </dl>
+    {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
             
-            <form action="" class="my-5" id="alertbutton" style="display: none;">
-                    <select class="form-select"  >
-                        <option selected disabled>Reason for alerting</option>
-                        <option value="Allergy">Allergy</option>
-                        <option value="Abnormal lab results">Abnormal lab results</option>
-                        <option value="Abnormal imaging results">Abnormal imaging results</option>
-                        <option value="Deteriorating condition">Deteriorating condition</option>
-                        <option value="Abnormal blood pressure">Abnormal blood pressure</option>
-                        <option value="Abnormal vital signs">Abnormal vital signs</option>
-                        <option value="Abnormal oxygen saturation">Abnormal oxygen saturation</option>
-                        <option value="Others ">Others (Please state in the comments section)</option>
+            <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">
+                <select class="form-select" required >
+                    <option selected disabled>Reason for alerting</option>
+                    <option value="Allergy">Allergy</option>
+                    <option value="Abnormal lab results">Abnormal lab results</option>
+                    <option value="Abnormal imaging results">Abnormal imaging results</option>
+                    <option value="Deteriorating condition">Deteriorating condition</option>
+                    <option value="Abnormal blood pressure">Abnormal blood pressure</option>
+                    <option value="Abnormal vital signs">Abnormal vital signs</option>
+                    <option value="Abnormal oxygen saturation">Abnormal oxygen saturation</option>
+                    <option value="Others ">Others (Please state in the comments section)</option>
                     </select>
                     <br>
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                            style="height: 100px"></textarea>
+                            style="height: 100px" required></textarea>
                         <label for="floatingTextarea2">Comments</label>
                     </div>
                     <br>    
-                <input class="btn btn-danger  shadow-lg" type="submit" value="Send">
+                <input class="btn btn-danger  shadow-lg" type="submit" value="Send" name="alert">
             </form>
         </div>
         <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
@@ -78,6 +79,7 @@
             else
             document.getElementById('alertbutton').style.display = 'none'
         }
-    </script>
+        </script>
+        {% endblock %}
 </body>
 </html>
