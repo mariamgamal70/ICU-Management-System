@@ -28,46 +28,48 @@
     <title>Contact Us</title>
 </head>
 <body>
-        <h1 class="text-primary display-2 p-5 container-fluid" style="font-family:'Bayon';  " id="contactus">Contact Us </h1>
+    {% with messeges =get_flashed_messages() %}
+    {% if messeges %}
+    {%for messege in messeges%}
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <i class='bx bx-check-circle'></i>
+        {{messege}}. <a href="http://127.0.0.1:5000/" class="alert-link">Go back?</a>.
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <h1 class="text-primary display-3 p-4 container-fluid" style="font-family:'Bayon';  " id="contactus">Contact Us </h1>
         <div class=" d-flex flex-row flex-wrap justify-content-around">
         <div class="form">
         <form action="http://127.0.0.1:5000/contactus" method="POST">
             <div class=" d-flex justify-content-between flex-wrap p-0">
                 <span class="col-md-5">
                     <label for="FirstName" class="form-label">First Name</label>
-                    <input  type="text" class="form-control  py-3 " placeholder="Enter First Name" name="FirstName" required>
+                    <input  type="text" class="form-control   " placeholder="Enter First Name" name="FirstName" required>
                 </span>
                 <span class="col-md-5">
                     <label for="LastName" class="form-label">Last Name</label>
-                    <input  type="text" class="form-control  py-3" placeholder="Enter Last Name" name="LastName" required>
+                    <input  type="text" class="form-control  " placeholder="Enter Last Name" name="LastName" required>
                 </span>
             </div>
             <br>
             <label for="email" class="form-label">Email</label>
-            <input  type="email" class="form-control p-3" placeholder="Enter email" name="email" required>
+            <input  type="email" class="form-control " placeholder="Enter email" name="email" required>
             <br>
             <label for="Phone" class="form-label">Phone Number</label>
-            <input  type="tel" class="form-control p-3" placeholder="Enter Phone Number" name="Phone" required>
+            <input  type="tel" class="form-control  " placeholder="Enter Phone Number" name="Phone" required>
             <br>
             <label for="complain" class="form-label">Complain/Inquiry</label>
-            <textarea  class="form-control p-3" rows="5" id="comment" name="complain" placeholder="Please enter your complaint or inquiry here" required></textarea>
+            <textarea  class="form-control  " rows="5" id="comment" name="complain" placeholder="Please enter your complaint or inquiry here" required></textarea>
             <div class="d-grid my-5">
-            <button type="submit" class="btn btn-primary btn-lg btn-block" style="font-family:'Bayon'; font-size: 2rem;"><a
+            <button type="submit" class="btn btn-primary  btn-block" style="font-family:'Bayon'; font-size: 1.5rem;"><a
                     href="#">Submit</a></button>
                 </div>
-        </form>
-        {% with messeges =get_flashed_messages() %}
-        {% if messeges %}
-        {%for messege in messeges%}
-        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <i class='bx bx-check-circle'></i>
-            {{messege}}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+            </form>
+            <div style="margin-bottom: 50px; text-align: center;"><a href="http://127.0.0.1:5000/" class="link-primary" style="text-decoration: underline; font-size:larger;">Go back?</a></div>
+
     </div>
-    <div class="contact align-self-center text-center display-5 p">
+    <div class="contact align-self-center text-center display-6 p">
         <b class="text-primary">Hospital contact information:</b>
         <br>
         xxx-xxx-xxx

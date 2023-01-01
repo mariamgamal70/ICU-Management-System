@@ -35,7 +35,6 @@ mycursor = mydb.cursor()
 def sendmessage(result):
    msg = Message(subject="Inquiry/Complaint", sender=result['email'], recipients=["mariamgamal70@gmail.com"])
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
-   flash(msg.body)
    mail.send(msg)
 
 
@@ -151,7 +150,7 @@ def contactus():
       result['complaint']= request.form["complain"]
       sendmessage(result)
       flash('Email is successfully sent','success')
-      return render_template("contactus.html")
+      return redirect("/contactus")
    return render_template("contactus.html")
 
 
