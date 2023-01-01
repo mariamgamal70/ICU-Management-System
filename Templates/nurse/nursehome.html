@@ -21,7 +21,9 @@
 </head>
 <body>
     { % extends "index.html" % }
-    <h1><b>Welcome Nurse <span class="text-primary">whatever</span></b></h1>
+    {% if nursename %}
+    <h1><b>Welcome Nurse <span class="text-primary">{{nursename}}</span></b></h1>
+    {% endif %}
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">

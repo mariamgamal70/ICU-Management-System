@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Bayon' rel='stylesheet'>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <style>
@@ -30,31 +31,41 @@
         <h1 class="text-primary display-2 p-5 container-fluid" style="font-family:'Bayon';  " id="contactus">Contact Us </h1>
         <div class=" d-flex flex-row flex-wrap justify-content-around">
         <div class="form">
-        <form action="/action_page.php">
+        <form action="http://127.0.0.1:5000/contactus" method="POST">
             <div class=" d-flex justify-content-between flex-wrap p-0">
                 <span class="col-md-5">
                     <label for="FirstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control  py-3 " placeholder="Enter First Name" name="FirstName">
+                    <input  type="text" class="form-control  py-3 " placeholder="Enter First Name" name="FirstName" required>
                 </span>
                 <span class="col-md-5">
                     <label for="LastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control  py-3" placeholder="Enter Last Name" name="LastName">
+                    <input  type="text" class="form-control  py-3" placeholder="Enter Last Name" name="LastName" required>
                 </span>
             </div>
             <br>
             <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control p-3" placeholder="Enter email" name="email">
+            <input  type="email" class="form-control p-3" placeholder="Enter email" name="email" required>
             <br>
             <label for="Phone" class="form-label">Phone Number</label>
-            <input type="tel" class="form-control p-3" placeholder="Enter Phone Number" name="Phone">
+            <input  type="tel" class="form-control p-3" placeholder="Enter Phone Number" name="Phone" required>
             <br>
             <label for="complain" class="form-label">Complain/Inquiry</label>
-            <textarea class="form-control p-3" rows="5" id="comment" name="complain" placeholder="Please enter your complaint or inquiry here"></textarea>
+            <textarea  class="form-control p-3" rows="5" id="comment" name="complain" placeholder="Please enter your complaint or inquiry here" required></textarea>
             <div class="d-grid my-5">
             <button type="submit" class="btn btn-primary btn-lg btn-block" style="font-family:'Bayon'; font-size: 2rem;"><a
                     href="#">Submit</a></button>
                 </div>
         </form>
+        {% with messeges =get_flashed_messages() %}
+        {% if messeges %}
+        {%for messege in messeges%}
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <i class='bx bx-check-circle'></i>
+            {{messege}}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
     </div>
     <div class="contact align-self-center text-center display-5 p">
         <b class="text-primary">Hospital contact information:</b>
