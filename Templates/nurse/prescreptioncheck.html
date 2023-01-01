@@ -6,14 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Prescription List</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+        }
+        .table_wrapper{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+    th {
+        position: sticky;
+    }
+    </style>
 </head>
-<body>
+<body class="m-5">
     {%block content%}
-    
+    <h1 class="text-primary"><b>Prescription List</b></h1>
+    <div class="table_wrapper">
+    <table class="table table-hover" style="overflow: auto;">
+        <thead class="table-primary">
+            <tr>
+            { % for r in data.header % }
+            <th>{ { r } }</th>
+            <th>{ { r } }</th>
+            { % endfor % }
+            <th>Adminster Prescription</th>
+            </tr>
+        </thead>
+        <tbody>
+            { % for r in data.rec % }
+            <tr>
+                { % for l in r% }
+                <td> { { l } }</td>
+                <td> { { l } }</td>
+                { % endfor % }
+                <td class="text-center"><a href="" class="btn btn-primary"><i class='bx bx-task' style="font-size:25px;"></i></a></td>
+            </tr>
+            { % endfor % }
+        </tbody>
+    </table>
+</div>
     {% endblock %}
 </body>
 </html>
