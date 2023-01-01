@@ -18,62 +18,65 @@
     <title>Patient Record</title>
 </head>
 <body >
+    { % extends "index.html" % }
     {%block content%}
+    {% if data %}
     <div class="m-5">
         <dl class="row display-5">
             <dt class="col-sm-3">Record ID</dt>
-            <dd class="col-sm-9">XXXXXXX</dd>
+            <dd class="col-sm-9">{{data['RecordID']}}</dd>
         </dl>
         <fieldset class="border p-2">
-            <legend class="text-primary float-none w-auto">Personal Information</legend>
+            <legend class="text-primary float-none w-auto">Patient Personal Information</legend>
             <dl class="row">
                 <dt class="col-sm-3">Name</dt> 
-                <dd class="col-sm-9">whatever name</dd>
+                <dd class="col-sm-9">{{data['FirstName']+data[LastName]}}</dd>
                 <dt class="col-sm-3">Birthdate</dt>
-                <dd class="col-sm-9">DD/MM/YYYY </dd>
+                <dd class="col-sm-9">{{data['Birthdate']}} </dd>
                 <dt class="col-sm-3">Gender</dt>
-                <dd class="col-sm-9">whatever gender</dd>
+                <dd class="col-sm-9">{{data['Gender']}}</dd>
                 <dt class="col-sm-3">Social Security Number</dt>
-                <dd class="col-sm-9">XXXXXXXX</dd>
+                <dd class="col-sm-9">{{data['SSN']}}</dd>
                 <dt class="col-sm-3">Address</dt>
-                <dd class="col-sm-9">whatever address</dd>
+                <dd class="col-sm-9">{{data['Address']}}</dd>
                 <dt class="col-sm-3">Phone Number</dt>
-        <dd class="col-sm-9">XXX-XXX-XXX</dd>
-        <dt class="col-sm-3">Emergency Contact</dt>
-        <dd class="col-sm-9">XXX-XXX-XXX</dd>
-    </dl>
+                <dd class="col-sm-9">{{data['PhoneNumber']}}</dd>
+                <dt class="col-sm-3">Emergency Contact</dt>
+                <dd class="col-sm-9">{{data['EmergencyContact']}}</dd>
+            </dl>
 </fieldset>
 <fieldset class="border p-2">
-    <legend class="text-primary float-none w-auto">Medical Information</legend>
+    <legend class="text-primary float-none w-auto">Patient Medical Information</legend>
     <dl class="row">
         <dt class="col-sm-3">Medical Status</dt>
-        <dd class="col-sm-9">whatever Medical Status</dd>
+        <dd class="col-sm-9">{{data['MedicalStatus']}}</dd>
         <dt class="col-sm-3">Admission Reason</dt>
-        <dd class="col-sm-9">whatever Admission Reason</dd>
+        <dd class="col-sm-9">{{data['AdmissionReason']}}</dd>
         <dt class="col-sm-3">Date of Admittance</dt>
-        <dd class="col-sm-9">DD/MM/YYYY</dd>
+        <dd class="col-sm-9">{{data['DateofAdmittance']}}</dd>
         <dt class="col-sm-3">Medical Diagnosis</dt>
-        <dd class="col-sm-9">whatever Medical Diagnosis</dd>
+        <dd class="col-sm-9">{{data['MedicalDiagnosis']}}</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
-    <legend class="text-primary float-none w-auto">ICU Information</legend>
+    <legend class="text-primary float-none w-auto">Patient ICU Information</legend>
     <dl class="row">
         <dt class="col-sm-3">Bed Number</dt>
-        <dd class="col-sm-9">XX</dd>
+        <dd class="col-sm-9">{{data['BedNumber']}}</dd>
         <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">whatever Attending Physician</dd>
+        <dd class="col-sm-9">{{data['AttendingPhysician']}}</dd>
         <dt class="col-sm-3">Attending Physician ID</dt>
-            <dd class="col-sm-9">XXXXXXXX</dd>
-            <dt class="col-sm-3">Attending Nurse</dt>
+        <dd class="col-sm-9">{{data['AttendingPhysicianID']}}</dd>
+            <!-- <dt class="col-sm-3">Attending Nurse</dt>
             <dd class="col-sm-9">whatever Attending Nurse</dd>
             <dt class="col-sm-3">Attending Nurse ID</dt>
-            <dd class="col-sm-9">XXXXXXXX</dd>
+            <dd class="col-sm-9">XXXXXXXX</dd> -->
         </dl>
     </fieldset>
+    {% endif %}
     <div class="d-flex justify-content-center m-5" >
-        <a class="btn btn-primary mx-3">Update ICU Information</a>
-        <a class="btn btn-primary mx-3">View Procedures </a>
+        <a href="/Templates/nurse/updateicuinformation.html" class="btn btn-primary mx-3">Update ICU Information</a>
+        <a class="btn btn-primary mx-3">View Procedures</a>
     </div>
 </div>
 {% endblock %}
