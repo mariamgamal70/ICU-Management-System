@@ -18,33 +18,34 @@
     <title>Patient Record</title>
 </head>
 <body >
+    {%block content%}
     <div class="m-5">
-    <dl class="row display-5">
-        <dt class="col-sm-3">Record ID</dt>
-        <dd class="col-sm-9">XXXXXXX</dd>
-    </dl>
-    <fieldset class="border p-2">
-        <legend class="text-primary float-none w-auto">Personal Information</legend>
-        <dl class="row">
-        <dt class="col-sm-3">Name</dt> 
-        <dd class="col-sm-9">whatever name</dd>
-        <dt class="col-sm-3">Birthdate</dt>
-        <dd class="col-sm-9">DD/MM/YYYY </dd>
-        <dt class="col-sm-3">Gender</dt>
-        <dd class="col-sm-9">whatever gender</dd>
-        <dt class="col-sm-3">Social Security Number</dt>
-        <dd class="col-sm-9">XXXXXXXX</dd>
-        <dt class="col-sm-3">Address</dt>
-        <dd class="col-sm-9">whatever address</dd>
-        <dt class="col-sm-3">Phone Number</dt>
+        <dl class="row display-5">
+            <dt class="col-sm-3">Record ID</dt>
+            <dd class="col-sm-9">XXXXXXX</dd>
+        </dl>
+        <fieldset class="border p-2">
+            <legend class="text-primary float-none w-auto">Personal Information</legend>
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt> 
+                <dd class="col-sm-9">whatever name</dd>
+                <dt class="col-sm-3">Birthdate</dt>
+                <dd class="col-sm-9">DD/MM/YYYY </dd>
+                <dt class="col-sm-3">Gender</dt>
+                <dd class="col-sm-9">whatever gender</dd>
+                <dt class="col-sm-3">Social Security Number</dt>
+                <dd class="col-sm-9">XXXXXXXX</dd>
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-9">whatever address</dd>
+                <dt class="col-sm-3">Phone Number</dt>
         <dd class="col-sm-9">XXX-XXX-XXX</dd>
         <dt class="col-sm-3">Emergency Contact</dt>
         <dd class="col-sm-9">XXX-XXX-XXX</dd>
     </dl>
-    </fieldset>
-    <fieldset class="border p-2">
-        <legend class="text-primary float-none w-auto">Medical Information</legend>
-        <dl class="row">
+</fieldset>
+<fieldset class="border p-2">
+    <legend class="text-primary float-none w-auto">Medical Information</legend>
+    <dl class="row">
         <dt class="col-sm-3">Medical Status</dt>
         <dd class="col-sm-9">whatever Medical Status</dd>
         <dt class="col-sm-3">Admission Reason</dt>
@@ -54,15 +55,15 @@
         <dt class="col-sm-3">Medical Diagnosis</dt>
         <dd class="col-sm-9">whatever Medical Diagnosis</dd>
     </dl>
-    </fieldset>
-    <fieldset class="border p-2">
-        <legend class="text-primary float-none w-auto">ICU Information</legend>
-        <dl class="row">
-            <dt class="col-sm-3">Bed Number</dt>
-            <dd class="col-sm-9">XX</dd>
-            <dt class="col-sm-3">Attending Physician</dt>
-            <dd class="col-sm-9">whatever Attending Physician</dd>
-            <dt class="col-sm-3">Attending Physician ID</dt>
+</fieldset>
+<fieldset class="border p-2">
+    <legend class="text-primary float-none w-auto">ICU Information</legend>
+    <dl class="row">
+        <dt class="col-sm-3">Bed Number</dt>
+        <dd class="col-sm-9">XX</dd>
+        <dt class="col-sm-3">Attending Physician</dt>
+        <dd class="col-sm-9">whatever Attending Physician</dd>
+        <dt class="col-sm-3">Attending Physician ID</dt>
             <dd class="col-sm-9">XXXXXXXX</dd>
             <dt class="col-sm-3">Attending Nurse</dt>
             <dd class="col-sm-9">whatever Attending Nurse</dd>
@@ -71,9 +72,10 @@
         </dl>
     </fieldset>
     <div class="d-flex justify-content-center m-5" >
-    <a class="btn btn-primary mx-3">Update ICU Information</a>
-    <a class="btn btn-primary mx-3">View Procedures </a>
+        <a class="btn btn-primary mx-3">Update ICU Information</a>
+        <a class="btn btn-primary mx-3">View Procedures </a>
     </div>
 </div>
+{% endblock %}
 </body>
 </html>

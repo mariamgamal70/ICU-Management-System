@@ -18,28 +18,29 @@
     <title>Document</title>
 </head>
 <body class="m-4">
-    { % extends "index.html" % }
-    <h1 class="text-primary"><b>Laboratory</b></h1>
-    <div class="accordion m-3" id="accordionPanelsStayOpenExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+{ % extends "index.html" % }
+{%block content%}
+<h1 class="text-primary"><b>Laboratory</b></h1>
+<div class="accordion m-3" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
                     aria-controls="panelsStayOpen-collapseOne">
                     <b>Existing</b>
                 </button>
             </h2>
             <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                aria-labelledby="panelsStayOpen-headingOne">
-                <div class="accordion-body">
-                    <table class="table">
-                        <tr class="table-primary">
-                            <th>File</th>
-                            <th>Recieved Date</th>
-                        </tr>
-                        { % for r in data.rec % }
-                        <tr>
-                            { % for l in r% }
+            aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+                <table class="table">
+                    <tr class="table-primary">
+                        <th>File</th>
+                        <th>Recieved Date</th>
+                    </tr>
+                    { % for r in data.rec % }
+                    <tr>
+                        { % for l in r% }
                             <td> { { l } }</td>
                             { % endfor % }
                         </tr>
@@ -50,12 +51,72 @@
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseTwo">
-                    <b>Pending</b>
-                </button>
-            </h2>
-            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+                data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseTwo">
+                <b>Pending</b>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
+        aria-labelledby="panelsStayOpen-headingTwo">
+        <div class="accordion-body">
+            <table class="table">
+                <tr class="table-primary">
+                    <th>File</th>
+                    <th>Recieved Date</th>
+                </tr>
+                        { % for r in data.rec % }
+                        <tr>
+                            { % for l in r% }
+                            <td> { { l } }</td>
+                            { % endfor % }
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button onclick="showLabForm()" id="addlabbutton" class="btn btn-primary m-3">Add Existing Lab</button>
+    <button  id="reqlab" class="btn btn-primary m-3">Request Lab</button>
+    <form action="" method="post" id="addlabform" style="display: none;" class="m-3">
+        <input type="file" name="lab" id="lab">
+    </form>
+    <h1 class="text-primary"><b>Imaging</b></h1>
+    <div class="accordion m-3" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+                aria-controls="panelsStayOpen-collapseOne">
+                <b>Existing</b>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+        aria-labelledby="panelsStayOpen-headingOne">
+        <div class="accordion-body">
+            <table class="table">
+                <tr class="table-primary">
+                    <th>File</th>
+                    <th>Recieved Date</th>
+                </tr>
+                { % for r in data.rec % }
+                <tr>
+                    { % for l in r% }
+                    <td> { { l } }</td>
+                    { % endfor % }
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
+                        aria-controls="panelsStayOpen-collapseTwo">
+                        <b>Pending</b>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
                 aria-labelledby="panelsStayOpen-headingTwo">
                 <div class="accordion-body">
                     <table class="table">
@@ -74,66 +135,6 @@
             </div>
         </div>
     </div>
-    <button onclick="showLabForm()" id="addlabbutton" class="btn btn-primary m-3">Add Existing Lab</button>
-    <button  id="reqlab" class="btn btn-primary m-3">Request Lab</button>
-    <form action="" method="post" id="addlabform" style="display: none;" class="m-3">
-        <input type="file" name="lab" id="lab">
-    </form>
-    <h1 class="text-primary"><b>Imaging</b></h1>
-        <div class="accordion m-3" id="accordionPanelsStayOpenExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
-                        aria-controls="panelsStayOpen-collapseOne">
-                        <b>Existing</b>
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
-                    aria-labelledby="panelsStayOpen-headingOne">
-                    <div class="accordion-body">
-                        <table class="table">
-                            <tr class="table-primary">
-                                <th>File</th>
-                                <th>Recieved Date</th>
-                            </tr>
-                            { % for r in data.rec % }
-                            <tr>
-                                { % for l in r% }
-                                <td> { { l } }</td>
-                                { % endfor % }
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseTwo">
-                        <b>Pending</b>
-                    </button>
-                </h2>
-                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
-                    aria-labelledby="panelsStayOpen-headingTwo">
-                    <div class="accordion-body">
-                        <table class="table">
-                            <tr class="table-primary">
-                                <th>File</th>
-                                <th>Recieved Date</th>
-                            </tr>
-                            { % for r in data.rec % }
-                            <tr>
-                                { % for l in r% }
-                                <td> { { l } }</td>
-                                { % endfor % }
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
         <button onclick="showImagingForm()" id="addimg" class="btn btn-primary m-3">Upload Existing Imaging</button>
         <button  id="reqimg" class="btn btn-primary m-3">Request Imaging</button>
         <form action="" method="post" id="addImagingform" style="display: none;" class="m-3">
@@ -142,16 +143,17 @@
         <script>
             function showLabForm(){
                 if(document.getElementById('addlabform').style.display=='none')
-                    document.getElementById('addlabform').style.display = 'block';
+                document.getElementById('addlabform').style.display = 'block';
                 else
                 document.getElementById('addlabform').style.display = 'none';
             }
             function showImagingForm(){
                 if(document.getElementById('addImagingform').style.display=='none')
-                    document.getElementById('addImagingform').style.display = 'block';
+                document.getElementById('addImagingform').style.display = 'block';
                 else
                 document.getElementById('addImagingform').style.display = 'none';
             }
-        </script>
+            </script>
+        {% endblock %}
 </body>
 </html>

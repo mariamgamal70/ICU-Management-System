@@ -17,8 +17,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/adminMain.css') }}"> 
 
-<link rel="stylesheet" href="{{ url_for('static', filename='Adminbase.css') }}"> #style dynamic content
 </head>
 
 <body>
@@ -30,10 +30,10 @@
     </header>
     <div class="smartphone-menu-trigger"></div>
     <header class="avatar bg-primary">
-      <img src="/Static/images/Admin-Profile-PNG-Clipart.png" >
+      <img src="{{url_for('static',filename='/images/Admin-Profile-PNG-Clipart.png')}}" >
       <br><br>
       <h6 id="Admin">Admin</h6>
-      <h2>{{}}</h2>
+      <h2>{{x["name"]}}</h2>
     </header>
     <ul>
       <li tabindex="0" class="icon-dashboard" > <a style="color:white; text-decoration:none;" href="#"><span>Dashboard</span></a> </li>
@@ -52,63 +52,8 @@
     
 
     <!-- content start-->
-    {% block content %}
+    {% block content %} 
     
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-blue order-card">
-            <div class="card-block">
-              <a href="#">
-                <h6 class="m-b-20">Nurses</h6>
-              </a>
-              <br>
-              <h2 class="text-right"><i class="fas fa-user-nurse f-left" data-after="number" id="nurseicon"></i> 
-                
-              </h2>
-    
-            </div>
-          </div>
-        </div>
-    
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-green order-card">
-            <div class="card-block">
-              <a href="#">
-                <h6 class="m-b-20">Patients</h6>
-              </a>
-              <br>
-              <h2 class="text-right"><i class="fas fa-user-plus f-left" data-after="number" id="patienticon"></i></h2>
-            </div>
-          </div>
-        </div>
-    
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-yellow order-card">
-            <div class="card-block">
-              <a href="#">
-                <h6 class="m-b-20">Receptionists</h6>
-              </a>
-              <br>
-              <h2 class="text-right"><i class="fas fa-phone f-left" data-after="number" id="Recepicon"></i></h2>
-            </div>
-          </div>
-        </div>
-    
-        <div class="col-md-4 col-xl-3">
-          <div class="card bg-c-pink order-card">
-            <div class="card-block">
-              <a href="#">
-                <h6 class="m-b-20">Doctors</h6>
-              </a>
-              <br>
-              <h2 class="text-right"><i class="fas fa-user-md f-left" data-after="number" id="Doctoricon"></i></h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     {% endblock %}
     <!-- content end-->
 
