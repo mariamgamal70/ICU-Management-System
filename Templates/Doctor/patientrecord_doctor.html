@@ -101,14 +101,15 @@
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Request</label>
                 <select class="form-select" required id="ddm" onchange="ddselect()">
+                    <option selected value="Choose an Option">Please Choose an Option</option>
                     <option value="Request Diagnosis">Request Diagnosis</option>
                     <option value="Set Priority">Set Priority</option>
                     <option value="Prescribe Medicine">Prescribe Medicine</option>
                     </select>
               </div>
               <div class="mb-3">
-                <label for="message-text" id="lbl1" class="col-form-label">Message</label>
-                <textarea class="form-control" id="message-text"></textarea>
+                <label for="message-text" id="lbl1" class="col-form-label"></label>
+                <input type="text" class="form-control" id="message-text">
               </div>
             </form>
           </div>
