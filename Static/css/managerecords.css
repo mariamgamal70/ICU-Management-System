@@ -17,6 +17,9 @@
     background-color:#0d6efd;
     color: #ffffff;
 } 
+tr[data-href]{
+  cursor:  pointer;
+}
 
 /* @media (min-width: 1024px) {
     body {
