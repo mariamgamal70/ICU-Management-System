@@ -1,10 +1,11 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../Static/css/sidebar.css">
+  <link rel="stylesheet" href="../../Static/css/addrecord.css">
   <link rel="preconnect" href="https:/fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
@@ -18,17 +19,18 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
-    <title>Patient Record</title>
+    <title>Patient Home Page</title>
 </head>
-<body >
-    <!-- {%block content%} -->
-    <div class="m-5">
-        <dl class="row display-5">
-            <dt class="col-sm-3 font-weight-bold text-primary">Record ID</dt>
-            <dd class="col-sm-9 font-weight-bold text-primary">XXXXXXX</dd>
-        </dl>
+
+<body>
+<!-- {%block content%} -->
+   <div class="main-container m-5">
+
+    <div class="row row-bordered">
+        <h1 class="font-weight-bold text-primary ">Home Page</h1>
+    </div>
         <fieldset class="border p-2">
-            <legend class="text-primary float-none w-auto">Basic Information</legend>
+            <legend class="text-primary float-none w-auto mt-4">Basic Information</legend>
             <dl class="row">
                 <dt class="col-sm-3">Name</dt> 
                 <dd class="col-sm-9">XXXXXXX</dd>
@@ -59,18 +61,7 @@
         <dd class="col-sm-9">XXXXXXXXX</dd>
     </dl>
 </fieldset>
-<fieldset class="border p-2">
-    <legend class="text-primary float-none w-auto">Assigned</legend>
-    <dl class="row">
-        <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">XXXXX</dd>
-        <dt class="col-sm-3">Attending Nurse</dt>
-        <dd class="col-sm-9">XXXXXX</dd>
-        </dl>
-    </fieldset>
-    <div class="d-flex justify-content-center m-5" >
-        <a class="btn btn-primary mx-3">Update Information</a>
-    </div>
+
 </div>
 <!-- {% endblock %} -->
 </body>
