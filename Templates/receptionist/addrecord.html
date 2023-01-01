@@ -19,7 +19,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
     integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
     crossorigin="anonymous"></script>
-
+    <title>Add Record</title>
 </head>
 
 <body>
@@ -36,23 +36,23 @@
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">First Name</label>
-            <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
-              required>
+            <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1"
+              placeholder="First Name" required>
           </div>
         </div>
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-            <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
-              required>
+            <input name="MiddleName" type="string" class="form-control" id="exampleFormControlInput1"
+              placeholder="Middle Name" required>
           </div>
 
         </div>
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-            <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
-              required>
+            <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1"
+              placeholder="Last Name" required>
           </div>
         </div>
 
@@ -69,24 +69,24 @@
         <div class="row">
           <div class="col-4">
             <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
-              <input name="Birthdate" type="string" class="form-control" id="exampleFormControlInput1"
-                placeholder="YYYY/MM/DD">
+              <label for="exampleFormControlInput1" class="form-label">Record ID</label>
+              <input name="Record ID" type="string" class="form-control" id="exampleFormControlInput1"
+                placeholder="Record ID" required>
             </div>
           </div>
 
           <div class="col-4">
             <div class=m-3>
               <label for="exampleFormControlInput1" class="form-label">Patient ID</label>
-              <input name="Patient ID" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
+              <input name="Patient ID" type="string" class="form-control" id="exampleFormControlInput1" placeholder="ID"
                 required>
             </div>
           </div>
 
           <div class="col-4">
             <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Social Security Number</label>
-              <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
+              <label for="exampleFormControlInput1" class="form-label">SSN</label>
+              <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="SSN"
                 required>
             </div>
           </div>
@@ -97,15 +97,24 @@
 
           <div class="col-4">
             <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Insurance Provider</label>
-              <input name="Insurance" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
+              <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
+              <input name="Birthdate" type="date" class="form-control" id="exampleFormControlInput1"
+                placeholder="DD/MM/YYYY" required>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="m-3">
+              <label for="exampleFormControlInput1" class="form-label">Age</label>
+              <input name="Age" type="string" class="form-control" id="exampleFormControlInput1" placeholder="Age"
                 required>
             </div>
           </div>
           <div class="col-4">
             <div class="m-3">
-              <label for="exampleFormControlInput1" class="form-label">Age</label>
-              <input name="Age" type="string" class="form-control" id="exampleFormControlInput1" placeholder="">
+              <label for="exampleFormControlInput1" class="form-label">Insurance Provider</label>
+              <input name="Insurance" type="string" class="form-control" id="exampleFormControlInput1"
+                placeholder="Insurance" required>
             </div>
           </div>
         </div>
@@ -118,18 +127,63 @@
           <div class="row">
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Address</label>
-              <input name="Address" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
+              <input name="Address" type="string" class="form-control" id="exampleFormControlInput1"
+                placeholder="Address" required>
+            </div>
+            <div class="col-4 m-3">
+              <label for="exampleFormControlInput1" class="form-label">Email</label>
+              <input name="Address" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
                 required>
             </div>
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
-              <input name="PhoneNumber" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
-                required>
+              <input name="PhoneNumber" type="tel" class="form-control" id="exampleFormControlInput1"
+                placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
             </div>
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Emergency Contact</label>
-              <input name="PhoneNumber" type="string" class="form-control" id="exampleFormControlInput1" placeholder=""
-                required>
+              <input name="PhoneNumber" type="tel" class="form-control" id="exampleFormControlInput1"
+                placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="container ">
+
+          <h4 class="font-weight-bold text-primary">Assigned</h4>
+          <div class="row">
+
+            <div class="input-group col-4 m-3">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                placeholder="Choose Doctor" required>
+              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Doctors</button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Dr Ahmed</a></li>
+                <li><a class="dropdown-item" href="#">Dr Bassem</a></li>
+                <li><a class="dropdown-item" href="#">Dr Neymar</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Undetermined</a></li>
+              </ul>
+            </div>
+
+            <div class="input-group col-4 m-3">
+              <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                placeholder="Choose Nurse" required>
+              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">Nurses</button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Sarah</a></li>
+                <li><a class="dropdown-item" href="#">Julia</a></li>
+                <li><a class="dropdown-item" href="#">Nermeen</a></li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="#">Undetermined</a></li>
+              </ul>
             </div>
 
           </div>
@@ -137,7 +191,7 @@
 
       </div>
       <div class="m-3">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </div>
     </form>
