@@ -54,7 +54,7 @@ def index():
 
 @app.route('/adminhome')
 def Adminhome():
-   return render_template('/admin/adminDashboard.html',x=diction)
+   return render_template('/admin/adminDashboard.html')
 
 @app.route("/AdminMain")
 def AdminMain():
