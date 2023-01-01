@@ -3,10 +3,15 @@ from flask_session import Session
 import mysql.connector
 from flask_mail import Mail, Message
 # from flask_socketio import SocketIO
-# from apiclient.discovery import build #builds service object for any google api
-# from google_auth_oauthlib.flow import InstalledAppFLow
-# scopes = ['https://www.googleapis.com/auth/calendar.events']
 
+# from google.auth.transport.requests import Request
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import InstalledAppFlow
+# from googleapiclient.discovery import build
+# from googleapiclient.errors import HttpError
+# scopes = ['https://www.googleapis.com/auth/calendar']
+# flow = InstalledAppFlow.from_client_secrets_file("client_secret.json", scopes=scopes)
+#flow.run_console()
 # app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 # socketio = SocketIO(app)
 
@@ -181,7 +186,14 @@ def getnursepatientdata():
    patient=mycursor.fetchone()
    result['patientname']= patient[0] +patient[1]
    result['patientid']= patient[2]
+   session['patientid'] = patient[2]
    render_template('/nursehome',data=result)
+
+@app.route("/viewpatientrecord")
+def getpatientrecord():
+   mycursor.execute('SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s',(session['patientid']))
+   patient=mycursor.fetchone()
+   render_template('/viewpatientrecord',data=patient)
 
 @app.route("/logout")
 def LogOut():
