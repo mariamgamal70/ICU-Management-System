@@ -1,7 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request,session,flash
+from flask import Flask, render_template, redirect, url_for, request, session, flash, make_response
 from flask_session import Session
 import mysql.connector
 from flask_mail import Mail, Message
+from werkzeug.utils import secure_filename
+
 # from flask_socketio import SocketIO
 
 # from google.auth.transport.requests import Request
@@ -361,12 +363,48 @@ def getnursepatientdata():
    session['patientid'] = patient[2]
    render_template('/nursehome',data=result)
 
-@app.route("/viewpatientrecord")
+@app.route("/patientrecord")
 def getpatientrecord():
    mycursor.execute('SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s',(session['patientid']))
    patient=mycursor.fetchone()
-   render_template('/viewpatientrecord',data=patient)
-##############################################sidebar#####################################
+   render_template('/patientrecord',data=patient)
+
+
+@app.route("/patientlabsandscans", methods=["POST", "GET"])
+def getpatientlabsandscans():
+   if request.method == "POST":
+      if "uploadlab" in request.form:
+         selected_radio = request.form.get('lab')
+         file=request.files['existinglab']
+         if selected_radio is None or not file:
+            flash('Please check the form again')
+            redirect('/patientlabsandscans')
+         file_contents = file.read()
+         val = (selected_radio, file_contents, request.method.get(
+            'dataissued'), session['patientid'])
+         mycursor.execute('INSERT INTO lab(type,labfile,dateissued,patientid) values()',val )
+      else:
+         selected_radio = request.form.get('imaging')
+         file = request.files['existing']
+         if selected_radio is None or not file:
+            flash('Please check the form again')
+            redirect('/patientlabsandscans')
+         val = (selected_radio, request.files['existinglab'], request.method.get(
+            'dataissued'), session['patientid'])
+         mycursor.execute(
+            'INSERT INTO scan (type,labfile,dateissued,patientid) values()', val)
+   mycursor.execute('SELECT Lab,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=checked',(session['patientid']))
+   checkedlabs=mycursor.fetchall()
+   mycursor.execute(
+      'SELECT Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
+   pendinglabs = mycursor.fetchall()
+   mycursor.execute('SELECT Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=checked', (session['patientid']))
+   checkedimaging=mycursor.fetchall
+   mycursor.execute('SELECT Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
+   pendingimaging = mycursor.fetchall
+
+   render_template('/patientlabsandscans',checkedlabs=checkedlabs,pendinglabs=pendinglabs,checkedimaging=checkedimaging,pendingimaging=pendingimaging)
+
 @app.route("/logout")
 def LogOut():
    session.pop("id",None)
