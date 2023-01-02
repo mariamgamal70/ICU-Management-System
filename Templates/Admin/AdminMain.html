@@ -18,6 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/adminMain.css') }}"> 
+  {% block addl_css %}
+{% endblock %}
 
 </head>
 
@@ -33,7 +35,7 @@
       <img src="{{url_for('static',filename='/images/Admin-Profile-PNG-Clipart.png')}}" >
       <br><br>
       <h6 id="Admin">Admin</h6>
-      <h2>{{x["name"]}}</h2>
+      <h2></h2>
     </header>
     <ul>
       <li tabindex="0" class="icon-dashboard" > <a style="color:white; text-decoration:none;" href="#"><span>Dashboard</span></a> </li>
@@ -42,7 +44,7 @@
       <li tabindex="0" class="icon-calendar"> <a style="color:white; text-decoration:none;" href="#"><span>Appointments</span></a></li>
       <li tabindex="0" class="icon-department">  <a style="color:white; text-decoration:none;" href="#"><span>Departments</span></a></li>
       <li tabindex="0" class="icon-payment"> <a style="color:white; text-decoration:none;" href="#"><span>Payments</span></a></li>
-      <li tabindex="0" class="icon-logout" > <a id="sign_out" style="color:white; text-decoration: none; font-size: 1.3rem;" href="#"><span>Sign Out</span></a></li>
+      <li tabindex="0" class="icon-logout" > <a id="sign_out" style="color:white; text-decoration: none; font-size: 1.3rem;" href="http://127.0.0.1:5000/logout"><span>Sign Out</span></a></li>
     </ul>
    
   </nav>
