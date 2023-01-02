@@ -1,4 +1,6 @@
-
+body {
+  font-family: "Poppins", sans-serif;
+}
 .row-bordered {
     position: relative;
   }
@@ -21,9 +23,9 @@ tr[data-href]{
   cursor:  pointer;
 }
 
-/* @media (min-width: 1024px) {
+@media (max-width: 1024px) {
     body {
       display: flex;
       place-items: center;
     }
-} */
+}
