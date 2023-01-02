@@ -17,10 +17,11 @@
     </style>
     <title>Document</title>
 </head>
-<body class="m-4">
+<body class="m-3">
 { % extends "index.html" % }
 {%block content%}
 <h1 class="text-primary"><b>Laboratory</b></h1>
+<hr>
 <div class="accordion m-3" id="accordionPanelsStayOpenExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingOne">
@@ -76,9 +77,44 @@
         </div>
     </div>
     <button onclick="showLabForm()" id="addlabbutton" class="btn btn-primary m-3">Add Existing Lab</button>
-    <button  id="reqlab" class="btn btn-primary m-3">Request Lab</button>
-    <form action="" method="post" id="addlabform" style="display: none;" class="m-3">
-        <input type="file" name="lab" id="lab">
+    <button  id="reqlab" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Request Lab</button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Request Lab</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="Complete blood count">
+                    <input type="checkbox" name="Complete blood count" id=""> Complete blood count</label><br>
+                    <label for="Basic metabolic panel">
+                    <input type="checkbox" name="Basic metabolic panel" id=""> Basic metabolic panel</label><br>
+                    <label for="Comprehensive metabolic panel">
+                    <input type="checkbox" name="Comprehensive metabolic panel" id=""> Comprehensive metabolic panel</label><br>
+                    <label for="Lipid panel">
+                    <input type="checkbox" name="Lipid panel" id=""> Lipid panel</label><br>
+                    <label for="Thyroid panel">
+                    <input type="checkbox" name="Thyroid panel" id=""> Thyroid panel</label><br>
+                    <label for="Cardiac biomarkers">
+                    <input type="checkbox" name="Cardiac biomarkers" id=""> Cardiac biomarkers</label><br>
+                    <label for="Coagulation panel">
+                    <input type="checkbox" name="Coagulation panel" id=""> Coagulation panel</label><br>
+                    <label for="C-reactive protein test">
+                    <input type="checkbox" name=" C-reactive protein test" id=""> C-reactive protein test</label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" value="Request" name="labrequest" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+    </div>
+    <form action="" method="POST" id="addlabform" style="display: none;" class="m-3">
+        <div class="input-group mb-3 w-50">
+            <input type="file" class="form-control" id="inputGroupFile02">
+            <input type="submit" class="btn btn-outline-primary" name="addexistinglab" value="Add">
+        </div>
     </form>
     <h1 class="text-primary"><b>Imaging</b></h1>
     <div class="accordion m-3" id="accordionPanelsStayOpenExample">
@@ -136,7 +172,39 @@
         </div>
     </div>
         <button onclick="showImagingForm()" id="addimg" class="btn btn-primary m-3">Upload Existing Imaging</button>
-        <button  id="reqimg" class="btn btn-primary m-3">Request Imaging</button>
+        <button  id="reqimg" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#exampleModal2">Request Imaging</button>
+        <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Request Lab</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="CT-Scan">
+                            <input type="checkbox" name="CT-Scan" id=""> CT-Scan</label><br>
+                        <label for="BMRI">
+                            <input type="checkbox" name="MRI" id=""> MRI</label><br>
+                        <label for="PET Scan">
+                            <input type="checkbox" name="PET Scan" id=""> PET Scan</label><br>
+                        <label for="Ultrasound">
+                            <input type="checkbox" name="Ultrasound" id=""> Ultrasound</label><br>
+                        <label for="X-Ray">
+                            <input type="checkbox" name="X-Ray" id=""> X-Ray</label><br>
+                        <label for="Sonar">
+                            <input type="checkbox" name="Sonar" id=""> Sonar</label><br>
+                        <label for="Angiography">
+                            <input type="checkbox" name="Angiography" id=""> Angiography</label><br>
+                        <label for="ECG">
+                            <input type="checkbox" name="ECG" id=""> ECG</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="Request" name="scanrequest" class="btn btn-primary">
+                    </div>
+                </div>
+            </div>
+        </div>
         <form action="" method="post" id="addImagingform" style="display: none;" class="m-3">
             <input type="file" name="lab" id="lab">
         </form>

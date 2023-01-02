@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../Static/css/sidebar.css">
+  <link rel="stylesheet" href="../../Static/css/managerecords.css">
+  <link rel="preconnect" href="https:/fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+    crossorigin="anonymous"></script>
+
+    <style>
+      #hd{
+        margin-top: 50px;
+      }
+    </style>
+</head>
+
+<body>
+  <!-- {%extends sidebarhtml %} -->
+  <div class="main-container mt-3 mx-3">
+
+    <div class="row row-bordered">
+      <h1 class="font-weight-bold text-primary">Home</h1>
+    </div>
+  </div>
+
+ <!-- { % extends "index.html" % }
+  {%block content%}
+  {% if data %}-->
+  <h1 id="hd"><b>Welcome Doctor <span class="text-primary">Ex</span></b></h1>
+  <div class="d-flex flex-wrap justify-content-around w-100">
+      <div class="w-75">
+          <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
+              <dt class="col-sm-4 text-primary">Doctor ID</dt>
+              <dd class="col-sm-6">{{data['doctorid']}}</dd>
+              <dt class="col-sm-4 text-primary">Name</dt>
+              <dd class="col-sm-6">whatever Name</dd>
+              <dt class="col-sm-4 text-primary">Birthdate</dt>
+              <dd class="col-sm-6">{{data['doctorbirthdate']}}</dd>
+              <dt class="col-sm-4 text-primary">Social Security Number</dt>
+              <dd class="col-sm-6">{{data['doctorssn']}}</dd>
+              <dt class="col-sm-4 text-primary">Gender</dt>
+              <dd class="col-sm-6">{{data['doctorgender']}}</dd>
+              <dt class="col-sm-4 text-primary">Number of current patients</dt>
+              <dd class="col-sm-6">#No.</dd>
+              <dt class="col-sm-4 text-danger">Number of alerts</dt>
+              <dd class="col-sm-6">#No.</dd>
+          </dl>
+  <!--{% endif %}-->
+         
+          
+         
+      </div>
+      <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
+          <img src="/Static/images/Doctorimg.jpg" alt="profile pic" style="height: 300px;">
+      </div>
+  </div>
+      <!--{% endblock %}-->
+
+
+</body>
+
+</html>
