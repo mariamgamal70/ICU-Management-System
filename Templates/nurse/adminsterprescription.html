@@ -19,6 +19,8 @@
     
 </head>
 <body class="m-3">
+    { % extends "index.html" % }
+    {%block content%}
     <h1 class=" text-primary">Please check each time you adminster a dosage</h1>
     <hr class="mb-4">
         <div class="container">
@@ -50,5 +52,6 @@
             <div class="text-center"><input type="submit" value="Adminster" class="btn btn-primary"></div>
         </form>
     </div>
+    {% endblock %}
 </body>
 </html>

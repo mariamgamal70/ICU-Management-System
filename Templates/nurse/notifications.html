@@ -21,6 +21,8 @@
 </head>
 
 <body class="m-3">
+    { % extends "index.html" % }
+    {%block content%}
     <h1 class=" text-primary">Please mark each time you are done with a request</h1>
     <hr class="mb-4">
     <div class="container">
@@ -77,6 +79,6 @@
             <div class="text-center"><input type="submit" value="Mark as done" class="btn btn-primary"></div>
         </form>
     </div>
+    {% endblock %}
 </body>
-
 </html>
