@@ -5,314 +5,363 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema ICU_MANAGEMENT_SYSTEM
+-- Schema ICU_MANAGEMENT_NEW
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema ICU_MANAGEMENT_SYSTEM
+-- Schema ICU_MANAGEMENT_NEW
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM` DEFAULT CHARACTER SET utf8 ;
-USE `ICU_MANAGEMENT_SYSTEM` ;
+CREATE SCHEMA IF NOT EXISTS `ICU_MANAGEMENT_NEW` DEFAULT CHARACTER SET utf8 ;
+USE `ICU_MANAGEMENT_NEW` ;
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`ICU_UNITS`
+-- Table `ICU_MANAGEMENT_NEW`.`Receptionist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`ICU_UNITS` (
-  `UnitID` INT NOT NULL AUTO_INCREMENT,
-  `UnitName` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`UnitID`),
-  UNIQUE INDEX `UnitName_UNIQUE` (`UnitName` ASC) VISIBLE)
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Receptionist` (
+  `Receptionist_SSN` VARCHAR(255) NOT NULL,
+  `ReceptionistID` INT NOT NULL,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `Salary` FLOAT NOT NULL,
+  `Sex` ENUM('Male', 'Female') NOT NULL,
+  `Birthdate` DATE NOT NULL,
+  `Phone` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Experience` VARCHAR(255) NOT NULL,
+  `Qualifications` VARCHAR(255) NOT NULL,
+  `StartShift` DATETIME NULL,
+  `EndShift` DATETIME NULL,
+  PRIMARY KEY (`Receptionist_SSN`),
+  UNIQUE INDEX `ReceptionistID_UNIQUE` (`ReceptionistID` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Unit_Equipments`
+-- Table `ICU_MANAGEMENT_NEW`.`PatientRecord`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Unit_Equipments` (
-  `SerialNumber` INT NOT NULL AUTO_INCREMENT,
-  `Type` VARCHAR(45) NOT NULL,
-  `Name` VARCHAR(45) NOT NULL,
-  `Availability` VARCHAR(45) NOT NULL,
-  `Equipment_Quantity` INT NOT NULL,
-  PRIMARY KEY (`SerialNumber`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Unit_Rooms`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Unit_Rooms` (
-  `RoomNumber` INT NOT NULL AUTO_INCREMENT,
-  `Extension` VARCHAR(45) NOT NULL,
-  `RoomType` VARCHAR(45) NOT NULL,
-  `ICU_UNITS_UnitID` INT NOT NULL,
-  `Unit_Equipments_SerialNumber` INT NOT NULL,
-  PRIMARY KEY (`RoomNumber`),
-  INDEX `fk_Unit_Rooms_ICU_UNITS1_idx` (`ICU_UNITS_UnitID` ASC) VISIBLE,
-  INDEX `fk_Unit_Rooms_Unit_Equipments1_idx` (`Unit_Equipments_SerialNumber` ASC) VISIBLE,
-  CONSTRAINT `fk_Unit_Rooms_ICU_UNITS1`
-    FOREIGN KEY (`ICU_UNITS_UnitID`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`ICU_UNITS` (`UnitID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Unit_Rooms_Unit_Equipments1`
-    FOREIGN KEY (`Unit_Equipments_SerialNumber`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Unit_Equipments` (`SerialNumber`)
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`PatientRecord` (
+  `RecordID` INT NOT NULL,
+  `MedicalStatus` VARCHAR(255) NOT NULL,
+  `MedicalHistory` VARCHAR(255) NOT NULL,
+  `Admission_Reasoning` VARCHAR(255) NOT NULL,
+  `Insurance_Status` VARCHAR(255) NOT NULL,
+  `BloodPressure` VARCHAR(45) NOT NULL,
+  `BloodGlucose` VARCHAR(45) NOT NULL,
+  `RespiratoryRate` VARCHAR(45) NOT NULL,
+  `OxygenSaturation` VARCHAR(45) NOT NULL,
+  `PulseRateMin` VARCHAR(45) NOT NULL,
+  `PainLevel` TINYINT UNSIGNED NOT NULL,
+  `IV_Access` ENUM('Yes', 'No') NOT NULL,
+  `IV_Acess_Date` DATETIME NULL DEFAULT NULL,
+  `Takes_Heparin` ENUM('Yes', 'No') NOT NULL,
+  `Level_of_consiousness` ENUM('Awake', 'Restless', 'Drowsy', 'Alert', 'Confused', 'Sedated') NOT NULL,
+  `Pupils` ENUM('Equal', 'Round', 'Reactive to light', 'Sluggish', 'Nonreactive to light', 'Sedated') NOT NULL,
+  `Skin` ENUM('pink', 'pale', 'cyanotic', 'jaundiced', 'flushed', 'diaphortic') NOT NULL,
+  `ReceptionistFilledRecord_SSN` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`RecordID`),
+  INDEX `fk_PatientRecord_Receptionist1_idx` (`ReceptionistFilledRecord_SSN` ASC) VISIBLE,
+  CONSTRAINT `fk_PatientRecord_Receptionist1`
+    FOREIGN KEY (`ReceptionistFilledRecord_SSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Receptionist` (`Receptionist_SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Beds`
+-- Table `ICU_MANAGEMENT_NEW`.`Unit_Rooms`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Beds` (
-  `BedID` INT NOT NULL AUTO_INCREMENT,
-  `Bed_Status` VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Unit_Rooms` (
+  `RoomNumber` INT NOT NULL,
+  `RoomType` VARCHAR(45) NULL,
+  PRIMARY KEY (`RoomNumber`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Beds`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Beds` (
+  `BedID` INT NOT NULL,
+  `Bed_Status` ENUM('Available', 'Not Available') NOT NULL,
   `Price_Day` FLOAT NOT NULL,
   `Unit_Rooms_RoomNumber` INT NOT NULL,
   PRIMARY KEY (`BedID`),
-  INDEX `fk_Unit_Beds_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
-  UNIQUE INDEX `Unit_Rooms_RoomNumber_UNIQUE` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
-  CONSTRAINT `fk_Unit_Beds_Unit_Rooms1`
+  INDEX `fk_Beds_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
+  CONSTRAINT `fk_Beds_Unit_Rooms1`
     FOREIGN KEY (`Unit_Rooms_RoomNumber`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Unit_Rooms` (`RoomNumber`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Unit_Rooms` (`RoomNumber`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Doctor`
+-- Table `ICU_MANAGEMENT_NEW`.`Doctor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Doctor` (
-  `Doctor_ESSN` INT NOT NULL AUTO_INCREMENT,
-  `Speciality` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Doctor_ESSN`),
-  CONSTRAINT `fk_Doctor_Staff1`
-    FOREIGN KEY (`Doctor_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Staff` (`ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Department`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Department` (
-  `DepartmentNum` INT NOT NULL AUTO_INCREMENT,
-  `DepartmentName` VARCHAR(100) NOT NULL,
-  `Location` VARCHAR(45) NOT NULL,
-  `Head_SSN` INT NOT NULL,
-  PRIMARY KEY (`DepartmentNum`),
-  UNIQUE INDEX `DepartmentName_UNIQUE` (`DepartmentName` ASC) VISIBLE,
-  INDEX `fk_Department_Doctor1_idx` (`Head_SSN` ASC) VISIBLE,
-  CONSTRAINT `fk_Department_Doctor1`
-    FOREIGN KEY (`Head_SSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Doctor` (`Doctor_ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Staff`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Staff` (
-  `ESSN` INT NOT NULL AUTO_INCREMENT,
-  `FirstName` VARCHAR(45) NOT NULL,
-  `LastName` VARCHAR(45) NOT NULL,
-  `Salary` FLOAT NOT NULL,
-  `Sex` ENUM('Male', 'Female') NOT NULL,
-  `BirthDate` DATE NOT NULL,
-  `Job_Title` ENUM('Doctor', 'Nurse', 'Receptionist', 'Admin') NOT NULL,
-  `Phone` VARCHAR(45) NOT NULL,
-  `Address` VARCHAR(100) NOT NULL,
-  `Experience` VARCHAR(100) NOT NULL,
-  `Qualification` VARCHAR(45) NOT NULL,
-  `Start_Shift` TIME NULL,
-  `End_Shift` TIME NULL,
-  `Supervisor_ESSN` INT NULL,
-  `DepNum` INT NULL,
-  PRIMARY KEY (`ESSN`),
-  INDEX `fk_Staff_Staff1_idx` (`Supervisor_ESSN` ASC) VISIBLE,
-  INDEX `fk_Staff_Department1_idx` (`DepNum` ASC) VISIBLE,
-  CONSTRAINT `fk_Staff_Staff1`
-    FOREIGN KEY (`Supervisor_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Staff` (`ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Staff_Department1`
-    FOREIGN KEY (`DepNum`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Department` (`DepartmentNum`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Receptionist`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Receptionist` (
-  `Receptionist_ESSN` INT NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`Receptionist_ESSN`),
-  CONSTRAINT `fk_Receptionist_Staff1`
-    FOREIGN KEY (`Receptionist_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Staff` (`ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Patient_Record`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Patient_Record` (
-  `IdPatient_Record` INT NOT NULL AUTO_INCREMENT,
-  `Medical_Status` VARCHAR(200) NOT NULL,
-  `Medical_History` VARCHAR(200) NOT NULL,
-  `Admission_Reasoning` VARCHAR(200) NOT NULL,
-  `Insurance_Status` VARCHAR(100) NOT NULL,
-  `LabResults` BLOB NULL,
-  `PatientScans` BLOB NULL,
-  `BloodPressure` VARCHAR(45) NULL,
-  `BodyTemp` FLOAT NULL,
-  `PulseRateMin` INT NULL,
-  `RespiratoryRate` INT NULL,
-  `OxygenSaturation` FLOAT NULL,
-  `Receptionist_Receptionist_ESSN` INT NOT NULL,
-  PRIMARY KEY (`IdPatient_Record`),
-  INDEX `fk_Patient_Record_Receptionist1_idx` (`Receptionist_Receptionist_ESSN` ASC) VISIBLE,
-  CONSTRAINT `fk_Patient_Record_Receptionist1`
-    FOREIGN KEY (`Receptionist_Receptionist_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Receptionist` (`Receptionist_ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Patient`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Patient` (
-  `PSSN` INT NOT NULL AUTO_INCREMENT,
-  `FName` VARCHAR(50) NOT NULL,
-  `LName` VARCHAR(50) NOT NULL,
-  `Phone_Number` VARCHAR(45) NOT NULL,
-  `Address` VARCHAR(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Doctor` (
+  `DoctorSSN` VARCHAR(255) NOT NULL,
+  `Doctor_ID` INT NOT NULL,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
   `Sex` ENUM('Male', 'Female') NOT NULL,
   `Birthdate` DATE NOT NULL,
-  `Date_Admitted` DATETIME NOT NULL,
-  `Date_Discharged` DATETIME NULL,
+  `Phone` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(255) NOT NULL,
+  `Speciality` VARCHAR(45) NOT NULL,
+  `Experience` VARCHAR(45) NOT NULL,
+  `Salary` FLOAT NOT NULL,
+  `StartShift` TIME NULL,
+  `EndShift` VARCHAR(45) NULL,
+  PRIMARY KEY (`DoctorSSN`),
+  UNIQUE INDEX `Doctor_ID_UNIQUE` (`Doctor_ID` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `Phone_UNIQUE` (`Phone` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Patient`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Patient` (
+  `PSSN` VARCHAR(255) NOT NULL,
+  `PatientID` INT UNSIGNED NOT NULL,
+  `FName` VARCHAR(45) NOT NULL,
+  `LName` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `Phone` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(255) NOT NULL,
+  `Sex` ENUM('Male', 'Female') NOT NULL,
+  `Birthdate` VARCHAR(45) NOT NULL,
+  `Date_Admitted` DATE NOT NULL,
+  `Date_Discharged` DATE NULL DEFAULT NULL,
   `Emergency_Contact` VARCHAR(45) NOT NULL,
-  `Civil Status` VARCHAR(45) NULL,
-  `Blood Group` VARCHAR(10) NULL,
-  `Unit_Beds_BedID` INT NOT NULL,
-  `Patient_Record_IdPatient_Record1` INT NOT NULL,
-  `AlertDR_ESSN` INT NULL,
+  `CivilStatus` ENUM('Single', 'Married') NOT NULL,
+  `Blood_Group` ENUM('O-', 'O+', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-') NOT NULL,
+  `PatientRecord_RecordID` INT NULL DEFAULT NULL,
+  `Beds_BedID` INT NULL DEFAULT NULL,
+  `AssignedDrSSN` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`PSSN`),
-  UNIQUE INDEX `Phone_Number_UNIQUE` (`Phone_Number` ASC) VISIBLE,
-  INDEX `fk_Patient_Unit_Beds1_idx` (`Unit_Beds_BedID` ASC) VISIBLE,
-  INDEX `fk_Patient_Patient_Record1_idx` (`Patient_Record_IdPatient_Record1` ASC) VISIBLE,
-  INDEX `fk_Patient_Doctor1_idx` (`AlertDR_ESSN` ASC) VISIBLE,
-  CONSTRAINT `fk_Patient_Unit_Beds1`
-    FOREIGN KEY (`Unit_Beds_BedID`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Beds` (`BedID`)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  UNIQUE INDEX `Phone_UNIQUE` (`Phone` ASC) VISIBLE,
+  INDEX `fk_Patient_PatientRecord_idx` (`PatientRecord_RecordID` ASC) VISIBLE,
+  UNIQUE INDEX `PatientID_UNIQUE` (`PatientID` ASC) VISIBLE,
+  INDEX `fk_Patient_Beds1_idx` (`Beds_BedID` ASC) VISIBLE,
+  INDEX `fk_Patient_Doctor1_idx` (`AssignedDrSSN` ASC) VISIBLE,
+  CONSTRAINT `fk_Patient_PatientRecord`
+    FOREIGN KEY (`PatientRecord_RecordID`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`PatientRecord` (`RecordID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Patient_Patient_Record1`
-    FOREIGN KEY (`Patient_Record_IdPatient_Record1`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Patient_Record` (`IdPatient_Record`)
+  CONSTRAINT `fk_Patient_Beds1`
+    FOREIGN KEY (`Beds_BedID`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Beds` (`BedID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Patient_Doctor1`
-    FOREIGN KEY (`AlertDR_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Doctor` (`Doctor_ESSN`)
+    FOREIGN KEY (`AssignedDrSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Doctor` (`DoctorSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Prescribed_Medicine`
+-- Table `ICU_MANAGEMENT_NEW`.`PatientScans`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Prescribed_Medicine` (
-  `Medicine_Code` INT NOT NULL,
-  `Medicine_name` VARCHAR(45) NOT NULL,
-  `Quantity` SMALLINT NOT NULL,
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`PatientScans` (
+  `PatientScanID` INT NOT NULL AUTO_INCREMENT,
+  `Patient_PSSN` VARCHAR(255) NOT NULL,
+  `Type` VARCHAR(45) NOT NULL,
+  `PatientScans` BLOB NOT NULL,
+  `DataIssued` DATETIME NOT NULL,
+  `Flag` ENUM('Pending', 'Checked') NOT NULL DEFAULT 'Pending',
+  PRIMARY KEY (`PatientScanID`, `Patient_PSSN`),
+  UNIQUE INDEX `PatientScanID_UNIQUE` (`PatientScanID` ASC) VISIBLE,
+  INDEX `fk_PatientScans_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
+  CONSTRAINT `fk_PatientScans_Patient1`
+    FOREIGN KEY (`Patient_PSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Patient` (`PSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`LabResults`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`LabResults` (
+  `LabResultID` INT NOT NULL AUTO_INCREMENT,
+  `Patient_PSSN` VARCHAR(255) NOT NULL,
+  `Type` VARCHAR(45) NOT NULL,
+  `LabResult` BLOB NOT NULL,
+  `DateIssued` DATETIME NOT NULL,
+  `Flag` ENUM('Pending', 'Checked') NOT NULL DEFAULT 'Pending',
+  PRIMARY KEY (`LabResultID`, `Patient_PSSN`),
+  UNIQUE INDEX `LabResultID_UNIQUE` (`LabResultID` ASC) VISIBLE,
+  INDEX `fk_LabResults_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
+  CONSTRAINT `fk_LabResults_Patient1`
+    FOREIGN KEY (`Patient_PSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Patient` (`PSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`UnitEquipment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`UnitEquipment` (
+  `Equipment_SerialNum` INT NOT NULL,
+  `Type` VARCHAR(45) NOT NULL,
+  `EquipmentName` VARCHAR(45) NOT NULL,
+  `Status` ENUM('Available', 'Not Available') NOT NULL,
+  `Equipment_Quantity` INT NOT NULL,
+  `Unit_Rooms_RoomNumber` INT NOT NULL,
+  PRIMARY KEY (`Equipment_SerialNum`),
+  INDEX `fk_UnitEquipment_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
+  CONSTRAINT `fk_UnitEquipment_Unit_Rooms1`
+    FOREIGN KEY (`Unit_Rooms_RoomNumber`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Unit_Rooms` (`RoomNumber`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Bills`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Bills` (
+  `Bills_ID` INT NOT NULL,
+  `Patient_PSSN` VARCHAR(255) NOT NULL,
+  `TotalValue` FLOAT NULL DEFAULT NULL,
+  `Insurance_Percent` INT NOT NULL,
+  PRIMARY KEY (`Bills_ID`, `Patient_PSSN`),
+  INDEX `fk_Bills_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
+  CONSTRAINT `fk_Bills_Patient1`
+    FOREIGN KEY (`Patient_PSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Patient` (`PSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Admin`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Admin` (
+  `Admin_SSN` INT NOT NULL,
+  `AdminID` INT NOT NULL,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `Sex` ENUM('Male', 'Female') NOT NULL,
+  `Phone` VARCHAR(45) NOT NULL,
+  `Birthdate` DATE NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`Admin_SSN`),
+  UNIQUE INDEX `AdminID_UNIQUE` (`AdminID` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Nurse`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Nurse` (
+  `Nurse_SSN` VARCHAR(255) NOT NULL,
+  `NurseID` INT NOT NULL,
+  `Speciality` VARCHAR(45) NOT NULL,
+  `Fname` VARCHAR(45) NOT NULL,
+  `Lname` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `Salary` FLOAT NOT NULL,
+  `Sex` ENUM('Male', 'Female') NOT NULL,
+  `Birthdate` DATE NOT NULL,
+  `Phone` VARCHAR(45) NOT NULL,
+  `Address` VARCHAR(45) NOT NULL,
+  `Experience` VARCHAR(45) NOT NULL,
+  `StartShift` DATETIME NULL,
+  `EndShift` DATETIME NULL,
+  `Unit_Rooms_RoomNumber` INT NOT NULL,
+  PRIMARY KEY (`Nurse_SSN`),
+  UNIQUE INDEX `NurseID_UNIQUE` (`NurseID` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
+  INDEX `fk_Nurse_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
+  CONSTRAINT `fk_Nurse_Unit_Rooms1`
+    FOREIGN KEY (`Unit_Rooms_RoomNumber`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Unit_Rooms` (`RoomNumber`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`user` (
+  `UserID` INT NOT NULL,
+  `Username` VARCHAR(45) NOT NULL,
+  `Password` VARCHAR(45) NOT NULL,
+  `Permission` ENUM('Admin', 'Patient', 'Receptionist', 'Nurse', 'Doctor') NOT NULL,
+  `email` VARCHAR(45) NULL,
+  `Admin_Admin_SSN` INT NULL DEFAULT NULL,
+  `Receptionist_Receptionist_SSN` VARCHAR(255) NULL DEFAULT NULL,
+  `Doctor_DoctorSSN` VARCHAR(255) NULL DEFAULT NULL,
+  `Patient_PSSN` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`UserID`),
+  INDEX `fk_user_Admin1_idx` (`Admin_Admin_SSN` ASC) VISIBLE,
+  INDEX `fk_user_Receptionist1_idx` (`Receptionist_Receptionist_SSN` ASC) VISIBLE,
+  INDEX `fk_user_Doctor1_idx` (`Doctor_DoctorSSN` ASC) VISIBLE,
+  INDEX `fk_user_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
+  UNIQUE INDEX `Password_UNIQUE` (`Password` ASC) VISIBLE,
+  CONSTRAINT `fk_user_Admin1`
+    FOREIGN KEY (`Admin_Admin_SSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Admin` (`Admin_SSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_Receptionist1`
+    FOREIGN KEY (`Receptionist_Receptionist_SSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Receptionist` (`Receptionist_SSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_Doctor1`
+    FOREIGN KEY (`Doctor_DoctorSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Doctor` (`DoctorSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_Patient1`
+    FOREIGN KEY (`Patient_PSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Patient` (`PSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_NEW`.`Prescribed_Medication`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`Prescribed_Medication` (
+  `Doctor_DoctorSSN` VARCHAR(255) NOT NULL,
+  `Patient_PSSN` VARCHAR(255) NOT NULL,
+  `Specifications` VARCHAR(45) NOT NULL,
+  `Frequency` VARCHAR(45) NOT NULL,
   `Price` FLOAT NOT NULL,
   `Dosage` VARCHAR(45) NOT NULL,
   `StartDate` DATE NOT NULL,
   `EndDate` DATE NOT NULL,
-  `Patient_PSSN` INT NOT NULL,
-  `Doctor_Doctor_ESSN` INT NOT NULL,
-  PRIMARY KEY (`Medicine_Code`),
-  UNIQUE INDEX `Medicine_name_UNIQUE` (`Medicine_name` ASC) VISIBLE,
-  INDEX `fk_Prescribed_Medicine_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
-  INDEX `fk_Prescribed_Medicine_Doctor1_idx` (`Doctor_Doctor_ESSN` ASC) VISIBLE,
-  CONSTRAINT `fk_Prescribed_Medicine_Patient1`
-    FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Patient` (`PSSN`)
+  PRIMARY KEY (`Doctor_DoctorSSN`, `Patient_PSSN`),
+  INDEX `fk_Doctor_has_Patient_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
+  INDEX `fk_Doctor_has_Patient_Doctor1_idx` (`Doctor_DoctorSSN` ASC) VISIBLE,
+  CONSTRAINT `fk_Doctor_has_Patient_Doctor1`
+    FOREIGN KEY (`Doctor_DoctorSSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Doctor` (`DoctorSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Prescribed_Medicine_Doctor1`
-    FOREIGN KEY (`Doctor_Doctor_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Doctor` (`Doctor_ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Nurse`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Nurse` (
-  `Nurse_ESSN` INT NOT NULL AUTO_INCREMENT,
-  `Speciality` VARCHAR(45) NOT NULL,
-  `Unit_Rooms_RoomNumber` INT NOT NULL,
-  PRIMARY KEY (`Nurse_ESSN`),
-  INDEX `fk_Nurse_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
-  CONSTRAINT `fk_Nurse_Staff1`
-    FOREIGN KEY (`Nurse_ESSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Staff` (`ESSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Nurse_Unit_Rooms1`
-    FOREIGN KEY (`Unit_Rooms_RoomNumber`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Unit_Rooms` (`RoomNumber`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Bills`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Bills` (
-  `Bill_Id` INT NOT NULL AUTO_INCREMENT,
-  `Value` FLOAT NULL,
-  `Insurance` TINYINT NULL,
-  `Patient_PSSN` INT NOT NULL,
-  PRIMARY KEY (`Bill_Id`),
-  INDEX `fk_Bills_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
-  CONSTRAINT `fk_Bills_Patient1`
+  CONSTRAINT `fk_Doctor_has_Patient_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Patient` (`PSSN`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_SYSTEM`.`Admin`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_SYSTEM`.`Admin` (
-  `Admin_ID` INT NOT NULL,
-  PRIMARY KEY (`Admin_ID`),
-  CONSTRAINT `fk_Admin_Staff1`
-    FOREIGN KEY (`Admin_ID`)
-    REFERENCES `ICU_MANAGEMENT_SYSTEM`.`Staff` (`ESSN`)
+    REFERENCES `ICU_MANAGEMENT_NEW`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
