@@ -1,0 +1,48 @@
+{% extends "/admin/adminMain.html" %}
+
+{% block addl_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ViewDep.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<br><br><br><br>
+<div class="table-responsive">
+    <table class="table table-bordered border-primary caption-top table-light">
+        <caption>Departments Info</caption>
+        <thead>
+          <tr>
+            <th scope="col">Department Number</th>
+            <th scope="col">Name</th>
+            <th scope="col">Head Doctor</th>
+            <th scope="col">Total Doctors</th>
+            <th scope="col">Total Nurses</th>
+            <th scope="col">Total Receptionists</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+{% endblock %}
