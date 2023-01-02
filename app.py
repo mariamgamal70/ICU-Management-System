@@ -110,6 +110,7 @@ def Adminhome():
 
 @app.route("/Admin_Department")
 def ViewDepartmentInfo():
+   
    return render_template('/Admin/ViewDep.html')
 
 
