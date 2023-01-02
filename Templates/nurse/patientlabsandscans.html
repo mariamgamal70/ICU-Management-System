@@ -9,20 +9,18 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../../Static/css/nurse.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            font-family: "Poppins", sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="../../Static/css/nurse.css">
     <title>Document</title>
 </head>
-<body class="m-3">
+<body>
 { % extends "index.html" % }
 {%block content%}
-<h1 class="text-primary"><b>Laboratory</b></h1>
-<hr>
-<div class="accordion m-3" id="accordionPanelsStayOpenExample">
+<div class="main-container m-5">
+<h1 class="text-primary">Laboratory</h1>
+<hr class="mb-4">
+<div class="accordion " id="accordionPanelsStayOpenExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="panelsStayOpen-headingOne">
             <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -34,18 +32,24 @@
             <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
             aria-labelledby="panelsStayOpen-headingOne">
             <div class="accordion-body">
-                <table class="table">
-                    <tr class="table-primary">
+                <div class="table_wrapper">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
                         <th>File</th>
                         <th>Recieved Date</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     { % for r in data.rec % }
                     <tr>
                         { % for l in r% }
                             <td> { { l } }</td>
                             { % endfor % }
                         </tr>
+                    </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </div>
@@ -60,23 +64,29 @@
         <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse"
         aria-labelledby="panelsStayOpen-headingTwo">
         <div class="accordion-body">
-            <table class="table">
-                <tr class="table-primary">
-                    <th>File</th>
-                    <th>Recieved Date</th>
-                </tr>
-                        { % for r in data.rec % }
-                        <tr>
-                            { % for l in r% }
-                            <td> { { l } }</td>
-                            { % endfor % }
-                        </tr>
-                    </table>
+            <div class="table_wrapper">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Recieved Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { % for r in data.rec % }
+                    <tr>
+                        { % for l in r% }
+                        <td> { { l } }</td>
+                        { % endfor % }
+                    </tr>
+                </tbody>
+            </table>
+        </div>
                 </div>
             </div>
         </div>
     </div>
-    <button onclick="showLabForm()" id="addlabbutton" class="btn btn-primary m-3">Add Existing Lab</button>
+    <button onclick="showLabForm()" id="addlabbutton" class="btn btn-primary m-3">Upload Existing Lab</button>
     <button  id="reqlab" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#exampleModal">Request Lab</button>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -116,8 +126,9 @@
             <input type="submit" class="btn btn-outline-primary" name="addexistinglab" value="Add">
         </div>
     </form>
-    <h1 class="text-primary"><b>Imaging</b></h1>
-    <div class="accordion m-3" id="accordionPanelsStayOpenExample">
+    <h1 class="text-primary">Imaging</h1>
+    <hr class="mb-4">
+    <div class="accordion " id="accordionPanelsStayOpenExample">
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsStayOpen-headingThree">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -129,18 +140,24 @@
         <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
         aria-labelledby="panelsStayOpen-headingThree">
         <div class="accordion-body">
-            <table class="table">
-                <tr class="table-primary">
-                    <th>File</th>
-                    <th>Recieved Date</th>
-                </tr>
-                { % for r in data.rec % }
-                <tr>
-                    { % for l in r% }
-                    <td> { { l } }</td>
-                    { % endfor % }
-                </tr>
+            <div class="table_wrapper">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                        <th>File</th>
+                        <th>Recieved Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    { % for r in data.rec % }
+                    <tr>
+                        { % for l in r% }
+                        <td> { { l } }</td>
+                        { % endfor % }
+                    </tr>
+                </tbody>
             </table>
+        </div>
         </div>
     </div>
 </div>
@@ -155,18 +172,24 @@
                 <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse"
                 aria-labelledby="panelsStayOpen-headingFour">
                 <div class="accordion-body">
-                    <table class="table">
-                        <tr class="table-primary">
-                            <th>File</th>
-                            <th>Recieved Date</th>
-                        </tr>
-                        { % for r in data.rec % }
-                        <tr>
-                            { % for l in r% }
-                            <td> { { l } }</td>
-                            { % endfor % }
-                        </tr>
+                    <div class="table_wrapper">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Recieved Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { % for r in data.rec % }
+                            <tr >
+                                { % for l in r% }
+                                <td> { { l } }</td>
+                                { % endfor % }
+                            </tr>
+                        </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </div>
@@ -205,9 +228,14 @@
                 </div>
             </div>
         </div>
-        <form action="" method="post" id="addImagingform" style="display: none;" class="m-3">
-            <input type="file" name="lab" id="lab">
+        <form action="" method="POST" id="addImagingform" style="display: none;" class="m-3">
+            <div class="input-group mb-3 w-50">
+                <input type="file" class="form-control" id="inputGroupFile02">
+                <input type="submit" class="btn btn-outline-primary" name="addImagingform" value="Add">
+            </div>
         </form>
+    </div>
+    {% endblock %}
         <script>
             function showLabForm(){
                 if(document.getElementById('addlabform').style.display=='none')
@@ -222,6 +250,6 @@
                 document.getElementById('addImagingform').style.display = 'none';
             }
             </script>
-        {% endblock %}
+        
 </body>
 </html>

@@ -10,20 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel="stylesheet" href="/Static/css/nurse.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .nurseinfo,h1{
-            margin: 15px;
-            font-family: "Poppins" , sans-serif;
-        }
-    </style>
     <title>Nurse Homepage</title>
 </head>
 <body>
     { % extends "index.html" % }
     {%block content%}
     {% if data %}
-    <h1><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
+    <div class="main-container m-5">
+    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
@@ -72,6 +68,7 @@
             <img src="/Static/images/nursepp2.jpg" alt="profile pic" style="height: 300px;">
         </div>
     </div>
+</div>
     <script>
         function DisplayAlertForm(){
             if(document.getElementById('alertbutton').style.display=='none')
