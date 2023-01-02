@@ -19,6 +19,8 @@
     {%block content%}
     {% if data %}
     <div class="main-container m-5">
+        <h1 class="text-primary">Home</h1>
+        <hr class="mb-4">
     <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
@@ -33,7 +35,6 @@
                 <dd class="col-sm-6">{{data['nursessn']}}</dd>
                 <dt class="col-sm-4 text-primary">Gender</dt>
                 <dd class="col-sm-6">{{data['nursegender']}}</dd>
-                <dt class="col-sm-10 text-primary">Patient you're in charge of</dt>
                 <dt class="col-sm-4 text-primary">Patient Name</dt>
                 <dd class="col-sm-6">{{data['patientname']}}</dd>
                 <dt class="col-sm-4 text-primary">Patient ID</dt>

@@ -49,6 +49,8 @@
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">Patient Medical Information</legend>
     <dl class="row">
+        <dt class="col-sm-3">Patient Priority</dt>
+        <dd class="col-sm-9">{{data['PatientPriority']}}</dd>
         <dt class="col-sm-3">Medical Status</dt>
         <dd class="col-sm-9">{{data['MedicalStatus']}}</dd>
         <dt class="col-sm-3">Admission Reason</dt>
@@ -76,8 +78,7 @@
     </fieldset>
     {% endif %}
     <div class="d-flex justify-content-center m-5" >
-        <a href="/Templates/nurse/updateicuinformation.html" class="btn btn-primary mx-3">Update ICU Information</a>
-        <a class="btn btn-primary mx-3">View Procedures</a>
+        <a href="/Templates/nurse/updateicuinformation.html" class="btn btn-primary mx-3">Update Daily Assessment</a>
     </div>
 </div>
 {% endblock %}
