@@ -12,9 +12,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
-        body {
-            font-family: "Poppins", sans-serif;
-        }
+    body {
+        font-family: "Poppins", sans-serif;
+    }
+    .table thead tr {
+    background-color:#0d6efd;
+    color: #ffffff;
+    }
+    .table_wrapper{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
     </style>
     <title>Prescription Adminsteration</title>
 
@@ -25,10 +34,10 @@
     {%block content%}
     <h1 class=" text-primary">Please mark each time you are done with a request</h1>
     <hr class="mb-4">
-    <div class="container">
+    <div class="table_wrapper">
         <form action="">
             <table class="table table-hover">
-                <thead class="table-primary">
+                <thead>
                     <tr>
                         <th scope="col">Select Day</th>
                         <th scope="col">Article Name</th>
