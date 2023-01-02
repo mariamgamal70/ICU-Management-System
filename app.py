@@ -25,6 +25,10 @@ app.config["SESSION_PERMANENT"]=False
 app.config["SESSION_TYPE"]="filesystem"
 Session(app)
 
+# Session encryption key
+app.config["SECRET_KEY"] = "zf_b1JkWCAQneZoA0Xe8Gw"
+
+
 app.config["MAIL_SERVER"]="smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USERNAME"] = "mariamgamal70@gmail.com" #senders email
@@ -36,7 +40,7 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   password="lovelygirl12",
+   password="Eng_8730667",
    database="icu_management_system"
 )
 mycursor = mydb.cursor()
@@ -52,20 +56,170 @@ def sendmessage(result):
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
    mail.send(msg)
 
+notifications={}
+notificationcounter=0
+def updatenotifications(notification):
+   notificationcounter = notificationcounter+1
+   notifications['count'] = notificationcounter
+   notifications['typeofnotification']=notification
+   
+
 
 @app.route("/")#GET METHOD
 def index():
    return render_template("index.html")
 
-@app.route('/adminhome')
-def Adminhome():
-   return render_template('/admin/adminDashboard.html',x=diction)
 
-@app.route("/AdminMain")
-def AdminMain():
-   return render_template("AdminMain.html")
-   diction={"name":"sharif"}
-   # sql="SELECT "  
+
+
+
+
+
+@app.route('/AdminDashboard')
+def Adminhome():
+
+    
+    #mycursor.execute("SELECT FName FROM admin") Until we set our database
+    #name=mycursor.fetchone()
+ 
+    
+    mydict={
+      "number1":2,
+      "number2":0,
+      "number3":3,
+      "number4":5
+    }
+    """
+    mycursor.execute("SELECT COUNT(NurseSSN) FROM Nurse")
+    x=mycursor.fetchone()
+    mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctors")
+    y=mycursor.fetchone()
+    mycursor.execute("SELECT COUNT(ReceptionistSSN) FROM Recptionist ")
+    z=mycursor.fetchone()
+    mycursor.execute("SELECT COUNT(PSSN) FROM Patient ")
+    p=mycursor.fetchone()
+    Statistics={
+      "NurseNum":x,
+      "DoctorNum":y,
+      "RecepNum":z,
+      "PatientNum":p
+    }
+    """
+
+    return render_template('/Admin/adminDashboard.html',Stats=mydict)
+
+@app.route("/Admin_Department")
+def ViewDepartmentInfo():
+   return render_template('/Admin/ViewDep.html')
+
+
+
+#Modified version for user
+@app.route("/signin",methods=["POST","GET"])  # GET METHOD
+def signin():
+   if request.method == "POST":
+      #PATIENT ONLY-----------------------------------------------------------------
+      if "patient" in request.form:
+         patientid = request.form["patientID"]
+         patientpassword = request.form["patientpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+            patientname=mycursor.fetchone()
+            session["name"]=patientname        #to reference patient name   
+            session["id"]=patientid
+            session["Permision"]="Patient"     #Permision_level 
+            return render_template("patienthome.html")
+         else: 
+            flash('ID/Password is incorrect','warning')
+            return redirect('/signin')
+      #ENDPATIENT-------------------------------------------------------------------------
+      #DOCTORONLY--------------------------------------------------------------------------
+      elif "doctor" in request.form:
+         doctorid = request.form["doctorID"]
+         doctorpassword = request.form["doctorpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (doctorid, doctorpassword,))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM user WHERE doctorid = %s AND doctorpassword = %s", (doctorid, doctorpassword,))
+            doctorname=mycursor.fetchone()
+            session["name"]=doctorname
+            session["id"]=doctorid
+            session["Permision"]="Doctor"
+            return render_template("doctorhome.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ENDDOCTOR-------------------------------------------------------------------------------
+      #NURSEONLY-------------------------------------------------------------------------------
+      elif "nurse" in request.form:
+         nurseid = request.form["nurseID"]
+         nursepassword = request.form["nursepassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM useer WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+            nursename=mycursor.fetchone()
+            session["id"]=doctorid
+            session["name"]=nursename
+            session["Permision"]="Nurse"
+            return render_template("doctorhome.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ENDNURSE-------------------------------------------------------------------------------------
+      #ADMINONLY------------------------------------------------------------------------------------
+      elif "admin" in request.form:
+         adminid = request.form["adminID"]
+         adminpassword = request.form["adminpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+            adminname=mycursor.fetchone()
+            session["id"]=adminid
+            session["name"]=adminname
+            session["Permision"]="Admin"
+            return render_template("AdminMain.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ADMINEND---------------------------------------------------------------------------------------
+      #RECEPTIONISTSONLY------------------------------------------------------------------------------
+      elif "receptionist" in request.form:
+         receptionistid = request.form["receptionistID"]
+         receptionistpassword = request.form["receptionistpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+            receptionistname=mycursor.fetchone()
+            session["id"]=receptionistid
+            session["name"]=receptionistname
+            session["Permision"]="Receptionist"
+            return render_template("receptionist1.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #RECEPTIONISTEND-------------------------------------------------------------------------------
+   return render_template('signin.html')
+
+
+
+
+
+"""
 
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
@@ -75,7 +229,7 @@ def signin():
          patientid = request.form["patientID"]
          patientpassword = request.form["patientpassword"]
          mycursor.execute(
-             "SELECT * FROM patient_record WHERE IdPatient_Record = %s AND password = %s", (patientid, patientpassword))
+             "SELECT * FROM patient_record WHERE PatientID = %s AND password = %s", (patientid, patientpassword))
          account = mycursor.fetchone()
          if account:
             mycursor.execute(
@@ -149,14 +303,14 @@ def signin():
             mycursor.execute(
             "SELECT FirstName FROM receptionist WHERE receptionistid = %s AND receptionistpassword = %s", (receptionistid, receptionistpassword,))
             adminname=mycursor.fetchone()
-            session["id"]=adminid
+            session["id"]=receptionistid
             return render_template("receptionist1.html")
          else:
             flash('ID/Password is incorrect', 'warning')
             return redirect('/signin')
       #RECEPTIONISTEND-------------------------------------------------------------------------------
    return render_template('signin.html')
-
+"""
 @app.route("/contactus",methods=["POST","GET"])  # GET METHOD
 def contactus():
    if request.method == "POST":
@@ -198,7 +352,9 @@ def getpatientrecord():
 @app.route("/logout")
 def LogOut():
    session.pop("id",None)
-   redirect("/")
+   session.pop("name",None) 
+   session.pop("Permission",None)
+   return redirect(url_for('/'))
 
 if __name__ == "__main__":
    app.run(debug=True)
