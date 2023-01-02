@@ -56,6 +56,14 @@ def sendmessage(result):
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
    mail.send(msg)
 
+notifications={}
+notificationcounter=0
+def updatenotifications(notification):
+   notificationcounter = notificationcounter+1
+   notifications['count'] = notificationcounter
+   notifications['typeofnotification']=notification
+   
+
 
 @app.route("/")#GET METHOD
 def index():
