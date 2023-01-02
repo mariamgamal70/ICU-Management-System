@@ -9,10 +9,17 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="../../Static/css/sidebar.css">
+  <link rel="stylesheet" href="../../Static/css/managerecords.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body {
             font-family: "Poppins", sans-serif;
+        }
+        .table_wrapper{
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
         }
     </style>
     <title>Patient Record</title>
@@ -54,6 +61,8 @@
         <dd class="col-sm-9">DD/MM/YYYY</dd>
         <dt class="col-sm-3">Medical Diagnosis</dt>
         <dd class="col-sm-9">whatever Medical Diagnosis</dd>
+        <dt class="col-sm-3">Priority</dt>
+        <dd class="col-sm-9">XX</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
@@ -68,54 +77,179 @@
             <dt class="col-sm-3">Attending Nurse</dt>
             <dd class="col-sm-9">whatever Attending Nurse</dd>
             <dt class="col-sm-3">Attending Nurse ID</dt>
-            <dd class="col-sm-9">XXXXXXXX</dd>
+            <dd class="col-sm-9">XXXXXXX</dd>
         </dl>
     </fieldset>
     <fieldset class="border p-2">
-        <legend class="text-primary float-none w-auto">Doctor related information</legend>
-        <dl class="row">
-            <dt class="col-sm-3">Requested Diagnosis</dt>
-            <dd class="col-sm-9">XX</dd>
-            <dt class="col-sm-3">Prescribed Medicine</dt>
-            <dd class="col-sm-9">exxx</dd>
-            <dt class="col-sm-3">Priority</dt>
-            <dd class="col-sm-9">XX</dd>
-            </dl>
+        <legend class="text-primary float-none w-auto">Medication</legend>
+        <div class="table_wrapper m-4">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Medicine Name</th>
+                  <th scope="col">Dosage</th>
+                  <th scope="col">Frequency</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                  <th scope="col">Prescription</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Dawa ko7a</td>
+                  <td>10ml</td>
+                  <td>3/day</td>
+                  <td>1/1/23</td>
+                  <td>1/10/23</td>
+                  <td>Before breakfast</td>
+                  
+                </tr>
+                <tr>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                  <td>15</td>
+                 
+                </tr>
+                <tr>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                  <td>15</td>
+                
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          </table>
         </fieldset>
+
+        
     <div class="d-flex justify-content-center m-5" >
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat">Update Doctor Related Information</button>
+        <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModalF" data-bs-whatever="@mdo" onclick= "changevis2()">Update Medical Information</button>
+        <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat" onclick= "changevis()">Request Scan/Lab</button>
+        <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal3" data-bs-whatever="@dsf">Scan/Lab results</button>
     </div>
 
-   
-    
+    <div class="modal fade" id="exampleModalF" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Update Medical Information</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Options</label>
+                  <select  id="updte" class="form-select" required onchange="changevis2()">
+                    <option value="Choose an Option">Please Choose an Option</option>
+                    <option value="Set Priority">Set Priority</option>
+                    <option value="Add Diagnosis">Add Diagnosis</option>
+                    <option value="Add Medicine">Add Medicine</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <div id="med">
+                        <input type="text" class="form-control mt-3" name = "Medicine name" placeholder="Please Enter Name of Medicine">
+                        <input type="text" class="form-control mt-3" name="Dosage" placeholder="Please Enter Dosage">
+                        <input type="text" class="form-control mt-3" placeholder="Please Enter Frequency">
+                        <label for="start date" class="col-form-label" >Start Date</label>
+                        <input type="date" name="start date" class="form-control">
+                        <label for="end date" class="col-form-label" >End Date</label>
+                        <input type="date" name="end date" class="form-control" placeholder="Enter Name of Medicine">
+                        <input type="text" name="instruction" class="form-control mt-3" placeholder="Please enter instructions">
+
+                    </div>
+
+                    <div id="prio">
+                        <input type="text" class="form-control" name = "priority" placeholder="Please enter priority">
+                    </div>
+
+                    <div id="diag">
+                        <input type="text" class="form-control" name = "diagnosis" placeholder="Please enter diagnosis">
+                    </div>
+                
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+              <button type="button" class="btn btn-primary" name="submit1">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
     
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Update Doctor Related Info</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Request </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Request</label>
-                <select class="form-select" required id="ddm" onchange="ddselect()">
-                    <option selected value="Choose an Option">Please Choose an Option</option>
-                    <option value="Request Diagnosis">Request Diagnosis</option>
-                    <option value="Set Priority">Set Priority</option>
-                    <option value="Prescribe Medicine">Prescribe Medicine</option>
+                <select  id="ddm" class="form-select" required  onchange="changevis()">
+                    <option value="Choose an Option">Please Choose an Option</option>
+                    <option value="Request Scan">Request Scan</option>
+                    <option value="Request Lab">Request Lab</option>
                     </select>
               </div>
               <div class="mb-3">
-                <label for="message-text" id="lbl1" class="col-form-label"></label>
-                <input type="text" class="form-control" id="message-text">
+
+                <div id="labdss">
+                    <label for="Complete blood count">
+                        <input type="checkbox" name="Complete blood count" id=""> Complete blood count</label><br>
+                        <label for="Basic metabolic panel">
+                        <input type="checkbox" name="Basic metabolic panel" id=""> Basic metabolic panel</label><br>
+                        <label for="Comprehensive metabolic panel">
+                        <input type="checkbox" name="Comprehensive metabolic panel" id=""> Comprehensive metabolic panel</label><br>
+                        <label for="Lipid panel">
+                        <input type="checkbox" name="Lipid panel" id=""> Lipid panel</label><br>
+                        <label for="Thyroid panel">
+                        <input type="checkbox" name="Thyroid panel" id=""> Thyroid panel</label><br>
+                        <label for="Cardiac biomarkers">
+                        <input type="checkbox" name="Cardiac biomarkers" id=""> Cardiac biomarkers</label><br>
+                        <label for="Coagulation panel">
+                        <input type="checkbox" name="Coagulation panel" id=""> Coagulation panel</label><br>
+                        <label for="C-reactive protein test">
+                        <input type="checkbox" name=" C-reactive protein test" id=""> C-reactive protein test</label>
+                        <br>
+                        <label for="date" class="mt-3">Date</label>
+                        <input type="datetime-local" class="form-control">
+                </div>
+
+                <div id="scandss">
+                    <label for="CT-Scan">
+                        <input type="checkbox" name="CT-Scan" id=""> CT-Scan</label><br>
+                    <label for="BMRI">
+                        <input type="checkbox" name="MRI" id=""> MRI</label><br>
+                    <label for="PET Scan">
+                        <input type="checkbox" name="PET Scan" id=""> PET Scan</label><br>
+                    <label for="Ultrasound">
+                        <input type="checkbox" name="Ultrasound" id=""> Ultrasound</label><br>
+                    <label for="X-Ray">
+                        <input type="checkbox" name="X-Ray" id=""> X-Ray</label><br>
+                    <label for="Sonar">
+                        <input type="checkbox" name="Sonar" id=""> Sonar</label><br>
+                    <label for="Angiography">
+                        <input type="checkbox" name="Angiography" id=""> Angiography</label><br>
+                    <label for="ECG">
+                        <input type="checkbox" name="ECG" id=""> ECG</label>
+                        <br>
+                    <label for="date" class="mt-3">Date</label>
+                    <input type="datetime-local" class="form-control">
+                
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+            <button type="button" class="btn btn-primary" name="request">Request</button>
           </div>
         </div>
       </div>
@@ -132,6 +266,66 @@
         document.getElementById("lbl1").textContent = displaytext;
 
     }
+
+
+    function changevis() {
+  let x = document.getElementById("ddm");
+  if (x.value == "Request Scan") {
+    document.getElementById("scandss").style.visibility="visible";
+    document.getElementById("scandss").style.display="";
+    document.getElementById("labdss").style.display = "none";
+    document.getElementById("labdss").style.visibility = "hidden";
+   }else if(x.value == "Request Lab") {
+    document.getElementById("labdss").style.visibility = "visible";
+    document.getElementById("labdss").style.display="";
+    document.getElementById("scandss").style.display = "none";
+    document.getElementById("scandss").style.visibility = "hidden";
+   }
+    else{
+        document.getElementById("scandss").style.visibility = "hidden";
+        document.getElementById("labdss").style.visibility = "hidden";
+        document.getElementById("labdss").style.display="none";
+        document.getElementById("scandss").style.display="none";
+    }
+   }
+
+   function changevis2() {
+  let x = document.getElementById("updte");
+  if (x.value == "Add Medicine") {
+    document.getElementById("med").style.visibility="visible";
+    document.getElementById("med").style.display="";
+    document.getElementById("prio").style.display = "none";
+    document.getElementById("prio").style.visibility = "hidden";
+    document.getElementById("diag").style.display = "none";
+    document.getElementById("diag").style.visibility = "hidden";
+   }else if(x.value == "Set Priority") {
+    document.getElementById("prio").style.visibility = "visible";
+    document.getElementById("prio").style.display="";
+    document.getElementById("diag").style.display = "none";
+    document.getElementById("diag").style.visibility = "hidden";
+    document.getElementById("med").style.display = "none";
+    document.getElementById("med").style.visibility = "hidden";
+   }
+   else if(x.value == "Add Diagnosis"){
+    document.getElementById("med").style.visibility="hidden";
+    document.getElementById("med").style.display="none";
+    document.getElementById("prio").style.display = "none";
+    document.getElementById("prio").style.visibility = "hidden";
+    document.getElementById("diag").style.display = "";
+    document.getElementById("diag").style.visibility = "visible";
+   }
+    else{
+        document.getElementById("med").style.visibility = "hidden";
+        document.getElementById("diag").style.visibility = "hidden";
+        document.getElementById("med").style.display="none";
+        document.getElementById("diag").style.display="none";
+        document.getElementById("prio").style.display="none";
+        document.getElementById("prio").style.visibility="hidden";
+    }
+   }
+
+
+
 </script>
 
 {% endblock %}
