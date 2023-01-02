@@ -22,10 +22,17 @@
     {%block content%}
     {% if data %}
     <div class="main-container m-5">
+        <div class="d-flex justify-content-sm-between flex-wrap">
+        <div>
         <dl class="row display-5 text-primary">
-            <dt class="col-sm-3">Record ID</dt>
-            <dd class="col-sm-9">{{data['RecordID']}}</dd>
+            <dt class="col-sm-5">Record ID</dt>
+            <dd class="col-sm-7">{{data['RecordID']}}</dd> 
         </dl>
+        </div>
+        <div class="align-self-center">
+            <a href="/Templates/nurse/updateicuinformation.html" class="btn btn-primary btn-lg mx-3">Update Daily Assessment</a>
+        </div>
+    </div>
         <hr>
         <fieldset class="border p-2">
             <legend class="text-primary float-none w-auto">Patient Personal Information</legend>
@@ -77,9 +84,7 @@
         </dl>
     </fieldset>
     {% endif %}
-    <div class="d-flex justify-content-center m-5" >
-        <a href="/Templates/nurse/updateicuinformation.html" class="btn btn-primary mx-3">Update Daily Assessment</a>
-    </div>
+    
 </div>
 {% endblock %}
 </body>
