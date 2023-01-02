@@ -26,26 +26,24 @@ integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShg
         </style>
 </head>
 
-<body>
+<body class=" mt-3">
   <!-- {%extends sidebarhtml %} -->
-  <div class="container mt-3 ">
-
-    <div class="row row-bordered">
-      <h1 class="font-weight-bold text-primary">View Patients</h1>
-    </div>
+      <h1 class="font-weight-bold text-primary ml-4">View Patients</h1>
+      <hr>
     <div class="d-flex justify-content-between mt-5">
       <br>
       <form class="form-inline">
-        <div class="d-flex" style="width: 400px;" >
+        <div class="d-flex flex-row flex-wrap">
+          <div style="width: 200px;">
           <input class="form-control mr-sm-2 border-primary" type="search" placeholder="Search" aria-label="Search"
-            v-model="search" />
-          <button class="btn btn-primary my-2 my-sm-0 mx-3 fw-bold border" type="submit" @click.prevent="searchData()">
+            v-model="search" > </div>
+          <div><button class="btn btn-primary my-2 my-sm-0 mx-3 fw-bold border" type="submit" @click.prevent="searchData()">
             Search
-          </button>
+          </button></div>
         </div>
       </form>
     </div>
-    <div class="table_wrapper mt-3">
+    <div class="table_wrapper m-4">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -84,7 +82,6 @@ integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShg
         </tbody>
       </table>
     </div>
-  </div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const rows = document.querySelectorAll("tr[data-href]");
