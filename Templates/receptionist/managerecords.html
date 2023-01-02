@@ -11,26 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
-    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
-    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
-    crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Manage Record</title>
 </head>
 
 <body>
   <!-- {%extends sidebarhtml %} -->
-  <div class="main-container mt-3 mx-3">
+  <div class="main-container m-5">
 
     <div class="row row-bordered">
       <h1 class="font-weight-bold text-primary">Manage Records</h1>
     </div>
     <div class="d-flex justify-content-between mt-5">
-      <a type="button" class="btn btn-primary border border-primary" href="/Templates/receptionist/addrecord.html">
+      <a type="button" class="btn btn-primary border border-primary mx-1" href="/Templates/receptionist/addrecord.html">
         <i class="fa-solid fa-user-plus p-1"></i>
         Add New Record</a>
       <form class="form-inline">
@@ -44,7 +38,7 @@
       </form>
     </div>
     <div class="row justify-content-center mt-3">
-      <table class="table table-hover">
+      <table class="table table-hover" style="width:98%">
         <thead>
           <tr>
             <th scope="col">Record ID</th>
@@ -55,37 +49,37 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-href="www.google.com">
+          <tr data-href="/Templates/receptionist/viewrecord.html">
             <th scope="row">1</th>
             <td>Mark</td>
             <td>Otto</td>
             <td>@mdo</td>
             <td>
-              <button type="button" class="btn btn-outline-primary border border-primary">
+              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
                 <i class="fa-solid fa-user-pen"></i>
-              </button>
+              </a>
             </td>
           </tr>
-          <tr data-href="www.google.com">
+          <tr data-href="/Templates/receptionist/viewrecord.html">
             <th scope="row">2</th>
             <td>Jacob</td>
             <td>Thornton</td>
             <td>@fat</td>
             <td>
-              <button type="button" class="btn btn-outline-primary border border-primary">
+              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
                 <i class="fa-solid fa-user-pen"></i>
-              </button>
+              </a>
             </td>
           </tr>
-          <tr data-href="www.google.com">
+          <tr data-href="/Templates/receptionist/viewrecord.html">
             <th scope="row">3</th>
             <td>Larry</td>
             <td>the Bird</td>
             <td>@twitter</td>
             <td>
-              <button type="button" class="btn btn-outline-primary border border-primary">
+              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
                 <i class="fa-solid fa-user-pen"></i>
-              </button>
+              </a>
             </td>
           </tr>
         </tbody>
