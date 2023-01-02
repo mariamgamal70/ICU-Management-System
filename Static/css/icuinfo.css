@@ -19,3 +19,9 @@ body {
     background-color:#0d6efd;
     color: #ffffff;
 } 
+
+.table_wrapper{
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  }

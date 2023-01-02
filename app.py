@@ -40,7 +40,7 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   password="Eng_8730667",
+   password="adanGneCUFE2025$",
    database="icu_management_system"
 )
 mycursor = mydb.cursor()
