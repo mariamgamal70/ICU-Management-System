@@ -37,6 +37,7 @@ app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
 mail = Mail()
 mail.init_app(app)
+
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
@@ -55,13 +56,6 @@ def sendmessage(result):
    msg = Message(subject="Inquiry/Complaint", sender=result['email'], recipients=["mariamgamal70@gmail.com"])
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
    mail.send(msg)
-
-notifications={}
-notificationcounter=0
-def updatenotifications(notification):
-   notificationcounter = notificationcounter+1
-   notifications['count'] = notificationcounter
-   notifications['typeofnotification']=notification
    
 
 
@@ -73,11 +67,11 @@ def index():
 
 
 
+####################################################Admin##################################
 
 
 
-
-
+###############################################Index####################################
 
 #Modified version for user
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
@@ -348,7 +342,7 @@ def contactus():
       return redirect("/contactus")
    return render_template("contactus.html")
 
-
+################################################Nurse Page############################################3
 @app.route("/nursehome", methods=["POST", "GET"])
 def getnursepatientdata():
    nurseid=session['id']
@@ -372,13 +366,48 @@ def getpatientrecord():
    mycursor.execute('SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s',(session['patientid']))
    patient=mycursor.fetchone()
    render_template('/viewpatientrecord',data=patient)
-
+##############################################sidebar#####################################
 @app.route("/logout")
 def LogOut():
    session.pop("id",None)
    session.pop("name",None) 
    session.pop("Permission",None)
    return redirect(url_for('/'))
+###################################################### Patient Page ############################################
+#Age
+@app.route("/patient/homepage")
+def PatientRecord():
+    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,PhoneNumber,EmergencyContact,PatientID,Insurance_Status from patient join record on PSSN=PatientSSN where patientid=%s',(session['patientid']))
+    patient=mycursor.fetchone()
+    render_template('/patient/homepage',data=patient)
+#edit sum and groupby 
+@app.route("/patient/icuinfo")
+def PatientRecord():
+    mycursor.execute('SELECT Date_Admitted,Date_Discharged,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName,Diagnosis,Bills_ID,TotalValue,Insurance_Percent,Price,Specifications,Frequency,Dosage,StartDate,EndDate from patient join Prescribed_Medication on PSSN=Patient_PSSN join bills on PSSN=Patient_PSSN join beds on Beds_BedID=BedID join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s',(session['patientid']))
+    patient=mycursor.fetchone()
+    render_template('/patient/icuinfo',data=patient)
+
+###################################################### Receptionist Page ############################################
+@app.route("/receptionist/viewrecord")
+def PatientRecord():
+    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName from patient join record on PSSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s',(session['patientid']))
+    patient=mycursor.fetchone()
+    render_template('/receptionist/viewrecord',data=patient)
+
+@app.route("/receptionist/homepage", methods=["POST", "GET"])
+def getnursepatientdata():
+   receptionistid=session['id']
+   result={}
+   mycursor.execute('SELECT FirstName,LastName,Birthdate,SSN,Gender from receptionist where receptionistID=%s',(receptionistid))
+   receptionist=mycursor.fetchone()
+   result['receptionistid']=session['id']
+   result['receptionistname'] = receptionist[0] + receptionist[1]
+   result['receptionistbirthdate']=receptionist[2] #age
+   result['receptionistssn']=receptionist[3]
+   result['receptionistgender']=receptionist[4]
+   render_template('/receptionist/homepage',data=result)
+
+#####################################################Run#############################################################
 
 if __name__ == "__main__":
    app.run(debug=True)
