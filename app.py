@@ -41,9 +41,9 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="Eng_8730667",
-   database="icu_management_system"
+   database="icu_management_new"
 )
-mycursor = mydb.cursor()
+mycursor = mydb.cursor() #(buffered=True)?
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
 #get function route("route)
 #functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
@@ -75,43 +75,7 @@ def index():
 
 
 
-@app.route('/AdminDashboard')
-def Adminhome():
 
-    
-    #mycursor.execute("SELECT FName FROM admin") Until we set our database
-    #name=mycursor.fetchone()
- 
-    
-    mydict={
-      "number1":2,
-      "number2":0,
-      "number3":3,
-      "number4":5
-    }
-    """
-    mycursor.execute("SELECT COUNT(NurseSSN) FROM Nurse")
-    x=mycursor.fetchone()
-    mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctors")
-    y=mycursor.fetchone()
-    mycursor.execute("SELECT COUNT(ReceptionistSSN) FROM Recptionist ")
-    z=mycursor.fetchone()
-    mycursor.execute("SELECT COUNT(PSSN) FROM Patient ")
-    p=mycursor.fetchone()
-    Statistics={
-      "NurseNum":x,
-      "DoctorNum":y,
-      "RecepNum":z,
-      "PatientNum":p
-    }
-    """
-
-    return render_template('/Admin/adminDashboard.html',Stats=mydict)
-
-@app.route("/Admin_Department")
-def ViewDepartmentInfo():
-   
-   return render_template('/Admin/ViewDep.html')
 
 
 
@@ -218,6 +182,58 @@ def signin():
 
 
 
+@app.route('/AdminDashboard')
+def Adminhome():
+
+    
+    #mycursor.execute("SELECT FName FROM admin") Until we set our database
+    #name=mycursor.fetchone()
+ 
+    
+    mydict={
+      "number1":2,
+      "number2":0,
+      "number3":3,
+      "number4":5
+    }
+    
+    mycursor.execute("SELECT COUNT(Nurse_SSN) FROM Nurse")
+    n=mycursor.fetchone()[0]
+    print(n)
+    mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctor")
+    d=mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(Receptionist_SSN) FROM Receptionist ")
+    r=mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(PSSN) FROM Patient ")
+    p=mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(BedID) FROM Beds")
+    b=mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(RoomNumber) FROM Unit_Rooms")
+    U=mycursor.fetchone()[0]
+    mycursor.execute("SELECT SUM(TotalValue) FROM Bills")
+    V=mycursor.fetchone()[0]
+
+
+    Statistics={
+      "NurseNum":n,    #Number of nurses in ICU
+      "DoctorNum":d,   #Number of doctors in ICU
+      "RecepNum":r,    #Number of Receptionists in ICU
+      "PatientNum":p,  #Number of Patients in ICU
+      "BedNum":b,      #Number of Beds in ICU
+      "RoomNum":U,     #Number of Rooms in ICU 
+      "ICUIncome":V    #Income of ICU
+
+    }
+    
+
+    return render_template('/Admin/adminDashboard.html',Stats=Statistics)
+
+
+@app.route('/AdminDr')
+def Admindr():
+
+   
+   return render_template("/Admin/AdminDr.html")
 
 
 """
