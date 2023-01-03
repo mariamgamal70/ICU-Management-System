@@ -232,8 +232,15 @@ def Adminhome():
 @app.route('/AdminDr')
 def Admindr():
 
-   
-   return render_template("/Admin/AdminDr.html")
+   mycursor.execute("SELECT Doctor_ID,Fname,Lname,Sex,Birthdate,Speciality,StartShift,EndShift FROM doctor")
+   row_headers=[x[0] for x in mycursor.description]
+   doctors_data=mycursor.fetchall()
+   Dr_Data={
+      'header':row_headers,
+      'records':doctors_data
+
+   }
+   return render_template("/Admin/AdminDr.html",Doc_data=Dr_Data)
 
 
 """

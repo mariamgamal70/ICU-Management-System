@@ -30,51 +30,25 @@
       <table class="table table-hover table-responsive" style="width:98%">
         <thead>
           <tr>
-            <th scope="col">Doctor ID</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Age</th>
-            <th scope="col">Speciality</th>
-            <th scope="col">Start Shift</th>
-            <th scope="col">End Shift</th>
-            <th scope="col">Action</th>
+            {% for h in Doc_data.header %}
+            <th scope="col">{ { h } } </th>
+
+            {% endfor %}
           </tr>
         </thead>
         <tbody>
-          <tr data-href="/Templates/receptionist/viewrecord.html">
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>
+    {% for d in Doc_data.records %}
+         <tr data-href="">
+            {% for data in d %}
+            <td> {{data}} </td>
+             <td>
               <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
                 <i class="fa-solid fa-user-pen"></i>
               </a>
             </td>
+            {% endfor %}
           </tr>
-          <tr data-href="/Templates/receptionist/viewrecord.html">
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-            <td>
-              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
-                <i class="fa-solid fa-user-pen"></i>
-              </a>
-            </td>
-          </tr>
-          <tr data-href="/Templates/receptionist/viewrecord.html">
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-            <td>
-              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
-                <i class="fa-solid fa-user-pen"></i>
-              </a>
-            </td>
-          </tr>
+          {{% endfor %}}
         </tbody>
       </table>
     </div>
