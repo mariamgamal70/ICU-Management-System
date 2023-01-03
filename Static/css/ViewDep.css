@@ -1,0 +1,19 @@
+caption
+{
+caption-side: top;
+color:rgb(3, 116, 192);
+font-family: 'Poppins', sans-serif;
+margin-left: 1%;
+}
+
+.table thead tr {
+    background-color:#0d6efd;
+    color: #ffffff;
+}
+
+tr:hover
+{
+transition:ease-out .5s;
+background-color:rgb(220, 220, 220);
+
+}
