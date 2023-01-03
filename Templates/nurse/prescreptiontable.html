@@ -24,19 +24,22 @@
     <table class="table table-hover">
         <thead>
             <tr>
-            { % for r in data.header % }
-            <th class="text-center">{ { r } }</th> <!--start and end date should be in database -->
-            { % endfor % }
-            <th class="text-center">Adminster Prescription</th>
+            <th>Medicine Name</th>
+            <th>Dosage</th>
+            <th>Frequency</th>
+            <th>Times Adminstered</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Adminster Prescription</th>
             </tr>
         </thead>
         <tbody>
-            { % for r in data.rec % }
+            { % for medicine in prescription % }
             <tr>
-                { % for l in r% }
-                <td> { { l } }</td>
+                { % for detail in medicine % }
+                <td> { { detail } }</td>
                 { % endfor % }
-                <td class="text-center"><a href="http://127.0.0.1:5000/adminsterprescription" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-task' style="font-size:25px;"></i></a></td>
+                <td><a href="http://127.0.0.1:5000/prescreptiontable/{{ detail['Name'] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-task' style="font-size:25px;"></i></a></td>
             </tr>
             { % endfor % }
         </tbody>

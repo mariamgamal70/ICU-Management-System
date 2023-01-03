@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, url_for, request, session, flash, make_response
+from flask import get_flashed_messages
+from flask import Flask, render_template, redirect, url_for, request, session, flash, Response
 from flask_session import Session
 import mysql.connector
 from flask_mail import Mail, Message
@@ -18,8 +19,7 @@ from werkzeug.utils import secure_filename
 # socketio = SocketIO(app)
 
 from datetime import datetime
-now = datetime.now()
-formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
+current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 app = Flask(__name__)
 
@@ -51,40 +51,36 @@ mycursor = mydb.cursor()
 #functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
 #route("route",methods=["POST","GET"])
 # in case it is GET and POST you should check inside the function whether the incoming is a get or post request , if its a get ,return template, if its a post , send data do changes
+def updatenotificationbutton():
+   messages = get_flashed_messages()
+   message_count = len(messages)
+   return message_count
 
+def notifynurse(notification):
+   string=notification['type']+'\n'+notification['info']
+   flash(string,'warning')
+
+def calculate_age(born):
+   # BORN SHOULD BE WRITTIN IN THIS FORMAT FIRST BEFORE PUTTING IT AS A PARAMETER  
+   # born = datetime(1997, 5, 21)
+   today = datetime.now()
+   return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 def sendmessage(result):
    msg = Message(subject="Inquiry/Complaint", sender=result['email'], recipients=["mariamgamal70@gmail.com"])
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
    mail.send(msg)
 
-notifications={}
-notificationcounter=0
-def updatenotifications(notification):
-   notificationcounter = notificationcounter+1
-   notifications['count'] = notificationcounter
-   notifications['typeofchanges']=notification['']
-   
-
-
 @app.route("/")#GET METHOD
 def index():
    return render_template("index.html")
 
-
-
-
-
-
-
 @app.route('/AdminDashboard')
 def Adminhome():
 
-    
     #mycursor.execute("SELECT FName FROM admin") Until we set our database
     #name=mycursor.fetchone()
  
-    
     mydict={
       "number1":2,
       "number2":0,
@@ -114,8 +110,6 @@ def Adminhome():
 def ViewDepartmentInfo():
    return render_template('/Admin/ViewDep.html')
 
-
-
 #Modified version for user
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
@@ -128,10 +122,11 @@ def signin():
              "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
          account = mycursor.fetchone()
          if account:
-            mycursor.execute(
-            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
-            patientname=mycursor.fetchone()
-            session["name"]=patientname        #to reference patient name   
+            #mycursor.execute(
+            #"SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+            #patientname=mycursor.fetchone()
+            session["name"] = account["Username"]
+            #session["name"]=patientname        #to reference patient name   
             session["id"]=patientid
             session["Permision"]="Patient"     #Permision_level 
             return render_template("patienthome.html")
@@ -217,9 +212,7 @@ def signin():
       #RECEPTIONISTEND-------------------------------------------------------------------------------
    return render_template('signin.html')
 
-
 """
-
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
    if request.method == "POST":
@@ -310,6 +303,7 @@ def signin():
       #RECEPTIONISTEND-------------------------------------------------------------------------------
    return render_template('signin.html')
 """
+
 @app.route("/contactus",methods=["POST","GET"])  # GET METHOD
 def contactus():
    if request.method == "POST":
@@ -325,19 +319,19 @@ def contactus():
 
 
 @app.route("/nursehome", methods=["POST", "GET"])
-def getnursepatientdata():
+def nursehome():
    nurseid=session['id']
    result={}
    mycursor.execute('SELECT FirstName,LastName,Birthdate,SSN,Gender from nurse where NurseID=%s',(nurseid))
    nurse=mycursor.fetchone()
    result['nurseid']=session['id']
-   result['nursename'] = nurse[0] + nurse[1]
+   result['nursename'] = nurse[0]+' '+ nurse[1]
    result['nursebirthdate']=nurse[2]
    result['nursessn']=nurse[3]
    result['nursegender']=nurse[4]
    mycursor.execute('SELECT FirstName,LastName,patientID from inpatient join nurse on nurseID=nurseID where nurseID=%s',(nurseid))
    patient=mycursor.fetchone()
-   result['patientname']= patient[0] +patient[1]
+   result['patientname']= patient[0]+' '+patient[1]
    result['patientid']= patient[2]
    session['patientid'] = patient[2]
    render_template('/nursehome',data=result)
@@ -372,17 +366,56 @@ def getpatientlabsandscans():
             'dataissued'), session['patientid'])
          mycursor.execute(
             'INSERT INTO scan (type,labfile,dateissued,patientid) values()', val)
-   mycursor.execute('SELECT Lab,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=checked',(session['patientid']))
+   mycursor.execute('SELECT Labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=checked',(session['patientid']))
    checkedlabs=mycursor.fetchall()
    mycursor.execute(
-      'SELECT Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
+      'SELECT labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
    pendinglabs = mycursor.fetchall()
-   mycursor.execute('SELECT Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=checked', (session['patientid']))
+   mycursor.execute('SELECT labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
    checkedimaging=mycursor.fetchall
-   mycursor.execute('SELECT Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
-   pendingimaging = mycursor.fetchall
+   mycursor.execute('SELECT scanfile,Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
+   pendingimaging = mycursor.fetchall()
 
    render_template('/patientlabsandscans',checkedlabs=checkedlabs,pendinglabs=pendinglabs,checkedimaging=checkedimaging,pendingimaging=pendingimaging)
+
+
+@app.route('/patientlabsandscans/<int:file_id>')
+def viewfile(file_id):
+   mycursor.execute('SELECT file from lab where id=%s',(file_id))
+   file=mycursor.fetchone()
+   return Response(file, mimetype='application/octet-stream')
+
+@app.route("/dailyassessment", methods=["POST", "GET"])
+def dailyassessment():
+   if request.method == "POST":
+      val = ((request.form.get('consciousness')),(request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodtype')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get('respiratoryrate')), (request.form.get('oxygensaturation')) , (request.form.get('heartrate')) , (request.form.get('painlevel')), (request.form.get('ivaccess')) , (request.form.get('ivaccessdate')), (request.form.get('heparin')))
+      mycursor.execute('UPDATE TABLE patient SET consciousness=%s,pupils=%s,skin=%s,bloodgluecose=%s,respiratoryrate=%s,oxygensaturation=%s,heartrate=%s,painlevel=%s,ivaccess=%s,ivaccessdate=%s,heparin=%s',val)
+      return redirect("/dailyassessment")
+   return render_template('/dailyassessment')
+
+@app.route('/notifications')
+def notification():
+   render_template('/notifcations')
+
+@app.route("/prescriptiontable", methods=["POST", "GET"])
+def prescriptiontable():
+   mycursor.execute('SELECT Name,Dosage,Frequency,Noadminsetered,StartDate,EndDate from prescription join patient on patient_PSSN=PSSN where patientID=%s', (session['patientid']))
+   prescriptions=mycursor.fetchall()
+
+
+@app.route('/prescriptiontable/<string:medicinename>')
+def prescriptiontable(medicinename):
+   mycursor.execute('SELECT Noadminsetered from prescription where Name=%s', (medicinename))
+   noadminster=mycursor.fetchone()
+   if request.method == "POST":
+      checkedboxes = request.form.getlist('checklist')
+      counter = 0
+      for checked in checkedboxes:
+         counter += 1
+         noadminster = noadminster-counter
+         mycursor.execute('UPDATE TABLE prescription SET Noadminsetered=noadminster where Name=%s', (medicinename))
+   return render_template('/prescriptiontable/<string:medicinename>', number=noadminster,name=medicinename)
+
 
 @app.route("/logout")
 def LogOut():
