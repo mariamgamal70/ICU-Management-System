@@ -357,6 +357,7 @@ def PatientRecord():
     mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status from patient join record on PSSN=PatientSSN where patientid=%s',(session['patientid']))
     patient=mycursor.fetchone()
     render_template('/patient/homepage',data=patient)
+
 #edit sum and groupby 
 @app.route("/patient/icuinfo")
 def ICUInfo():
@@ -387,21 +388,21 @@ def ReceptionistHomePage():
 @app.route('/receptionist/addrecord', methods=['POST', 'GET'])
 def R_AddRecord():
     if request.method == 'POST':
-        FirstName = request.form['FirstName']
-        MiddleName = request.form['MiddleName']
-        LastName = request.form['LastName']
-        Gender = request.form['Gender']
-        RecordID = request.form['RecordID']
-        PatientID = request.form['PatientID']
-        SSN = request.form['SSN']
-        formatted_date = request.form['Birthdate']  #add age
-        Insurance = request.form['Insurance']
-        Address = request.form['Address']
-        Email = request.form['Email']
-        PhoneNumber = request.form['PhoneNumber']
-        EmergencyContact = request.form['PhoneNumber']
-        AssignedDoctor = request.form['AssignedDoctor']
-        AssignedNurse = request.form['AssignedNurse']
+        FirstName = request.form.get('FirstName')
+        MiddleName = request.form.get('MiddleName')
+        LastName = request.form.get('LastName')
+        Gender = request.form.get('Gender')
+        RecordID = request.form.get('RecordID')
+        PatientID = request.form.get('PatientID')
+        SSN = request.form.get('SSN')
+        formatted_date = request.form.get('Birthdate')  #add age
+        Insurance = request.form.get('Insurance')
+        Address = request.form.get('Address')
+        Email = request.form.get('Email')
+        PhoneNumber = request.form.get('PhoneNumber')
+        EmergencyContact = request.form.get('PhoneNumber')
+        AssignedDoctor = request.form.get('AssignedDoctor')
+        AssignedNurse = request.form.get('AssignedNurse')
         try:
             sql = "INSERT INTO Patient(PSSN,FirstName, MiddleName, LastName,PatientID, Sex, Birthdate,Address, Email, PhoneNumber,EmergencyContact,AssignedDoctor,AssignedNurse) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s)"
             val = (SSN, FirstName, MiddleName, LastName, PatientID,Gender,
