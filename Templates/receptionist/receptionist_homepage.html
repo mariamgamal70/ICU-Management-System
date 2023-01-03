@@ -26,7 +26,9 @@
 </head>
 
 <body>
-    <!-- {%extends sidebarhtml %} -->
+    {%extends sidebarhtml %}
+    {%block content%}
+    {% if data %}
     <div class="main-container m-5">
 
         <div class="row row-bordered">
@@ -34,25 +36,27 @@
         </div>
 
         <h1 class="d-flex justify-content-center mb-5 mt-5"><b>Welcome Receptionist <span
-                    class="text-primary">Sarah</span></b></h1>
+                    class="text-primary">{{data.receptionistfirstname}}</span></b></h1>
         <div class="d-flex flex-wrap justify-content-around w-100">
             <div class="w-75">
                 <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
                     <dt class="col-sm-4 text-primary">ID</dt>
-                    <dd class="col-sm-6">1520</dd>
+                    <dd class="col-sm-6">{{data.receptionistid}}</dd>
                     <dt class="col-sm-4 text-primary">Name</dt>
-                    <dd class="col-sm-6">Sarah Sabry</dd>
+                    <dd class="col-sm-6">{{data.receptionistname}}</dd>
                     <dt class="col-sm-4 text-primary">Age</dt>
-                    <dd class="col-sm-6">25</dd>
+                    <dd class="col-sm-6">{{data.receptionistage}}</dd>
                     <dt class="col-sm-4 text-primary">Social Security Number</dt>
-                    <dd class="col-sm-6">2436348585</dd>
+                    <dd class="col-sm-6">{{data.receptionistssn}}</dd>
                     <dt class="col-sm-4 text-primary">Gender</dt>
-                    <dd class="col-sm-6">Female</dd>
+                    <dd class="col-sm-6">{{data.receptionistgender}}</dd>
                 </dl>
             </div>
+    {% endif %}
             <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
                 <img src="../../Static/images/receptionist.jpg" alt="profile pic" style="height: 300px;">
             </div>
+    {% endblock %}
 </body>
 
 </html>
