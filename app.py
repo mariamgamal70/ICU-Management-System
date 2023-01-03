@@ -377,35 +377,68 @@ def LogOut():
 #Age
 @app.route("/patient/homepage")
 def PatientRecord():
-    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,PhoneNumber,EmergencyContact,PatientID,Insurance_Status from patient join record on PSSN=PatientSSN where patientid=%s',(session['patientid']))
+    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status from patient join record on PSSN=PatientSSN where patientid=%s',(session['patientid']))
     patient=mycursor.fetchone()
     render_template('/patient/homepage',data=patient)
 #edit sum and groupby 
 @app.route("/patient/icuinfo")
-def PatientRecord():
+def ICUInfo():
     mycursor.execute('SELECT Date_Admitted,Date_Discharged,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName,Diagnosis,Bills_ID,TotalValue,Insurance_Percent,Price,Specifications,Frequency,Dosage,StartDate,EndDate from patient join Prescribed_Medication on PSSN=Patient_PSSN join bills on PSSN=Patient_PSSN join beds on Beds_BedID=BedID join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s',(session['patientid']))
     patient=mycursor.fetchone()
     render_template('/patient/icuinfo',data=patient)
 
 ###################################################### Receptionist Page ############################################
 @app.route("/receptionist/viewrecord")
-def PatientRecord():
-    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName from patient join record on PSSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s',(session['patientid']))
+def R_ViewRecord():
+    mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName from patient join record on PSSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s',(session['patientid']))
     patient=mycursor.fetchone()
     render_template('/receptionist/viewrecord',data=patient)
 
 @app.route("/receptionist/homepage", methods=["POST", "GET"])
-def getnursepatientdata():
+def ReceptionistHomePage():
    receptionistid=session['id']
    result={}
    mycursor.execute('SELECT FirstName,LastName,Birthdate,SSN,Gender from receptionist where receptionistID=%s',(receptionistid))
    receptionist=mycursor.fetchone()
    result['receptionistid']=session['id']
    result['receptionistname'] = receptionist[0] + receptionist[1]
-   result['receptionistbirthdate']=receptionist[2] #age
+   result['receptionistbirthdate']=receptionist[2]                         #age
    result['receptionistssn']=receptionist[3]
    result['receptionistgender']=receptionist[4]
    render_template('/receptionist/homepage',data=result)
+
+@app.route('/receptionist/addrecord', methods=['POST', 'GET'])
+def R_AddRecord():
+    if request.method == 'POST':
+        FirstName = request.form['FirstName']
+        MiddleName = request.form['MiddleName']
+        LastName = request.form['LastName']
+        Gender = request.form['Gender']
+        RecordID = request.form['RecordID']
+        PatientID = request.form['PatientID']
+        SSN = request.form['SSN']
+        formatted_date = request.form['Birthdate']  #add age
+        Insurance = request.form['Insurance']
+        Address = request.form['Address']
+        Email = request.form['Email']
+        PhoneNumber = request.form['PhoneNumber']
+        EmergencyContact = request.form['PhoneNumber']
+        AssignedDoctor = request.form['AssignedDoctor']
+        AssignedNurse = request.form['AssignedNurse']
+        try:
+            sql = "INSERT INTO Patient(PSSN,FirstName, MiddleName, LastName,PatientID, Sex, Birthdate,Address, Email, PhoneNumber,EmergencyContact,AssignedDoctor,AssignedNurse) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s)"
+            val = (SSN, FirstName, MiddleName, LastName, PatientID,Gender,
+                   formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctor,AssignedNurse)
+            mycursor.execute(sql, val)
+            sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
+            val = (RecordID,Insurance)
+            mydb.commit()
+            return render_template('/receptionist/managerecords.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
+        except:
+            return render_template('/receptionist/addrecord.html', error="Invalid input!")
+
+    else:
+        return render_template('/receptionist/addrecord.html')
 
 #####################################################Run#############################################################
 
