@@ -1,0 +1,136 @@
+a:link {
+    text-decoration: none;
+  }
+
+  
+
+  h6 {
+    color: rgb(54, 51, 51);
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .order-card {
+    color: #fff;
+  }
+
+  .bg-c-blue {
+    background: white
+  }
+
+  .bg-c-green {
+    background: white
+  }
+
+  .bg-c-yellow {
+    background-color: white;
+  }
+
+  .bg-c-pink {
+    background: white;
+  }
+
+
+  .card {
+    border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    box-shadow: 0 1px 2.94px 0.06px rgba(4, 26, 55, 0.16);
+    border: none;
+    margin-bottom: 30px;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .card .card-block {
+    padding: 25px;
+  }
+
+  .order-card i {
+    font-size: 26px;
+  }
+
+  .f-left {
+    float: left;
+  }
+
+  .f-right {
+    float: right;
+  }
+
+
+   
+  main
+  {
+background-color: #dddbdb;
+
+  }
+
+
+
+  #Doctoricon
+{
+color: rgb(239, 97, 126);
+content: attr(data-after);
+}
+#Doctoricon::after
+{
+content:attr(data-after);
+margin-left:40px;
+
+}
+
+#Recepicon
+{
+color: #0275d8;
+
+}
+
+#Recepicon::after
+{
+content:attr(data-after);
+margin-left:40px;
+}
+
+#nurseicon
+{
+color: #73b4ff;
+content: attr(data-after);
+
+}
+#nurseicon::after
+{
+content:attr(data-after);
+margin-left:40px;
+}
+#patienticon
+{
+color: #FFB64D;
+}
+
+#patienticon::after
+{
+content:attr(data-after);
+margin-left:40px;
+}
+
+
+@media screen and (max-width: 900px) and (min-width: 400px) {
+
+
+    .container
+    {
+ background-color:  #dddbdb;
+
+    }
+}
+    
+
+
+@media screen and (max-width: 400px) {
+    .container
+    {
+background-color:  #dddbdb;;
+
+    }
+}
+
+    

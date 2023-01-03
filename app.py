@@ -76,43 +76,6 @@ def index():
 @app.route('/AdminDashboard')
 def Adminhome():
 
-    # mycursor.execute("SELECT FName FROM admin") Until we set our database
-    # name=mycursor.fetchone()
-
-    mydict = {
-        "number1": 2,
-        "number2": 0,
-        "number3": 3,
-        "number4": 5
-    }
-    """
-   mycursor.execute("SELECT COUNT(NurseSSN) FROM Nurse")
-   x=mycursor.fetchone()
-   mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctors")
-   y=mycursor.fetchone()
-   mycursor.execute("SELECT COUNT(ReceptionistSSN) FROM Recptionist ")
-   z=mycursor.fetchone()
-   mycursor.execute("SELECT COUNT(PSSN) FROM Patient ")
-   p=mycursor.fetchone()
-   Statistics={
-      "NurseNum":x,
-      "DoctorNum":y,
-      "RecepNum":z,
-      "PatientNum":p
-   }
-   """
-
-    return render_template('/Admin/adminDashboard.html', Stats=mydict)
-
-
-@app.route("/Admin_Department")
-def ViewDepartmentInfo():
-    return render_template('/Admin/ViewDep.html')
-
-
-@app.route('/AdminDashboard')
-def Adminhome():
-
    # mycursor.execute("SELECT FName FROM admin") Until we set our database
    # name=mycursor.fetchone()
 
