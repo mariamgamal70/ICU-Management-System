@@ -21,24 +21,24 @@
     <div class="main-container m-5">
         <h1 class="text-primary">Home</h1>
         <hr class="mb-4">
-    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
+    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data.nursename}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
                 <dt class="col-sm-4 text-primary">Nurse ID</dt>
-                <dd class="col-sm-6">{{data['nurseid']}}</dd>
+                <dd class="col-sm-6">{{data.nurseid}}</dd>
                 <dt class="col-sm-4 text-primary">Name</dt>
                 <dd class="col-sm-6">whatever Name</dd>
                 <dt class="col-sm-4 text-primary">Birthdate</dt>
-                <dd class="col-sm-6">{{data['nursebirthdate']}}</dd>
+                <dd class="col-sm-6">{{data.nursebirthdate}}</dd>
                 <dt class="col-sm-4 text-primary">Social Security Number</dt>
-                <dd class="col-sm-6">{{data['nursessn']}}</dd>
+                <dd class="col-sm-6">{{data.nursessn}}</dd>
                 <dt class="col-sm-4 text-primary">Gender</dt>
-                <dd class="col-sm-6">{{data['nursegender']}}</dd>
+                <dd class="col-sm-6">{{data.nursegender}}</dd>
                 <dt class="col-sm-4 text-primary">Patient Name</dt>
-                <dd class="col-sm-6">{{data['patientname']}}</dd>
+                <dd class="col-sm-6">{{data.patientname}}</dd>
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
-                <dd class="col-sm-6">{{data['patientid']}}</dd>
+                <dd class="col-sm-6">{{data.patientid}}</dd>
             </dl>
     {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
