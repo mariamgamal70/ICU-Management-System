@@ -40,8 +40,8 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   password="Eng_8730667",
-   database="icu_management_system"
+   password="mysql",
+   database="icu_management_new"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -343,6 +343,47 @@ def getnursepatientdata():
    result['patientid']= patient[2]
    session['patientid'] = patient[2]
    render_template('/nursehome',data=result)
+
+
+@app.route("/Doctor_home")
+def getdoctordata():  
+   doctorid = session["id"]
+   result = {}
+   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",(doctorid))
+   doctor = mycursor.fetchone()
+   result['doctorid'] = doctor[5]
+   result['doctorname'] = doctor[0] + doctor[1]
+   result['doctorbirthdate'] = doctor[2]
+   result['doctorssn'] = doctor[3]
+   result['doctorgender'] = doctor[4]
+   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = PSSN where doctor_ID = 32')#(doctorid)))
+   count = mycursor.fetchone()
+   result['patientsnumber'] = count[0]
+   return render_template('/Doctor/Doctor_home.html', data = result)
+
+
+
+
+@app.route("/patientrecord_doctor")
+def getpatientdocrecord():
+   result = {}
+   mycursor.execute('SELECT PatientRecord_RecordID, FName, LName, Birthdate, Sex, Date_Admitted, Doctor_ID, Beds_BedID, from patient join patientrecord on RecordID = PatientID join Doctor on AssignedDrSSN = DoctorSSN where patientid=%s',session(['patientid']))
+   record = mycursor.fetchone()
+   result['recordid'] = record[0]
+   result['doctorid'] = record[6]
+   result['patientname'] = record[1] + record[2]
+   result['patientbirthday'] = record[3]
+   result['patientgender'] = record[4]
+   result['dateofadmittance'] = record[5]
+   result['bedid'] = record[7]
+
+   mycursor.execute('SELECT Fname, Lname')
+
+
+
+
+
+
 
 @app.route("/viewpatientrecord")
 def getpatientrecord():
