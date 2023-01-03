@@ -28,14 +28,13 @@
             </a>
             <span class="tooltip">Home</span>
           </li>
-          <li>
             <li>
               <a href="http://127.0.0.1:5000/nursenotifications">
                   <i class='bx bx-bell'></i>
                   {% if Notifications %}
                   <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger  rounded-circle" id="reddot">
                   </span>
-                <span class="links_name">Notifications <span class="badge bg-danger">{{% count notification %}}</span></span>
+                <span class="links_name">Notifications <span class="badge bg-danger">{{% notification_count %}}</span></span>
                 {{% endif %}}
               </a>
               <span class="tooltip">Notifications</span>
@@ -97,6 +96,7 @@
         reddot.style.display = 'inline';
       }
       }
+
       </script> 
       {%block content%} {% endblock %}
 </body>

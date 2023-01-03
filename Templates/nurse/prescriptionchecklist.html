@@ -25,12 +25,12 @@
     <div class="main-container m-5">
     <h1 class=" text-primary">Please check each time you adminster a dosage</h1>
     <hr class="mb-4">
-    <h3>Medicine Name <span>{{name}}</span></h3>
-        <form action="">
+    <h3>Checklist for {{name}} </h3>
+        <form  method="POST">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Number of times adminstered </th>
+                        <th>Number of times remaining: {{ number }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,7 +39,7 @@
                         <td>
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" name="checklist" id="customCheck1" >
-                                <label class="custom-control-label" for="customCheck1">1</label>
+                                <label class="custom-control-label" for="customCheck1">Dose {{ no+1 }}</label>
                             </div>
                         </td>
                     </tr>
