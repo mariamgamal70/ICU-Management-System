@@ -50,11 +50,11 @@ def notifynurse(notification):
    string = notification['type']+'\n'+notification['info']
    flash(string, 'warning')
 
-def calculate_age(born):
-   # BORN SHOULD BE WRITTIN IN THIS FORMAT FIRST BEFORE PUTTING IT AS A PARAMETER
-   # born = datetime(1997, 5, 21)
-   today = datetime.now()
-   return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+# def calculate_age(born):
+#    BORN SHOULD BE WRITTIN IN THIS FORMAT FIRST BEFORE PUTTING IT AS A PARAMETER
+#    born = datetime(1997, 5, 21)
+#    today = datetime.now()
+#    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
 
 def sendmessage(result):
    msg = Message(subject="Inquiry/Complaint", sender=result['email'], recipients=["mariamgamal70@gmail.com"])
