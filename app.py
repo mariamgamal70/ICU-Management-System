@@ -30,8 +30,8 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="adanGneCUFE2025$",
-    database="icu_management_system"
+    password="Eng_8730667",
+    database="icu_management_neww"
 )
 mycursor = mydb.cursor()
 # GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -120,7 +120,7 @@ def Adminhome():
 def Admindr():
 
    mycursor.execute(
-      "SELECT Doctor_ID,Fname,Lname,Sex,Birthdate,Speciality,StartShift,EndShift FROM doctor")
+      "SELECT Doctor_ID,Fname,Lname,Sex,(SELECT TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age FROM doctor),Speciality,StartShift,EndShift FROM doctor")
    row_headers = [x[0] for x in mycursor.description]
    doctors_data = mycursor.fetchall()
    Dr_Data = {
@@ -564,7 +564,9 @@ def R_AddRecord():
         return render_template('/receptionist/addrecord.html')
 
 ##################################################### Run#############################################################
+ 
 
+ 
 
 if __name__ == "__main__":
     app.run(debug=True)
