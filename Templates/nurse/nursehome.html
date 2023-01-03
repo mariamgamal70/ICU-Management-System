@@ -26,19 +26,19 @@
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
                 <dt class="col-sm-4 text-primary">Nurse ID</dt>
-                <dd class="col-sm-6">{{data.nurseid}}</dd>
+                <dd class="col-sm-6">{{nurseid}}</dd>
                 <dt class="col-sm-4 text-primary">Name</dt>
-                <dd class="col-sm-6">whatever Name</dd>
-                <dt class="col-sm-4 text-primary">Birthdate</dt>
-                <dd class="col-sm-6">{{data.nursebirthdate}}</dd>
+                <dd class="col-sm-6">{{nurse[0]+' ' + nurse[1]}}</dd>
+                <dt class="col-sm-4 text-primary">Age</dt>
+                <dd class="col-sm-6">{{nurse[2]}}</dd>
                 <dt class="col-sm-4 text-primary">Social Security Number</dt>
-                <dd class="col-sm-6">{{data.nursessn}}</dd>
+                <dd class="col-sm-6">{{nurse[3]}}</dd>
                 <dt class="col-sm-4 text-primary">Gender</dt>
-                <dd class="col-sm-6">{{data.nursegender}}</dd>
+                <dd class="col-sm-6">{{nurse[4]}}</dd>
                 <dt class="col-sm-4 text-primary">Patient Name</dt>
-                <dd class="col-sm-6">{{data.patientname}}</dd>
+                <dd class="col-sm-6">{{patient[0]+' '+ patient[1]}}</dd>
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
-                <dd class="col-sm-6">{{data.patientid}}</dd>
+                <dd class="col-sm-6">{{patient[2]}}</dd>
             </dl>
     {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>

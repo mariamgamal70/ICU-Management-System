@@ -1,0 +1,64 @@
+{% extends "/Admin/AdminMain.html" %}
+
+{% block addl_css %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/AdminDr.css') }}">
+
+{% endblock %}
+
+{% block content %}
+<div class="main-container m-5">
+
+    <div class="row row-bordered">
+      <h1 class="font-weight-bold text-primary">Doctors Records</h1>
+    </div>
+    <div class="d-flex justify-content-between mt-5">
+      <a type="button" class="btn btn-primary border border-primary mx-1" href="/Templates/receptionist/addrecord.html">
+        <i class="fa-solid fa-user-plus p-1"></i>
+        Add New Record</a>
+      <form class="form-inline">
+        <div class="d-flex" style="width: 400px;">
+          <input class="form-control mr-sm-2 border-primary" type="search" placeholder="Search" aria-label="Search"
+            v-model="search" />
+          <button class="btn btn-primary my-2 my-sm-0 mx-3 fw-bold border" type="submit" @click.prevent="searchData()">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="row justify-content-center mt-3">
+      <table class="table table-hover table-responsive" style="width:98%">
+        <thead>
+          <tr>
+            {% for h in Doc_data.header %}
+            <th scope="col">{ { h } } </th>
+
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+    {% for d in Doc_data.records %}
+         <tr data-href="">
+            {% for data in d %}
+            <td> {{data}} </td>
+             <td>
+              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
+                <i class="fa-solid fa-user-pen"></i>
+              </a>
+            </td>
+            {{%endfor%}}
+          </tr>
+    {{% endfor %}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+ 
+  <script src="{{ url_for('static', filename='/AdminDr.js') }}"></script>
+</body>
+
+</html>
+
+
+
+{% endblock %}
