@@ -359,31 +359,30 @@ def contactus():
 
 @app.route("/nursehome", methods=["POST", "GET"])
 def nursehome():
-    nurseid = session['id']
-    result = {}
-    mycursor.execute(
-        'SELECT FirstName,LastName,Birthdate,SSN,Gender from nurse where NurseID=%s', (nurseid))
-    nurse = mycursor.fetchone()
-    result['nurseid'] = session['id']
-    result['nursename'] = nurse[0]+' ' + nurse[1]
-    result['nursebirthdate'] = nurse[2]
-    result['nursessn'] = nurse[3]
-    result['nursegender'] = nurse[4]
-    mycursor.execute(
-        'SELECT FirstName,LastName,patientID from inpatient join nurse on nurseID=nurseID where nurseID=%s', (nurseid))
-    patient = mycursor.fetchone()
-    result['patientname'] = patient[0]+' '+patient[1]
-    result['patientid'] = patient[2]
-    session['patientid'] = patient[2]
-    render_template('nursehome.html', data=result)
+   nurseid = session['id']
+   result = {}
+   mycursor.execute(
+       'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex,Unit_Rooms_RoomNumber from nurse where NurseID=%s', (nurseid))
+   nurse = mycursor.fetchone()
+   #  result['nurseid'] = session['id']
+   #  result['nursename'] = nurse[0]+' ' + nurse[1]
+   #  result['nursebirthdate'] = nurse[2]
+   #  result['nursessn'] = nurse[3]
+   #  result['nursegender'] = nurse[4]
+   mycursor.execute('SELECT patient.FName,patient.LName,PatientID from patient join beds on Beds_BedID=BedID join unit_room on Unit_Rooms_RoomNumber=RoomNumber join nurse on nurseID=nurseID where RoomNumber=%s', (nurse[5]))
+   patient = mycursor.fetchone()
+   # result['patientname'] = patient[0]+' '+patient[1]
+   # result['patientid'] = patient[2]
+   # session['patientid'] = patient[2]
+   render_template('nursehome.html',nurseid=nurseid,nurse=nurse,patient=patient)
 
 
 @app.route("/patientrecord")
 def getpatientrecord():
     mycursor.execute(
-        'SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s', (session['patientid']))
+        'SELECT RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Gender,patient.SSN,patient.Address,patient.Phone,Emergency_Contact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,Unit_Rooms_RoomNumber,doctor.Fname,doctor.LName,Doctor_ID from patient join record on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN join beds on Beds_BedID=BedID join unit_room on Unit_Rooms_RoomNumber=RoomNumber where PatientID=%s', (session['patientid']))
     patient = mycursor.fetchone()
-    render_template('patientrecord.html', data=patient)
+    render_template('patientrecord.html', patient=patient)
 
 
 @app.route("/patientlabsandscans", methods=["POST", "GET"])
