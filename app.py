@@ -403,9 +403,12 @@ def ReceptionistHomePage():
    receptionist=mycursor.fetchone()
    result['receptionistid']=session['id']
    result['receptionistname'] = receptionist[0] + receptionist[1]
-   result['receptionistbirthdate']=receptionist[2]                         #age
+   result['receptionistbirthdate']=receptionist[2]                        
    result['receptionistssn']=receptionist[3]
    result['receptionistgender']=receptionist[4]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from receptionist AS age')
+   receptionist=mycursor.fetchone()
+   result['receptionistage']=receptionist               #age
    render_template('/receptionist/homepage',data=result)
 
 @app.route('/receptionist/addrecord', methods=['POST', 'GET'])
