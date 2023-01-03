@@ -37,16 +37,20 @@
                     <thead>
                     <tr>
                         <th>File</th>
-                        <th>Recieved Date</th>
+                        <th>Type</th>
+                        <th>Date Issued</th>
+                        <th>Time Issued</th>
                     </tr>
                     </thead>
                     <tbody>
-                    { % for r in data.rec % }
+                    { % for checked in checkedlabs % }
                     <tr>
-                        { % for l in r% }
-                            <td> { { l } }</td>
-                            { % endfor % }
+                        <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ file.id }}">{{ checked[0] }}</a></td>
+                        <td> {{checked[1]}}</td>
+                        <td> {{checked[2]}}</td>
+                        <td> {{checked[3]}}</td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                     </table>
                 </div>
@@ -69,12 +73,14 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>File</th>
-                        <th>Recieved Date</th>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Date Issued</th>
+                        <th>Time Issued</th>
                     </tr>
                 </thead>
                 <tbody>
-                    { % for r in data.rec % }
+                    { % for pending in pendingimaging % }
                     <tr>
                         <td>
                             <div class="custom-control custom-checkbox">
@@ -82,8 +88,8 @@
                                 <label class="custom-control-label" for="customCheck1">1</label>
                             </div>
                         </td>
-                        { % for l in r% }
-                        <td> { { l } }</td>
+                        { % for checks in pending %}
+                        <td> { { checks } }</td>
                         { % endfor % }
                     </tr>
                     { % endfor % }
@@ -167,16 +173,20 @@
                 <thead>
                     <tr>
                         <th>File</th>
-                        <th>Recieved Date</th>
+                        <th>Type</th>
+                        <th>Date Issued</th>
+                        <th>Time Issued</th>
                     </tr>
                 </thead>
                 <tbody>
-                    { % for r in data.rec % }
+                    { % for checked in checkedimaging % }
                     <tr>
-                        { % for l in r% }
-                        <td> { { l } }</td>
-                        { % endfor % }
+                    <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ file.id }}">{{ checked[0] }}</a></td>
+                    <td> {{checked[1]}}</td>
+                    <td> {{checked[2]}}</td>
+                    <td> {{checked[3]}}</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -200,12 +210,13 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>File</th>
+                                <th>Type</th>
                                 <th>Recieved Date</th>
+                                <th>Time Issued</th>
                             </tr>
                         </thead>
                         <tbody>
-                            { % for r in data.rec % }
+                            { % for pending in pendingimaging % }
                             <tr>
                                 <td>
                                     <div class="custom-control custom-checkbox">
@@ -213,8 +224,8 @@
                                         <label class="custom-control-label" for="customCheck1">1</label>
                                     </div>
                                 </td>
-                                { % for l in r% }
-                                <td> { { l } }</td>
+                                { % for checks in pending %}
+                                <td> { { checks } }</td>
                                 { % endfor % }
                             </tr>
                             { % endfor % }

@@ -25,24 +25,20 @@
     <div class="main-container m-5">
     <h1 class=" text-primary">Please check each time you adminster a dosage</h1>
     <hr class="mb-4">
+    <h3>Medicine Name <span>{{name}}</span></h3>
         <form action="">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col"></th>
-                        { % for r in data.rec % }
-                            { % for l in r% }
-                            <th> { { l } }</th>
-                            { % endfor % }
-                        { % endfor % }
+                        <th>Number of times adminstered </th>
                     </tr>
                 </thead>
                 <tbody>
-                    { % for r in data.FREQUENCY % }
+                    { % for no in number % }
                     <tr>
                         <td>
                             <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck1" >
+                                <input type="checkbox" class="custom-control-input" name="checklist" id="customCheck1" >
                                 <label class="custom-control-label" for="customCheck1">1</label>
                             </div>
                         </td>
