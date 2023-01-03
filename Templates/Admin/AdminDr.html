@@ -30,10 +30,17 @@
       <table class="table table-hover table-responsive" style="width:98%">
         <thead>
           <tr>
-            {% for h in Doc_data.header %}
-            <th scope="col">{ { h } } </th>
+            
+            <th scope="col">Doctor_ID </th>
+            <th scope="col">Fname </th>
+            <th scope="col">Lname </th>
+            <th scope="col">Sex </th>
+            <th scope="col">Age </th>
+            <th scope="col">Speciality</th>
+            <th scope="col">StartShift </th>
+            <th scope="col">EndShift </th>
 
-            {% endfor %}
+           
           </tr>
         </thead>
         <tbody>
@@ -41,14 +48,15 @@
          <tr data-href="">
             {% for data in d %}
             <td> {{data}} </td>
-             <td>
-              <a type="button" class="btn btn-outline-primary border border-primary" href="/Templates/receptionist/editrecord.html">
-                <i class="fa-solid fa-user-pen"></i>
-              </a>
-            </td>
-            {{%endfor%}}
+             
+            {%endfor%}
+            <td>
+                <a type="button" class="btn btn-outline-primary border border-primary" href="">
+                  <i class="fa-solid fa-user-pen"></i>
+                </a>
+              </td>
           </tr>
-    {{% endfor %}}
+    {% endfor %}
         </tbody>
       </table>
     </div>

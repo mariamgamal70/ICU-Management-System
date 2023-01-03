@@ -425,7 +425,7 @@ def getpatientlabsandscans():
     render_template('patientlabsandscans.html', checkedlabs=checkedlabs,
                     pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
 
-
+"""
 @app.route('/patientlabsandscans/<int:file_id>')
 def viewfile(file_id):
     mycursor.execute('SELECT file from lab where id=%s', (file_id))
@@ -564,7 +564,7 @@ def R_AddRecord():
 
 ##################################################### Run#############################################################
  
-
+"""
  
 
 if __name__ == "__main__":
