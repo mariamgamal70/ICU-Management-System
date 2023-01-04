@@ -36,15 +36,15 @@
             </tr>
         </thead>
         <tbody>
-            { % for medicine in prescription % }
+            { % for prescription in prescriptions % }
             <tr>
-                { % for detail in medicine % }
-                <td> { { detail } }</td>
+                { % for medicine in prescription % }
+                <td> { { medicine } }</td>
                 { % endfor % }
                 <td>
-                    <a href="http://127.0.0.1:5000/prescreptiontable/{{ detail['id'] }}"  class="btn btn-outline-primary" style="font-size:20px;" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-plus-medical'></i></a>
+                    <a href="http://127.0.0.1:5000/prescreptiontable/{{ prescription[0] }}"  class="btn btn-outline-primary" style="font-size:20px;" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-plus-medical'></i></a>
                 </td>
-                <td><a href="http://127.0.0.1:5000/prescreptionchecklist/{{ detail['id'] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View"><i class='bx bx-calendar-check' style="font-size:25px;"></i></a></td>
+                <td><a href="http://127.0.0.1:5000/prescreptionchecklist/{{ prescription[0] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View"><i class='bx bx-calendar-check' style="font-size:25px;"></i></a></td>
             </tr>
             { % endfor % }
         </tbody>

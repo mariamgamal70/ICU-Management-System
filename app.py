@@ -435,21 +435,24 @@ def dailyassessment():
 @app.route("/prescriptiontable", methods=["POST", "GET"])
 def prescriptiontable():
    mycursor.execute('SELECT medicine_id,medicine_name,Dosage,Frequency,COUNT(timestamp)as Noadmisntered,StartDate,EndDate from prescribed_medication join patient on patient_PSSN=PSSN join medicine_prescription_timestamps on medicine_id= medicine_prescription_id group by medicine_prescription_id where patientID=%s', (session['patientid']))
-   prescriptions = mycursor.fetchall()
+   #TRANSFORMED LIST OF TUPLES INTO DICTIONARY VV ACCESSED BY KEYWORDS
+#    columns = [col[0] for col in mycursor.description]
+#    result = [dict(zip(columns, row)) for row in mycursor.fetchall()]
+   prescriptions = mycursor.fetchall() #RETURNS LIST OF TUPLES, TUPLES ARE ACCESSED USING INDEXES
    return render_template('prescriptiontable.html', prescriptions=prescriptions)
 
 # @app.route('/prescriptiontable/<id:medicineid>')
 # def prescriptiontable(medicineid):
-#    mycursor.execute('ADD INTO medicine_prescription_timestamps (timestamp) values(CURRENT_TIMESTAMP) WHERE medicine_prescription_id = %s', (medicineid))
-#    render_template('prescriptionchecklist.html')
-#    noadminstered = mycursor.fetchone()
-#    return render_template('prescriptiontable.html', noadminstered=noadminstered)
+#     mycursor.execute(
+#         'INSERT INTO medicine_prescription_timestamps (medicine_prescription_id, timestamp) values(%s, CURRENT_TIMESTAMP)', (medicineid))
+#     return redirect('prescriptionchecklist.html')
+
 
 # @app.route('/prescriptionchecklist/<id:medicineid>')
 # def prescriptiontable(medicineid):
-#    mycursor.execute('select SUM(id),id,timestamp from medicine_prescription_timestamps group by id where medicine_prescription_id=%s', (medicineid))
+#    mycursor.execute('SELECT SUM(id),id,timestamp from medicine_prescription_timestamps group by id where medicine_prescription_id=%s', (medicineid))
 #    medicinetimestamps=mycursor.fetchall()
-#    return render_template('prescriptiontable.html',medicinetimestamps=medicinetimestamps)
+#    return render_template('prescriptionchecklist.html',medicinetimestamps=medicinetimestamps)
 
 
 @app.route('/nursenotifications')
