@@ -147,24 +147,34 @@
    
             <form method="GET">
               <div class="input-group m-3">
-                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
-                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
-                  { % for doctornames in doctors % }
-                  <option value="">{{doctornames}}</option>
-                  { % endfor % }
-                 </select>
-              </div>
-            </form>
+                <div class="input-group m-3">
+                <select name="doctorssn" class="form-select" aria-label="DoctorSSN Select">
+                    <option value="" disabled selected>Choose Doctor SSN</option>
+                    {% for doctors in Patient_data.ssn %}
+                    {%for names in doctors%}
+                    <option value="{{names}}">{{names}}</option>
+                    {%endfor%}
+                    {%endfor%}
+                  </select>
 
-            <form method="GET">
-              <div class="input-group m-3">
-                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
-                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
-                  { % for nursenames in nurses % }
-                  <option value="">{{nursenames}}</option>
-                  { % endfor % }
-                 </select>
               </div>
+              </div>
+
+            <div class="input-group m-3">
+                <div class="input-group m-3">
+                    <select name="nursessn" class="form-select" aria-label="Nurse_SSN Select">
+                        <option value="" disabled selected>Choose Nurse SSN</option>
+                        {% for nurses in Patient_data.id %}
+                        {%for names in nurses%}
+                        <option value="{{names}}">{{names}}</option>
+                        {%endfor%}
+                        {%endfor%}
+                      </select>
+
+                  </div>
+
+
+            </div>
             </form>
 
           </div>
@@ -179,14 +189,7 @@
     </div>
   </div>
   {% endblock %}
-  <script>
-  function dropdown()
-  {
-    let d=document.getElementById("dd");
-    let text=d.options[d.selectedIndex].text;
-    document.getElementById("dd2").value=text;
-  }
-  </script>
+
 </body>
 
 </html>
