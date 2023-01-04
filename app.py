@@ -525,18 +525,12 @@ def R_AddRecord():
       Email = request.form.get('Email')
       PhoneNumber = request.form.get('PhoneNumber')
       EmergencyContact = request.form.get('PhoneNumber')
-      AssignedDoctorID = request.form.get('AssignedDoctor')
-      AssignedNurseID = request.form.get('AssignedNurse')
+      AssignedDoctorSSN = request.form.get('AssignedDoctorSSN')
+      AssignedNurseSSN = request.form.get('AssignedNurseSSN')
       try:
-         sql = "INSERT INTO Patient(PSSN,FirstName, MiddleName, LastName,PatientID, Sex, Birthdate,Address, Email, PhoneNumber,EmergencyContact) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
-         val = (SSN, FirstName, MiddleName, LastName, PatientID,Gender,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctor,AssignedNurse)
+         sql = "INSERT INTO Patient(patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN) VALUES(%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
+         val = (SSN, FirstName, MiddleName, LastName, PatientID,Gender,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctorSSN,AssignedNurseSSN)
          mycursor.execute(sql, val)
-         # sql = "INSERT INTO Doctor(Doctor.Fname,Doctor.Lname) VALUES(%s, %s)"
-         # val = (AssignedDoctor)
-         # mycursor.execute(sql, val)
-         # sql = "INSERT INTO Doctor(Nurse.Fname,Nurse.Lname) VALUES(%s, %s)"
-         # val = (AssignedNurse)
-         # mycursor.execute(sql, val)
          sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
          val = (RecordID,Insurance)
          mydb.commit()
