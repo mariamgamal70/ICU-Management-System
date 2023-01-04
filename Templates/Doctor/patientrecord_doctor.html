@@ -25,14 +25,13 @@
     <title>Patient Record</title>
 </head>
 <body >
-    {%block content%}
+    {% if patient %}
     <div class="main-container m-5">
       <div class="d-flex justify-content-sm-between flex-wrap">
         <div>
-        <dl class="row display-5 text-primary">
-            <dt class="col-sm-5">Record ID</dt>
-            <dd class="col-sm-7">{{data['RecordID']}}</dd> 
-        </dl>
+          <h1 class=" display-5 text-primary">
+            Record ID<span>&emsp;{{patient.0}}</span> 
+        </h1>
         </div>
         <div class="align-self-center">
             <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#modal33" data-bs-whatever="@yarab" onclick= "changevis()">Admit to ICU</button>
@@ -46,44 +45,73 @@
         <fieldset class="border p-2">
             <legend class="text-primary float-none w-auto">Basic information</legend>
             <dl class="row">
-                <dt class="col-sm-3">Name</dt> 
-                <dd class="col-sm-9">whatever name</dd>
-                <dt class="col-sm-3">Patient ID</dt> 
-                <dd class="col-sm-9">whatever name</dd>
+              <dt class="col-sm-3">Name</dt> 
+                <dd class="col-sm-9">{{patient[1]}} {{patient[2]}}</dd>
                 <dt class="col-sm-3">Age</dt>
-                <dd class="col-sm-9">DD/MM/YYYY </dd>
+                <dd class="col-sm-9">{{patient[3]}} </dd>
                 <dt class="col-sm-3">Gender</dt>
-                <dd class="col-sm-9">whatever gender</dd>
+                <dd class="col-sm-9">{{patient[4]}}</dd>
+                <dt class="col-sm-3">Emergency Contact</dt>
+                <dd class="col-sm-9">{{patient[5]}}</dd>
     </dl>
+    
 </fieldset>
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">Medical Information</legend>
     <dl class="row">
-        <dt class="col-sm-3">Medical Status</dt>
-        <dd class="col-sm-9">whatever Medical Status</dd>
-        <dt class="col-sm-3">Medical Diagnosis</dt>
-        <dd class="col-sm-9">whatever Medical Diagnosis</dd>
+      <dt class="col-sm-3">Medical Status</dt>
+      <dd class="col-sm-9">{{patient[6]}}</dd>
+      <dt class="col-sm-3">Medical History</dt>
+      <dd class="col-sm-9">{{patient[7]}}</dd>
+      <!-- <dt class="col-sm-3">Medical Diagnosis</dt>
+      <dd class="col-sm-9">{{patient[9]}}</dd> -->
+      <dt class="col-sm-3">Blood Type</dt>
+      <dd class="col-sm-9">{{patient[8]}}</dd>
+      <dt class="col-sm-3">Level of Consciousness</dt>
+      <dd class="col-sm-9">{{patient[9]}}</dd>
+      <dt class="col-sm-3">Pupils</dt>
+      <dd class="col-sm-9">{{patient[10]}}</dd>
+      <dt class="col-sm-3">Skin</dt>
+      <dd class="col-sm-9">{{patient[11]}}</dd>
+      <dt class="col-sm-3">Blood Pressure</dt>
+      <dd class="col-sm-9">{{patient[12]}}</dd>
+      <dt class="col-sm-3">Blood Gluecose</dt>
+      <dd class="col-sm-9">{{patient[13]}}</dd>
+      <dt class="col-sm-3">Respiratory Rate</dt>
+      <dd class="col-sm-9">{{patient[14]}}</dd>
+      <dt class="col-sm-3">Oxygen Saturation</dt>
+      <dd class="col-sm-9">{{patient[15]}}</dd>
+      <dt class="col-sm-3">Heart Rate</dt>
+      <dd class="col-sm-9">{{patient[16]}}</dd>
+      <dt class="col-sm-3">IV Access</dt>
+      <dd class="col-sm-9">{{patient[17]}}</dd>
+      <dt class="col-sm-3">IV Access Date</dt>
+      <dd class="col-sm-9">{{patient[18]}}</dd>
+      <dt class="col-sm-3">Heparin</dt>
+      <dd class="col-sm-9">{{patient[19]}}</dd>
+      <dt class="col-sm-3">Medical Diagnosis</dt>
+      <dd class="col-sm-9">{{patient[20]}}</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">ICU Information</legend>
     <dl class="row">
-        <dt class="col-sm-3">Bed Number</dt>
-        <dd class="col-sm-9">XX</dd>
-        <dt class="col-sm-3">Admission Reason</dt>
-        <dd class="col-sm-9">whatever Admission Reason</dd>
-        <dt class="col-sm-3">Date of Admittance</dt>
-        <dd class="col-sm-9">DD/MM/YYYY</dd>
-        <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">whatever Attending Physician</dd>
-        <dt class="col-sm-3">Attending Physician ID</dt>
-        <dd class="col-sm-9">XXXXXXXX</dd>
-            <dt class="col-sm-3">Attending Nurse</dt>
-            <dd class="col-sm-9">whatever Attending Nurse</dd>
-            <dt class="col-sm-3">Attending Nurse ID</dt>
-            <dd class="col-sm-9">XXXXXXX</dd>
+      <dt class="col-sm-3">Admission Reason</dt>
+      <dd class="col-sm-9">{{patient[21]}}</dd>
+      <dt class="col-sm-3">Date of Admittance</dt>
+      <dd class="col-sm-9">{{patient[22]}}</dd>
+      <dt class="col-sm-3">Bed Number</dt>
+      <dd class="col-sm-9">{{patient[23]}}</dd>
+      <dt class="col-sm-3">Attending Physician</dt>
+      <dd class="col-sm-9">{{patient[24]}} {{patient[25]}}</dd>
+      <dt class="col-sm-3">Attending Physician ID</dt>
+      <dd class="col-sm-9">{{patient[26]}}</dd>
         </dl>
     </fieldset>
+
+    {% endif %}
+
+    {% if medicine %}
     <fieldset class="border p-2">
         <legend class="text-primary float-none w-auto">Medication</legend>
         <div class="table_wrapper m-4">
@@ -99,36 +127,20 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Dawa ko7a</td>
-                  <td>10ml</td>
-                  <td>3/day</td>
-                  <td>1/1/23</td>
-                  <td>1/10/23</td>
-                  <td>Before breakfast</td>
-                  
-                </tr>
-                <tr>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>15</td>
-                 
-                </tr>
-                <tr>
-                  <td>Larry</td>
-                  <td>the Bird</td>
-                  <td>@twitter</td>
-                  <td>15</td>
-                
-                </tr>
+                {% if medicine %}
+                    <tr>
+                      {% for details in medicine %}
+                      <td> {{ details }}</td>
+                      {% endfor %}
+                    </tr>
+                    {% endif %}
               </tbody>
             </table>
           </div>
 
           </table>
         </fieldset>
-
+        {% endif %}
         
     <div class="d-flex justify-content-center m-5" >
         <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModalF" data-bs-whatever="@mdo" onclick= "changevis2()">Update Medical Information</button>
@@ -175,7 +187,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
-              <button type="button" class="btn btn-primary" name="submit1">Submit</button>
+              <button type="submit" class="btn btn-primary" name="submit1">Submit</button>
             </div>
           </div>
         </div>
@@ -249,7 +261,7 @@
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
-            <button type="button" class="btn btn-primary" name="request">Request</button>
+            <button type="submit" class="btn btn-primary" name="request">Request</button>
           </div>
         </div>
       </div>
@@ -261,7 +273,7 @@
 </div>
 </div>
 
-
+{% if patient %}
 
 <div class="modal fade" id="modal33" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -271,24 +283,29 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form>
+        <form method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
           <div class="mb-3">
-            <input type="text" class="form-control mt-3" placeholder="Please Enter Bed ID">
+            <input type="text" name = "bID" class="form-control mt-3" placeholder="Please Enter Bed ID">
             <input type="text" name="reason" class="form-control mt-3" placeholder="Please Enter Admission Reason">
-            <label for="admit date" class="col-form-label mt-3" >Date of Admittance</label>
-            <input type="date" name="admit date" class="form-control">
+            <label for="admitdate" class="col-form-label mt-3" >Date of Admittance</label>
+            <input type="date" name="admitdate" class="form-control">
             
             
           </div>
           <div class="mb-3">
 
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+              <button type="submit" class="btn btn-primary" name="request">Request</button>
+            </div>
+
         </form>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
-        <button type="button" class="btn btn-primary" name="request">Request</button>
-      </div>
+
+    {% endif %}
+
+
     </div>
   </div>
 </div>
@@ -358,6 +375,5 @@
 
 </script>
 
-{% endblock %}
 </body>
 </html>

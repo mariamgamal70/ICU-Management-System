@@ -41,7 +41,7 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="mysql",
-   database="icu_management_neww"
+   database="icu_management_last"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -368,31 +368,53 @@ def getdoctordata():
 
 
 
-@app.route("/patientrecord_doctor")
-def getpatientdocrecord():
-   result = {}
-   mycursor.execute('SELECT PatientRecord_RecordID, FName, LName, Birthdate, Sex, Date_Admitted, Doctor_ID, Beds_BedID, from patient join patientrecord on PatientRecord_RecordID = PatientID join Doctor on AssignedDrSSN = DoctorSSN where patientid=%s',session(['patientid']))
-   record = mycursor.fetchone()
-   result['recordid'] = record[0]
-   result['doctorid'] = record[6]
-   result['patientname'] = record[1] + record[2]
-   result['patientbirthday'] = record[3]
-   result['patientgender'] = record[4]
-   result['dateofadmittance'] = record[5]
-   result['bedid'] = record[7]
-
-   return render_template('/Doctor/patientrecord_doctor.html', data = result)
-
-
-
-
-
-
-@app.route("/viewpatientrecord")
+@app.route("/patientrecord_doctor")#NEEDS FIXING
 def getpatientrecord():
-   mycursor.execute('SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s',(session['patientid']))
-   patient=mycursor.fetchone()
-   render_template('/viewpatientrecord',data=patient)
+   mycursor.execute('SELECT RecordID, patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,Pupils,Skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.Lname,Doctor_ID,PatientID from patient join patientrecord on Patient_PSSN=PSSN join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', ([1]))
+   patient = mycursor.fetchone()
+   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where patientid=%s' ,([1]))
+   medicine=mycursor.fetchone()
+   return render_template('/Doctor/patientrecord_doctor.html', patient=patient, medicine = medicine)
+  
+
+
+
+
+
+# @app.route("/viewpatientrecord")
+# def getpatientrecord():
+#    mycursor.execute('SELECT RecordID,FirstName,LastName,Birthdate,Gender,SSN,Address,PhoneNumber,EmergencyContact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,BedNumber,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianID from patient join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID where patientid=%s',(session['patientid']))
+#    patient=mycursor.fetchone()
+#    render_template('/viewpatientrecord',data=patient)
+
+
+@app.route('/receptionist_homepage')
+def receptionistHomePage():
+   # receptionistid=session['id']
+   result={}
+   mycursor.execute('SELECT Fname,Lname,Receptionist_SSN,Sex,ReceptionistID from receptionist where receptionistID=%s',([39]))
+   receptionist=mycursor.fetchone()
+   result['receptionistid']=receptionist[4]  #session['id']
+   result['receptionistname'] = receptionist[0] + receptionist[1]
+   result['receptionistfirstname'] = receptionist[0]
+   result['receptionistssn']=receptionist[2]
+   result['receptionistgender']=receptionist[3]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from receptionist AS age')
+   receptionist=mycursor.fetchone()
+   result['receptionistage']=receptionist[0]
+   return render_template('/receptionist/receptionist_homepage.html.html',data=result)
+   
+
+@app.route("/patientrecord_doctor/<int:file_id>", methods=["POST", "GET"])
+def admit(file_id):
+   if request.method == "POST":
+      val = ((request.form.get("bID")), (request.form.get("admitdate")))
+      mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
+      mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
+
+      return redirect("/patientrecord_doctor")
+   return render_template('/Doctor/patientrecord_doctor.html')
+
 
 @app.route("/logout")
 def LogOut():
