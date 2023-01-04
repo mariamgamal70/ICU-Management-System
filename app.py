@@ -519,7 +519,7 @@ def editRecord(id):
       AssignedNurseSSN = request.form.get('nursessn')
       val1 = ((FirstName),(MiddleName), (LastName),(Gender), (PatientID),(SSN),(formatted_date), (Address), (Email),(PhoneNumber),(EmergencyContact),(AssignedDoctorSSN),(AssignedNurseSSN),(1))
       mycursor.execute('UPDATE patient SET FName=%s,MName=%s,LName=%s,Sex=%s,PatientID=%s,PSSN=%s,Birthdate=%s,Address=%s,email=%s,Phone=%s,Emergency_Contact=%s,AssignedDrSSN=%s,AssignedNurseSSN=%s WHERE PatientID=%s',  val1) 
-      val2 = ((RecordID),(Insurance,SSN))
+      val2 = ((RecordID),(Insurance),(SSN))
       mycursor.execute('UPDATE patientrecord SET RecordID=%s,Insurance_Status=%s,Patient_Pssn=%s', val2) 
     #   return redirect("/receptionist/receptionist_viewrecord")
       return render_template('/receptionist/receptionist_editrecord.html')
