@@ -24,10 +24,9 @@
     <div class="main-container m-5">
         <div class="d-flex justify-content-sm-between flex-wrap">
         <div>
-        <dl class="row display-5 text-primary">
-            <dt class="col-sm-5">Record ID</dt>
-            <dd class="col-sm-7">{{patient[0]}}</dd> 
-        </dl>
+        <h1 class=" display-5 text-primary">
+            Record ID<span>{{patient[0]}}</span> 
+        </h1>
         </div>
         <div class="align-self-center">
             <a href="http://127.0.0.1:5000/dailyassessment/{{patient[0]}}" class="btn btn-primary btn-lg mx-3">Update Daily Assessment</a>
@@ -52,25 +51,49 @@
     <dl class="row">
         <dt class="col-sm-3">Medical Status</dt>
         <dd class="col-sm-9">{{patient[6]}}</dd>
-        <dt class="col-sm-3">Medical Diagnosis</dt>
+        <dt class="col-sm-3">Medical History</dt>
+        <dd class="col-sm-9">{{patient[7]}}</dd>
+        <!-- <dt class="col-sm-3">Medical Diagnosis</dt>
+        <dd class="col-sm-9">{{patient[9]}}</dd> -->
+        <dt class="col-sm-3">Blood Type</dt>
+        <dd class="col-sm-9">{{patient[8]}}</dd>
+        <dt class="col-sm-3">Level of Consciousness</dt>
         <dd class="col-sm-9">{{patient[9]}}</dd>
-        <dt class="col-sm-3"></dt>
-        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3">Pupils</dt>
+        <dd class="col-sm-9">{{patient[10]}}</dd>
+        <dt class="col-sm-3">Skin</dt>
+        <dd class="col-sm-9">{{patient[11]}}</dd>
+        <dt class="col-sm-3">Blood Pressure</dt>
+        <dd class="col-sm-9">{{patient[12]}}</dd>
+        <dt class="col-sm-3">Blood Gluecose</dt>
+        <dd class="col-sm-9">{{patient[13]}}</dd>
+        <dt class="col-sm-3">Respiratory Rate</dt>
+        <dd class="col-sm-9">{{patient[14]}}</dd>
+        <dt class="col-sm-3">Oxygen Saturation</dt>
+        <dd class="col-sm-9">{{patient[15]}}</dd>
+        <dt class="col-sm-3">Heart Rate</dt>
+        <dd class="col-sm-9">{{patient[16]}}</dd>
+        <dt class="col-sm-3">IV Access</dt>
+        <dd class="col-sm-9">{{patient[17]}}</dd>
+        <dt class="col-sm-3">IV Access Date</dt>
+        <dd class="col-sm-9">{{patient[18]}}</dd>
+        <dt class="col-sm-3">Heparin</dt>
+        <dd class="col-sm-9">{{patient[19]}}</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">ICU Information</legend>
     <dl class="row">
         <dt class="col-sm-3">Admission Reason</dt>
-        <dd class="col-sm-9">{{patient[7]}}</dd>
+        <dd class="col-sm-9">{{patient[20]}}</dd>
         <dt class="col-sm-3">Date of Admittance</dt>
-        <dd class="col-sm-9">{{patient[8]}}</dd>
+        <dd class="col-sm-9">{{patient[21]}}</dd>
         <dt class="col-sm-3">Bed Number</dt>
-        <dd class="col-sm-9">{{patient[10]}}</dd>
+        <dd class="col-sm-9">{{patient[22]}}</dd>
         <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">{{patient[11] +' '+ patient[12]}}</dd>
+        <dd class="col-sm-9">{{patient[23] +' '+ patient[24]}}</dd>
         <dt class="col-sm-3">Attending Physician ID</dt>
-        <dd class="col-sm-9">{{patient[13]}}</dd>
+        <dd class="col-sm-9">{{patient[25]}}</dd>
             <!-- <dt class="col-sm-3">Attending Nurse</dt>
             <dd class="col-sm-9">whatever Attending Nurse</dd>
             <dt class="col-sm-3">Attending Nurse ID</dt>

@@ -30,7 +30,7 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Eng_8730667",
+    password="lovelygirl12",
     database="icu_management_neww"
 )
 mycursor = mydb.cursor()
@@ -362,27 +362,26 @@ def nursehome():
    nurseid = session['id']
    result = {}
    mycursor.execute(
-       'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex,Unit_Rooms_RoomNumber from nurse where NurseID=%s', (nurseid))
+       'SELECT nurse.FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex,Unit_Rooms_RoomNumber from nurse where NurseID=%s', (nurseid))
    nurse = mycursor.fetchone()
    #  result['nurseid'] = session['id']
    #  result['nursename'] = nurse[0]+' ' + nurse[1]
    #  result['nursebirthdate'] = nurse[2]
    #  result['nursessn'] = nurse[3]
    #  result['nursegender'] = nurse[4]
-   mycursor.execute('SELECT patient.FName,patient.LName,PatientID from patient join beds on Beds_BedID=BedID join unit_room on Unit_Rooms_RoomNumber=RoomNumber join nurse on nurseID=nurseID where RoomNumber=%s', (nurse[5]))
+   mycursor.execute('SELECT patient.FName,patient.LName,PatientID from patient join  nurse on Assignednurse=Nurse_SSN where NurseID=%s', (nurse[5]))
    patient = mycursor.fetchone()
    # result['patientname'] = patient[0]+' '+patient[1]
    # result['patientid'] = patient[2]
    # session['patientid'] = patient[2]
-   render_template('nursehome.html',nurseid=nurseid,nurse=nurse,patient=patient)
+   return render_template('nursehome.html',nurseid=nurseid,nurse=nurse,patient=patient)
 
 
-@app.route("/patientrecord")
+@app.route("/patientrecord")#NEEDS FIXING
 def getpatientrecord():
-   mycursor.execute(
-       'SELECT patient.RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Gender,patient.Emergency_Contact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,Beds_BedID,doctor.Fname,doctor.LName,Doctor_ID from patient join record on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', (session['patientid']))
+   mycursor.execute('SELECT patient.RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,pupils,skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.LName,Doctor_ID from patient join patientrecord on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', (session['patientid']))
    patient = mycursor.fetchone()
-   render_template('patientrecord.html', patient=patient)
+   return render_template('patientrecord.html', patient=patient)
 
 @app.route("/patientlabsandscans", methods=["POST", "GET"])
 def getpatientlabsandscans():
@@ -394,17 +393,17 @@ def getpatientlabsandscans():
                flash('Please check the form again')
                redirect('/patientlabsandscans')
                file_contents = file.read()
-               val = ((selected_radio, file_contents, request.method.get('dataissued')), (session['patientid']))
+               val = ((selected_radio, file_contents, request.form.get('dataissued')), (session['patientid']))
                mycursor.execute('INSERT INTO labresults (Type,LabResult,DateIssued) values(%s) where Patient_PSSN in(SELECT PSSN FROM patient where PatientID=%s )', val)
                mydb.commit()
-               render_template('patientlabsandscans.html')
+               return render_template('patientlabsandscans.html')
             else:
                selected_radio = request.form.get('imaging')
                file = request.files['existing']
                if selected_radio is None or not file:
                   flash('Please check the form again')
                   redirect('/patientlabsandscans')
-               val = ((selected_radio, request.files['existinglab'], request.method.get('dataissued')), (session['patientid']))
+               val = ((selected_radio, request.files['existinglab'], request.form.get('dataissued')), (session['patientid']))
                mycursor.execute('INSERT INTO patientscans (Type,LabResult,DateIssued) values(%s) where Patient_PSSN in(SELECT PSSN FROM patient where PatientID=%s )', val)
                mydb.commit()
                return render_template('patientlabsandscans.html')
@@ -413,10 +412,10 @@ def getpatientlabsandscans():
    mycursor.execute('SELECT LabResultID,labfile,Type,DateIssued from labresults join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
    pendinglabs = mycursor.fetchall()
    mycursor.execute('SELECT PatientScanID,labfile,Type,DateIssued from PatientScans join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
-   checkedimaging = mycursor.fetchall
+   checkedimaging = mycursor.fetchall()
    mycursor.execute('SELECT PatientScanID,scanfile,Type,DateIssued from PatientScans join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
    pendingimaging = mycursor.fetchall()
-   render_template('patientlabsandscans.html',checkedlabs=checkedlabs, pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
+   return render_template('patientlabsandscans.html',checkedlabs=checkedlabs, pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
 
 @app.route('/patientlabsandscans/<int:file_id>')
 def viewfile(file_id):
@@ -429,36 +428,33 @@ def viewfile(file_id):
 def dailyassessment():
    if request.method == "POST":
       val = ((request.form.get('consciousness')), (request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodtype')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get('respiratoryrate')), (request.form.get('oxygensaturation')), (request.form.get('heartrate')), (request.form.get('painlevel')), (request.form.get('ivaccess')), (request.form.get('ivaccessdate')), (request.form.get('heparin')))
-      mycursor.execute('UPDATE TABLE patient SET consciousness=%s,pupils=%s,skin=%s,bloodgluecose=%s,respiratoryrate=%s,oxygensaturation=%s,heartrate=%s,painlevel=%s,ivaccess=%s,ivaccessdate=%s,heparin=%s', val)
+      mycursor.execute('UPDATE TABLE patient SET Level_of_consciousness=%s,pupils=%s,skin=%s,BloodGluecose=%s,Respiratoryrate=%s,OxygenSaturation=%s,HeartRate=%s,PainLevel=%s,IV_Access=%s,iv_Acess_date=%s,Takes_Heparin=%s', val)
       return redirect("/dailyassessment")
    return render_template('dailyassessment.html')
 
 @app.route("/prescriptiontable", methods=["POST", "GET"])
 def prescriptiontable():
-   mycursor.execute('SELECT Name,Dosage,Frequency,Noadminsetered,StartDate,EndDate from prescribed_medications join patient on patient_PSSN=PSSN where patientID=%s', (session['patientid']))
+   mycursor.execute('SELECT medicine_id,medicine_name,Dosage,Frequency,COUNT(timestamp)as Noadmisntered,StartDate,EndDate from prescribed_medication join patient on patient_PSSN=PSSN join medicine_prescription_timestamps on medicine_id= medicine_prescription_id group by medicine_prescription_id where patientID=%s', (session['patientid']))
    prescriptions = mycursor.fetchall()
-   render_template('prescriptiontable.html', prescriptions=prescriptions)
+   return render_template('prescriptiontable.html', prescriptions=prescriptions)
 
+# @app.route('/prescriptiontable/<id:medicineid>')
+# def prescriptiontable(medicineid):
+#    mycursor.execute('ADD INTO medicine_prescription_timestamps (timestamp) values(CURRENT_TIMESTAMP) WHERE medicine_prescription_id = %s', (medicineid))
+#    render_template('prescriptionchecklist.html')
+#    noadminstered = mycursor.fetchone()
+#    return render_template('prescriptiontable.html', noadminstered=noadminstered)
 
-@app.route('/prescriptionchecklist/<id:medicineid>')
-def prescriptiontable(medicineid):
-    mycursor.execute(
-        'SELECT Noadminsetered from prescribed_medications where Name=%s', (medicineid))
-    noadminster = mycursor.fetchone()
-    if request.method == "POST":
-        checkedboxes = request.form.getlist('checklist')
-        counter = 0
-        for checked in checkedboxes:
-            counter += 1
-            noadminster = noadminster-counter
-            mycursor.execute(
-                'UPDATE TABLE prescription SET Noadminsetered=noadminster where Name=%s', (medicinename))
-    return render_template('prescriptionchecklist.html', number=noadminster, medicineid=medicineid)
+# @app.route('/prescriptionchecklist/<id:medicineid>')
+# def prescriptiontable(medicineid):
+#    mycursor.execute('select SUM(id),id,timestamp from medicine_prescription_timestamps group by id where medicine_prescription_id=%s', (medicineid))
+#    medicinetimestamps=mycursor.fetchall()
+#    return render_template('prescriptiontable.html',medicinetimestamps=medicinetimestamps)
 
 
 @app.route('/nursenotifications')
 def notification():
-    render_template('nursenotifcations.html')
+    return render_template('nursenotifcations.html')
 
 
 @app.context_processor
