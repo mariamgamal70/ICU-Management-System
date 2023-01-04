@@ -18,6 +18,7 @@
 
 <body>
   {%block content%}
+  {%if data%}
   <div class="main-container m-5">
 
     <div class="row row-bordered">
@@ -49,11 +50,13 @@
           </tr>
         </thead>
         <tbody>
+          {% for info in data.recordinfo %}
           <tr data-href="http://127.0.0.1:5000/receptionist_viewrecord">
-            {% for details in data %}
-            <td>{{ details }}</td>
+            {% for details in info %}
+            <td> {{details}} </td>
+            {% endfor %}
             <td>
-              <a type="button" class="btn btn-outline-primary border border-primary" href="http://127.0.0.1:5000/receptionist_editrecord/{{ detail['id'] }}">
+              <a type="button" class="btn btn-outline-primary border border-primary" href="http://127.0.0.1:5000/receptionist_editrecord">
                 <i class="fa-solid fa-user-pen"></i>
               </a>
             </td>
@@ -63,6 +66,7 @@
       </table>
     </div>
   </div>
+  {% endif %}
   {% endblock %}
   <script>
     document.addEventListener("DOMContentLoaded", () => {
