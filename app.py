@@ -534,9 +534,9 @@ def R_AddRecord():
          sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
          val = (RecordID,Insurance)
          mydb.commit()
-         return redirect('/receptionist/receptionist_managerecords.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
+         return redirect(url_for('receptionist_addrecord'), message=FirstName + ' ' + LastName+" has been successfully added to the database")
       except:
-            return redirect('/receptionist/receptionist_addrecord.html', error="Invalid input!")
+            return redirect(url_for('receptionist_addrecord'), error="Invalid input!")
    else:
       mycursor.execute('SELECT Fname from Doctor')
       doctors=mycursor.fetchall()
