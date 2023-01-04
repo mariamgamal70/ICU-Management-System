@@ -31,7 +31,7 @@ mydb = mysql.connector.connect(
     host="localhost",
     user="root",
     password="Eng_8730667",
-    database="icu_management_neww"
+    database="icu_management_last"
 )
 mycursor = mydb.cursor()
 # GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -117,24 +117,93 @@ def Adminhome():
 
 
 @app.route('/AdminDr')
-def Admindr():
+def AdminDr():
 
    mycursor.execute(
       "SELECT Doctor_ID,Fname,Lname,Sex,(SELECT TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age FROM doctor),Speciality,StartShift,EndShift FROM doctor")
-   row_headers = [x[0] for x in mycursor.description]
+   #row_headers = [x[0] for x in mycursor.description]
    doctors_data = mycursor.fetchall()
    Dr_Data = {
-      'header': row_headers,
+      #'header': row_headers,
       'records': doctors_data
 
    }
    return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
 
+
+
+
+@app.route('/Admin_Add_Dr',methods=["POST", "GET"])
+def AddDr():
+    
+    if request.method=="GET":
+         mycursor.execute("SELECT PSSN FROM patient")
+         PatientSSn=mycursor.fetchall()
+         mycursor.execute("SELECT PatientID FROM patient")
+         Patientid=mycursor.fetchall()
+         patientdata={
+            'ssn':PatientSSn,
+            'id':Patientid
+            }
+
+         return render_template("/Admin/Admin_Add_Dr.html",Patient_data=patientdata)
+        
+    elif request.method=="POST" :
+       FirstName = request.form.get('FirstName')
+       Password=request.form.get('password')
+       Experience = request.form.get('Experience')
+       LastName = request.form.get('LastName')
+       Gender = request.form.get('gender')
+       Salary = request.form.get('Salary')
+       DoctorID = request.form.get('DoctorID')
+       SSN = request.form.get('ssn')
+       formatted_date = request.form.get('Birthdate')  # add age
+       Speciality = request.form.get('Speciality')
+       Address = request.form.get('Address')
+       Email = request.form.get('Email')
+       PhoneNumber = request.form.get('PhoneNumber')
+       AssignedPatientSSN = request.form.get('patientssn')
+       AssignedPatientID = request.form.get('patientid')
+
+
+    try:
+        sql = "INSERT INTO doctor(DoctorSSN,Doctor_ID,FName,Lname,email,Sex,Birthdate, Phone, Address, Speciality, Experience,Salary) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)"
+        val = (SSN,DoctorID,FirstName,LastName,Email,Gender,formatted_date,PhoneNumber,Address,Speciality,Experience,Salary)
+        mycursor.execute(sql,val)
+        sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
+        val=(DoctorID,FirstName+' '+LastName,Password,"Doctor",Email,SSN)
+        mycursor.execute(sql,val)
+        """
+        if AssignedPatientSSN!=None and AssignedPatientID!=None:
+            sql="INSERT INTO patient(AssignedDrSSN) WHERE PSSN=%s and PatientID=%s "
+            val=(AssignedPatientSSN,AssignedPatientID)
+            mycursor.execute(sql,val)
+            """
+        mydb.commit()    
+
+        return redirect(url_for('AdminDr'))    
+
+    except:
+        return redirect(url_for('AddDr'))
+    
+   
+
+
+        
+      
+
+       
+
+
+
+       
+
+    
+    
 ######################################### ---ADMINEND---#################################################
 
 ######################################### ---INDEXSTART---#################################################
 # Modified version for user
-
 @app.route("/signin", methods=["POST", "GET"])  # GET METHOD
 def signin():
     if request.method == "POST":
@@ -236,8 +305,8 @@ def signin():
         # ------------------------------------RECEPTIONISTEND-------------------------------------------
     return render_template('signin.html')
 
-
 """
+
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
    if request.method == "POST":
@@ -327,7 +396,7 @@ def signin():
             return redirect('/signin')
       #------------------------------------RECEPTIONISTEND-------------------------------------------
    return render_template('signin.html')
-"""
+
 
 
 @app.route("/logout")
@@ -564,7 +633,7 @@ def R_AddRecord():
 
 ##################################################### Run#############################################################
  
-"""
+
  
 
 if __name__ == "__main__":

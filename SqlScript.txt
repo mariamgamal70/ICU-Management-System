@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema ICU_MANAGEMENT_NEWW
+-- Schema ICU_MANAGEMENT_LAST
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema ICU_MANAGEMENT_NEWW
+-- Schema ICU_MANAGEMENT_LAST
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `ICU_MANAGEMENT_NEWW` DEFAULT CHARACTER SET utf8 ;
-USE `ICU_MANAGEMENT_NEWW` ;
+CREATE SCHEMA IF NOT EXISTS `ICU_MANAGEMENT_LAST` DEFAULT CHARACTER SET utf8 ;
+USE `ICU_MANAGEMENT_LAST` ;
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Beds`
+-- Table `ICU_MANAGEMENT_LAST`.`Beds`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Beds` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Beds` (
   `BedID` INT NOT NULL,
   `Bed_Status` ENUM('Available', 'Not Available') NOT NULL,
   `Price_Day` FLOAT NOT NULL,
@@ -26,9 +26,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Doctor`
+-- Table `ICU_MANAGEMENT_LAST`.`Doctor`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Doctor` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Doctor` (
   `DoctorSSN` VARCHAR(255) NOT NULL,
   `Doctor_ID` INT NOT NULL,
   `Fname` VARCHAR(45) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Doctor` (
   `Phone` VARCHAR(45) NOT NULL,
   `Address` VARCHAR(255) NOT NULL,
   `Speciality` VARCHAR(45) NOT NULL,
-  `Experience` VARCHAR(45) NOT NULL,
+  `Experience` VARCHAR(45) NOT NULL DEFAULT 'Not Specified',
   `Salary` FLOAT NOT NULL,
   `StartShift` DATETIME NULL,
   `EndShift` DATETIME NULL,
@@ -51,9 +51,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Nurse`
+-- Table `ICU_MANAGEMENT_LAST`.`Nurse`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Nurse` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Nurse` (
   `Nurse_SSN` VARCHAR(255) NOT NULL,
   `NurseID` INT NOT NULL,
   `Speciality` VARCHAR(45) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Nurse` (
   `Birthdate` DATE NOT NULL,
   `Phone` VARCHAR(45) NOT NULL,
   `Address` VARCHAR(45) NOT NULL,
-  `Experience` VARCHAR(45) NOT NULL,
+  `Experience` VARCHAR(45) NOT NULL DEFAULT 'Not Specified',
   `StartShift` DATETIME NULL,
   `EndShift` DATETIME NULL,
   PRIMARY KEY (`Nurse_SSN`),
@@ -75,12 +75,13 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Patient`
+-- Table `ICU_MANAGEMENT_LAST`.`Patient`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Patient` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Patient` (
   `PSSN` VARCHAR(255) NOT NULL,
   `PatientID` INT UNSIGNED NOT NULL,
   `FName` VARCHAR(45) NOT NULL,
+  `MName` VARCHAR(45) NOT NULL,
   `LName` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `Phone` VARCHAR(45) NOT NULL,
@@ -94,36 +95,36 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Patient` (
   `Blood_Group` ENUM('O-', 'O+', 'A+', 'A-', 'B+', 'B-', 'AB+', 'AB-') NOT NULL,
   `Beds_BedID` INT NULL DEFAULT NULL,
   `AssignedDrSSN` VARCHAR(255) NULL DEFAULT NULL,
-  `AssignedNurse` VARCHAR(255) NULL DEFAULT NULL,
+  `AssignedNurseSSN` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`PSSN`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   UNIQUE INDEX `Phone_UNIQUE` (`Phone` ASC) VISIBLE,
   UNIQUE INDEX `PatientID_UNIQUE` (`PatientID` ASC) VISIBLE,
   INDEX `fk_Patient_Beds1_idx` (`Beds_BedID` ASC) VISIBLE,
   INDEX `fk_Patient_Doctor1_idx` (`AssignedDrSSN` ASC) VISIBLE,
-  INDEX `fk_Patient_Nurse1_idx` (`AssignedNurse` ASC) VISIBLE,
+  INDEX `fk_Patient_Nurse1_idx` (`AssignedNurseSSN` ASC) VISIBLE,
   CONSTRAINT `fk_Patient_Beds1`
     FOREIGN KEY (`Beds_BedID`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Beds` (`BedID`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Beds` (`BedID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Patient_Doctor1`
     FOREIGN KEY (`AssignedDrSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Doctor` (`DoctorSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Doctor` (`DoctorSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Patient_Nurse1`
-    FOREIGN KEY (`AssignedNurse`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Nurse` (`Nurse_SSN`)
+    FOREIGN KEY (`AssignedNurseSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Nurse` (`Nurse_SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Receptionist`
+-- Table `ICU_MANAGEMENT_LAST`.`Receptionist`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Receptionist` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Receptionist` (
   `Receptionist_SSN` VARCHAR(255) NOT NULL,
   `ReceptionistID` INT NOT NULL,
   `Fname` VARCHAR(45) NOT NULL,
@@ -134,8 +135,7 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Receptionist` (
   `Birthdate` DATE NOT NULL,
   `Phone` VARCHAR(45) NOT NULL,
   `Address` VARCHAR(45) NOT NULL,
-  `Experience` VARCHAR(255) NOT NULL,
-  `Qualifications` VARCHAR(255) NOT NULL,
+  `Experience` VARCHAR(255) NOT NULL DEFAULT 'Not Specified',
   `StartShift` DATETIME NULL,
   `EndShift` DATETIME NULL,
   PRIMARY KEY (`Receptionist_SSN`),
@@ -145,11 +145,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`PatientRecord`
+-- Table `ICU_MANAGEMENT_LAST`.`PatientRecord`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`PatientRecord` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`PatientRecord` (
   `RecordID` INT NOT NULL,
   `Patient_PSSN` VARCHAR(255) NOT NULL,
+  `MedicalDiagnosis` VARCHAR(255) NOT NULL,
   `MedicalStatus` VARCHAR(255) NOT NULL,
   `MedicalHistory` VARCHAR(255) NOT NULL,
   `Admission_Reasoning` VARCHAR(255) NOT NULL,
@@ -172,21 +173,21 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`PatientRecord` (
   INDEX `fk_PatientRecord_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
   CONSTRAINT `fk_PatientRecord_Receptionist1`
     FOREIGN KEY (`ReceptionistFilledRecord_SSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Receptionist` (`Receptionist_SSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Receptionist` (`Receptionist_SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_PatientRecord_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`PatientScans`
+-- Table `ICU_MANAGEMENT_LAST`.`PatientScans`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`PatientScans` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`PatientScans` (
   `PatientScanID` INT NOT NULL AUTO_INCREMENT,
   `Patient_PSSN` VARCHAR(255) NOT NULL,
   `Type` VARCHAR(45) NOT NULL,
@@ -198,16 +199,16 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`PatientScans` (
   INDEX `fk_PatientScans_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
   CONSTRAINT `fk_PatientScans_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`LabResults`
+-- Table `ICU_MANAGEMENT_LAST`.`LabResults`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`LabResults` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`LabResults` (
   `LabResultID` INT NOT NULL AUTO_INCREMENT,
   `Patient_PSSN` VARCHAR(255) NOT NULL,
   `Type` VARCHAR(45) NOT NULL,
@@ -219,16 +220,16 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`LabResults` (
   INDEX `fk_LabResults_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
   CONSTRAINT `fk_LabResults_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Unit_Rooms`
+-- Table `ICU_MANAGEMENT_LAST`.`Unit_Rooms`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Unit_Rooms` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Unit_Rooms` (
   `RoomNumber` INT NOT NULL,
   `RoomType` VARCHAR(45) NULL,
   `Beds_BedID` INT NOT NULL,
@@ -236,16 +237,16 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Unit_Rooms` (
   INDEX `fk_Unit_Rooms_Beds1_idx` (`Beds_BedID` ASC) VISIBLE,
   CONSTRAINT `fk_Unit_Rooms_Beds1`
     FOREIGN KEY (`Beds_BedID`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Beds` (`BedID`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Beds` (`BedID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`UnitEquipment`
+-- Table `ICU_MANAGEMENT_LAST`.`UnitEquipment`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`UnitEquipment` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`UnitEquipment` (
   `Equipment_SerialNum` INT NOT NULL,
   `Type` VARCHAR(45) NOT NULL,
   `EquipmentName` VARCHAR(45) NOT NULL,
@@ -257,16 +258,16 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`UnitEquipment` (
   INDEX `fk_UnitEquipment_Unit_Rooms1_idx` (`Unit_Rooms_RoomNumber` ASC) VISIBLE,
   CONSTRAINT `fk_UnitEquipment_Unit_Rooms1`
     FOREIGN KEY (`Unit_Rooms_RoomNumber`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Unit_Rooms` (`RoomNumber`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Unit_Rooms` (`RoomNumber`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Bills`
+-- Table `ICU_MANAGEMENT_LAST`.`Bills`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Bills` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Bills` (
   `Bills_ID` INT NOT NULL,
   `Patient_PSSN` VARCHAR(255) NOT NULL,
   `TotalValue` FLOAT NULL DEFAULT 0,
@@ -275,16 +276,16 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Bills` (
   INDEX `fk_Bills_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
   CONSTRAINT `fk_Bills_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Admin`
+-- Table `ICU_MANAGEMENT_LAST`.`Admin`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Admin` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Admin` (
   `Admin_SSN` INT NOT NULL,
   `AdminID` INT NOT NULL,
   `Fname` VARCHAR(45) NOT NULL,
@@ -299,9 +300,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`user`
+-- Table `ICU_MANAGEMENT_LAST`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`user` (
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`user` (
   `UserID` INT NOT NULL,
   `Username` VARCHAR(45) NOT NULL,
   `Password` VARCHAR(45) NOT NULL,
@@ -319,50 +320,67 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`user` (
   UNIQUE INDEX `Password_UNIQUE` (`Password` ASC) VISIBLE,
   CONSTRAINT `fk_user_Admin1`
     FOREIGN KEY (`Admin_Admin_SSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Admin` (`Admin_SSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Admin` (`Admin_SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_Receptionist1`
     FOREIGN KEY (`Receptionist_Receptionist_SSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Receptionist` (`Receptionist_SSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Receptionist` (`Receptionist_SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_Doctor1`
     FOREIGN KEY (`Doctor_DoctorSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Doctor` (`DoctorSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Doctor` (`DoctorSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ICU_MANAGEMENT_NEWW`.`Prescribed_Medication`
+-- Table `ICU_MANAGEMENT_LAST`.`Prescribed_Medication`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEWW`.`Prescribed_Medication` (
-  `Doctor_DoctorSSN` VARCHAR(255) NOT NULL,
-  `Patient_PSSN` VARCHAR(255) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`Prescribed_Medication` (
+  `medicine_id` INT NOT NULL,
+  `medicine_name` VARCHAR(255) NOT NULL,
   `Specifications` VARCHAR(45) NOT NULL,
   `Frequency` VARCHAR(45) NOT NULL,
   `Price` FLOAT NOT NULL,
   `Dosage` VARCHAR(45) NOT NULL,
   `StartDate` DATE NOT NULL,
   `EndDate` DATE NOT NULL,
-  PRIMARY KEY (`Doctor_DoctorSSN`, `Patient_PSSN`),
+  `Doctor_DoctorSSN` VARCHAR(255) NOT NULL,
+  `Patient_PSSN` VARCHAR(255) NOT NULL,
   INDEX `fk_Doctor_has_Patient_Patient1_idx` (`Patient_PSSN` ASC) VISIBLE,
   INDEX `fk_Doctor_has_Patient_Doctor1_idx` (`Doctor_DoctorSSN` ASC) VISIBLE,
+  PRIMARY KEY (`medicine_id`),
   CONSTRAINT `fk_Doctor_has_Patient_Doctor1`
     FOREIGN KEY (`Doctor_DoctorSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Doctor` (`DoctorSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Doctor` (`DoctorSSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Doctor_has_Patient_Patient1`
     FOREIGN KEY (`Patient_PSSN`)
-    REFERENCES `ICU_MANAGEMENT_NEWW`.`Patient` (`PSSN`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Patient` (`PSSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `ICU_MANAGEMENT_LAST`.`medicine_prescription_timestamps`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_LAST`.`medicine_prescription_timestamps` (
+  `medicine_prescription_id` INT NOT NULL,
+  `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`medicine_prescription_id`),
+  CONSTRAINT `fk_medicine_prescription_timestamps_Prescribed_Medication1`
+    FOREIGN KEY (`medicine_prescription_id`)
+    REFERENCES `ICU_MANAGEMENT_LAST`.`Prescribed_Medication` (`medicine_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
