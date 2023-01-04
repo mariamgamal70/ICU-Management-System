@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `ICU_MANAGEMENT_NEW`.`PatientRecord` (
   `OxygenSaturation` VARCHAR(45) NOT NULL,
   `PulseRateMin` VARCHAR(45) NOT NULL,
   `PainLevel` TINYINT UNSIGNED NOT NULL,
-  `IV_Access` ENUM('Yes', 'No') NOT NULL,
+DoctorSSN  `IV_Access` ENUM('Yes', 'No') NOT NULL,
   `IV_Acess_Date` DATETIME NULL DEFAULT NULL,
   `Takes_Heparin` ENUM('Yes', 'No') NOT NULL,
   `Level_of_consiousness` ENUM('Awake', 'Restless', 'Drowsy', 'Alert', 'Confused', 'Sedated') NOT NULL,
@@ -369,4 +369,4 @@ ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;icu_unitsicu_unitspatientdoctordoctordoctorDoctor_ESSNdoctorPRIMARYPRIMARYdoctoricu_unitsdoctor

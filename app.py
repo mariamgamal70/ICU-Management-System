@@ -41,7 +41,7 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="mysql",
-   database="icu_management_new"
+   database="icu_management_neww"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -347,18 +347,22 @@ def getnursepatientdata():
 
 @app.route("/Doctor_home")
 def getdoctordata():  
-   doctorid = session["id"]
+   #doctorid = session["id"]
    result = {}
-   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",(doctorid))
+   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",([1]))
    doctor = mycursor.fetchone()
    result['doctorid'] = doctor[5]
    result['doctorname'] = doctor[0] + doctor[1]
    result['doctorbirthdate'] = doctor[2]
    result['doctorssn'] = doctor[3]
    result['doctorgender'] = doctor[4]
-   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = PSSN where doctor_ID = 32')#(doctorid)))
+   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s',([1]))#(doctorid)))
    count = mycursor.fetchone()
    result['patientsnumber'] = count[0]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from doctor AS age')
+   doctora=mycursor.fetchone()
+   result['doctorage'] = doctora[0]
+
    return render_template('/Doctor/Doctor_home.html', data = result)
 
 
@@ -367,7 +371,7 @@ def getdoctordata():
 @app.route("/patientrecord_doctor")
 def getpatientdocrecord():
    result = {}
-   mycursor.execute('SELECT PatientRecord_RecordID, FName, LName, Birthdate, Sex, Date_Admitted, Doctor_ID, Beds_BedID, from patient join patientrecord on RecordID = PatientID join Doctor on AssignedDrSSN = DoctorSSN where patientid=%s',session(['patientid']))
+   mycursor.execute('SELECT PatientRecord_RecordID, FName, LName, Birthdate, Sex, Date_Admitted, Doctor_ID, Beds_BedID, from patient join patientrecord on PatientRecord_RecordID = PatientID join Doctor on AssignedDrSSN = DoctorSSN where patientid=%s',session(['patientid']))
    record = mycursor.fetchone()
    result['recordid'] = record[0]
    result['doctorid'] = record[6]
@@ -377,8 +381,7 @@ def getpatientdocrecord():
    result['dateofadmittance'] = record[5]
    result['bedid'] = record[7]
 
-   mycursor.execute('SELECT Fname, Lname')
-
+   return render_template('/Doctor/patientrecord_doctor.html', data = result)
 
 
 

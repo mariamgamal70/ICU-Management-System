@@ -27,10 +27,22 @@
 <body >
     {%block content%}
     <div class="main-container m-5">
+      <div class="d-flex justify-content-sm-between flex-wrap">
+        <div>
         <dl class="row display-5 text-primary">
-            <dt class="col-sm-3">Record ID</dt>
-            <dd class="col-sm-9">XXXXXXX</dd>
+            <dt class="col-sm-5">Record ID</dt>
+            <dd class="col-sm-7">{{data['RecordID']}}</dd> 
         </dl>
+        </div>
+        <div class="align-self-center">
+            <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#modal33" data-bs-whatever="@yarab" onclick= "changevis()">Admit to ICU</button>
+
+
+        </div>
+
+        
+    </div>
+    
         <fieldset class="border p-2">
             <legend class="text-primary float-none w-auto">Basic information</legend>
             <dl class="row">
@@ -38,7 +50,7 @@
                 <dd class="col-sm-9">whatever name</dd>
                 <dt class="col-sm-3">Patient ID</dt> 
                 <dd class="col-sm-9">whatever name</dd>
-                <dt class="col-sm-3">Birthdate</dt>
+                <dt class="col-sm-3">Age</dt>
                 <dd class="col-sm-9">DD/MM/YYYY </dd>
                 <dt class="col-sm-3">Gender</dt>
                 <dd class="col-sm-9">whatever gender</dd>
@@ -49,14 +61,8 @@
     <dl class="row">
         <dt class="col-sm-3">Medical Status</dt>
         <dd class="col-sm-9">whatever Medical Status</dd>
-        <dt class="col-sm-3">Admission Reason</dt>
-        <dd class="col-sm-9">whatever Admission Reason</dd>
-        <dt class="col-sm-3">Date of Admittance</dt>
-        <dd class="col-sm-9">DD/MM/YYYY</dd>
         <dt class="col-sm-3">Medical Diagnosis</dt>
         <dd class="col-sm-9">whatever Medical Diagnosis</dd>
-        <dt class="col-sm-3">Priority</dt>
-        <dd class="col-sm-9">XX</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
@@ -64,10 +70,14 @@
     <dl class="row">
         <dt class="col-sm-3">Bed Number</dt>
         <dd class="col-sm-9">XX</dd>
+        <dt class="col-sm-3">Admission Reason</dt>
+        <dd class="col-sm-9">whatever Admission Reason</dd>
+        <dt class="col-sm-3">Date of Admittance</dt>
+        <dd class="col-sm-9">DD/MM/YYYY</dd>
         <dt class="col-sm-3">Attending Physician</dt>
         <dd class="col-sm-9">whatever Attending Physician</dd>
         <dt class="col-sm-3">Attending Physician ID</dt>
-            <dd class="col-sm-9">XXXXXXXX</dd>
+        <dd class="col-sm-9">XXXXXXXX</dd>
             <dt class="col-sm-3">Attending Nurse</dt>
             <dd class="col-sm-9">whatever Attending Nurse</dd>
             <dt class="col-sm-3">Attending Nurse ID</dt>
@@ -123,7 +133,7 @@
     <div class="d-flex justify-content-center m-5" >
         <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModalF" data-bs-whatever="@mdo" onclick= "changevis2()">Update Medical Information</button>
         <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@fat" onclick= "changevis()">Request Scan/Lab</button>
-        <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#exampleModal3" data-bs-whatever="@dsf">Scan/Lab results</button>
+        <button type="button" class="btn btn-primary mx-3 btn-block" data-bs-toggle="modal" data-bs-target="#" data-bs-whatever="@sdfsf">View Results</button>
     </div>
 
     <div class="modal fade" id="exampleModalF" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -139,7 +149,6 @@
                   <label for="recipient-name" class="col-form-label">Options</label>
                   <select  id="updte" class="form-select" required onchange="changevis2()">
                     <option value="Choose an Option">Please Choose an Option</option>
-                    <option value="Set Priority">Set Priority</option>
                     <option value="Add Diagnosis">Add Diagnosis</option>
                     <option value="Add Medicine">Add Medicine</option>
                     </select>
@@ -155,10 +164,6 @@
                         <input type="date" name="end date" class="form-control" placeholder="Enter Name of Medicine">
                         <input type="text" name="instruction" class="form-control mt-3" placeholder="Please enter instructions">
 
-                    </div>
-
-                    <div id="prio">
-                        <input type="text" class="form-control" name = "priority" placeholder="Please enter priority">
                     </div>
 
                     <div id="diag">
@@ -241,6 +246,7 @@
               </div>
             </form>
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
             <button type="button" class="btn btn-primary" name="request">Request</button>
@@ -248,9 +254,47 @@
         </div>
       </div>
     </div>
+
+    
+
    
 </div>
 </div>
+
+
+
+<div class="modal fade" id="modal33" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Admit to ICU</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control mt-3" placeholder="Please Enter Bed ID">
+            <input type="text" name="reason" class="form-control mt-3" placeholder="Please Enter Admission Reason">
+            <label for="admit date" class="col-form-label mt-3" >Date of Admittance</label>
+            <input type="date" name="admit date" class="form-control">
+            
+            
+          </div>
+          <div class="mb-3">
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+        <button type="button" class="btn btn-primary" name="request">Request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
 <script>
     function ddselect()
@@ -288,13 +332,9 @@
   if (x.value == "Add Medicine") {
     document.getElementById("med").style.visibility="visible";
     document.getElementById("med").style.display="";
-    document.getElementById("prio").style.display = "none";
-    document.getElementById("prio").style.visibility = "hidden";
     document.getElementById("diag").style.display = "none";
     document.getElementById("diag").style.visibility = "hidden";
    }else if(x.value == "Set Priority") {
-    document.getElementById("prio").style.visibility = "visible";
-    document.getElementById("prio").style.display="";
     document.getElementById("diag").style.display = "none";
     document.getElementById("diag").style.visibility = "hidden";
     document.getElementById("med").style.display = "none";
@@ -303,8 +343,6 @@
    else if(x.value == "Add Diagnosis"){
     document.getElementById("med").style.visibility="hidden";
     document.getElementById("med").style.display="none";
-    document.getElementById("prio").style.display = "none";
-    document.getElementById("prio").style.visibility = "hidden";
     document.getElementById("diag").style.display = "";
     document.getElementById("diag").style.visibility = "visible";
    }
@@ -313,8 +351,6 @@
         document.getElementById("diag").style.visibility = "hidden";
         document.getElementById("med").style.display="none";
         document.getElementById("diag").style.display="none";
-        document.getElementById("prio").style.display="none";
-        document.getElementById("prio").style.visibility="hidden";
     }
    }
 
