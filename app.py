@@ -30,8 +30,8 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="lovelygirl12",
-    database="icu_management_neww"
+    password="Eng_8730667",
+    database="icu_management_last"
 )
 mycursor = mydb.cursor()
 # GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -116,25 +116,28 @@ def Adminhome():
    return render_template('/Admin/adminDashboard.html', Stats=Statistics)
 
 
-@app.route('/AdminDr')
+@app.route('/AdminDr',methods=["GET","POST"])
 def AdminDr():
+    if request.method=="GET":
+        
 
-   mycursor.execute(
+     mycursor.execute(
       "SELECT Doctor_ID,Fname,Lname,Sex,(SELECT TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age FROM doctor),Speciality,StartShift,EndShift FROM doctor")
-   #row_headers = [x[0] for x in mycursor.description]
-   doctors_data = mycursor.fetchall()
-   Dr_Data = {
+    #row_headers = [x[0] for x in mycursor.description]
+    doctors_data = mycursor.fetchall()
+    Dr_Data = {
       #'header': row_headers,
       'records': doctors_data
 
    }
-   return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
+        
+    return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
 
 
 
 
 @app.route('/Admin_Add_Dr',methods=["POST", "GET"])
-def AddDr():
+def Admin_Add_Dr():
     
     if request.method=="GET":
          mycursor.execute("SELECT PSSN FROM patient")
@@ -162,8 +165,8 @@ def AddDr():
        Address = request.form.get('Address')
        Email = request.form.get('Email')
        PhoneNumber = request.form.get('PhoneNumber')
-       AssignedPatientSSN = request.form.get('patientssn')
-       AssignedPatientID = request.form.get('patientid')
+       #AssignedPatientSSN = request.form.get('patientssn')
+       #AssignedPatientID = request.form.get('patientid')
 
 
     try:
@@ -171,7 +174,7 @@ def AddDr():
         val = (SSN,DoctorID,FirstName,LastName,Email,Gender,formatted_date,PhoneNumber,Address,Speciality,Experience,Salary)
         mycursor.execute(sql,val)
         sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
-        val=(DoctorID,FirstName+' '+LastName,Password,"Doctor",Email,SSN)
+        val=(DoctorID,FirstName,Password,"Doctor",Email,SSN)
         mycursor.execute(sql,val)
         """
         if AssignedPatientSSN!=None and AssignedPatientID!=None:
@@ -184,7 +187,7 @@ def AddDr():
         return redirect(url_for('AdminDr'))    
 
     except:
-        return redirect(url_for('AddDr'))
+        return redirect(url_for('Admin_Add_Dr'))
     
    
 
