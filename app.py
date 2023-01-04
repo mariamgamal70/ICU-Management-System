@@ -534,16 +534,19 @@ def R_AddRecord():
          sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
          val = (RecordID,Insurance)
          mydb.commit()
-         return render_template('/receptionist_managerecords.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
+         return redirect('/receptionist/receptionist_managerecords.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
       except:
-            return render_template('/receptionist_addrecord.html', error="Invalid input!")
-
+            return redirect('/receptionist/receptionist_addrecord.html', error="Invalid input!")
    else:
       mycursor.execute('SELECT Fname from Doctor')
-      doctors=mycursor.fetchone()
+      doctors=mycursor.fetchall()
       mycursor.execute('SELECT Fname from Nurse')
-      nurses=mycursor.fetchone()
-      return render_template('/receptionist_addrecord.html',doctors=doctors,nurses=nurses)
+      nurses=mycursor.fetchall()
+      data={
+            'doctorssn':doctors,
+            'nursessn':nurses
+      }
+      return render_template('/receptionist/receptionist_addrecord.html',data=data)
 
 #####################################################Run#############################################################
 if __name__ == "__main__":

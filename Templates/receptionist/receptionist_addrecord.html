@@ -17,8 +17,8 @@
 </head>
 
 <body>
-  {%extends sidebarhtml %}
   {%block content%}
+  {%if data%}
   <div class="container-fluid m-5">
 
     <div class="row row-bordered">
@@ -150,7 +150,7 @@
                 <div class="input-group m-3">
                 <select name="doctorssn" class="form-select" aria-label="DoctorSSN Select">
                     <option value="" disabled selected>Choose Doctor SSN</option>
-                    {% for doctors in Patient_data.ssn %}
+                    {% for doctors in data.doctorssn %}
                     {%for names in doctors%}
                     <option value="{{names}}">{{names}}</option>
                     {%endfor%}
@@ -164,7 +164,7 @@
                 <div class="input-group m-3">
                     <select name="nursessn" class="form-select" aria-label="Nurse_SSN Select">
                         <option value="" disabled selected>Choose Nurse SSN</option>
-                        {% for nurses in Patient_data.id %}
+                        {% for nurses in data.nursessn %}
                         {%for names in nurses%}
                         <option value="{{names}}">{{names}}</option>
                         {%endfor%}
@@ -188,6 +188,7 @@
     </form>
     </div>
   </div>
+  {% endif %}
   {% endblock %}
 
 </body>
