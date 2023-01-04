@@ -201,7 +201,6 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">Request</label>
                 <select  id="ddm" class="form-select" required  onchange="changevis()">
@@ -211,7 +210,7 @@
                     </select>
               </div>
               <div class="mb-3">
-
+                <form name="lab" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
                 <div id="labdss">
                     <label for="Complete blood count">
                         <input type="checkbox" name="Complete blood count" id=""> Complete blood count</label><br>
@@ -232,37 +231,46 @@
                         <br>
                         <label for="date" class="mt-3">Date</label>
                         <input type="datetime-local" class="form-control">
-                </div>
 
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
+                          <input type="submit" class="btn btn-primary" name="request1"></button>
+                        </div>
+                </div>
+              </form>
+
+              <form name="scan" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
                 <div id="scandss">
                     <label for="CT-Scan">
-                        <input type="checkbox" name="CT-Scan" id=""> CT-Scan</label><br>
+                        <input type="checkbox" name="sc" value="CT-Scan"> CT-Scan</label><br>
                     <label for="BMRI">
-                        <input type="checkbox" name="MRI" id=""> MRI</label><br>
+                        <input type="checkbox" name="sc" value="MRI"> MRI</label><br>
                     <label for="PET Scan">
-                        <input type="checkbox" name="PET Scan" id=""> PET Scan</label><br>
+                        <input type="checkbox" name="sc" id=""> PET Scan</label><br>
                     <label for="Ultrasound">
-                        <input type="checkbox" name="Ultrasound" id=""> Ultrasound</label><br>
+                        <input type="checkbox" name="sc" id=""> Ultrasound</label><br>
                     <label for="X-Ray">
-                        <input type="checkbox" name="X-Ray" id=""> X-Ray</label><br>
+                        <input type="checkbox" name="sc" id=""> X-Ray</label><br>
                     <label for="Sonar">
-                        <input type="checkbox" name="Sonar" id=""> Sonar</label><br>
+                        <input type="checkbox" name="sc" id=""> Sonar</label><br>
                     <label for="Angiography">
-                        <input type="checkbox" name="Angiography" id=""> Angiography</label><br>
+                        <input type="checkbox" name="sc" id=""> Angiography</label><br>
                     <label for="ECG">
-                        <input type="checkbox" name="ECG" id=""> ECG</label>
+                        <input type="checkbox" name="sc" id=""> ECG</label>
                         <br>
                     <label for="date" class="mt-3">Date</label>
                     <input type="datetime-local" class="form-control">
+
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
+                      <input type="submit" class="btn btn-primary" name="request2"></button>
+                    </div>
                 
               </div>
             </form>
           </div>
 
-          <div class="modal-footer">
-            <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" onclick="">Close</button>
-            <button type="submit" class="btn btn-primary" name="request">Request</button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -283,7 +291,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
+        <form name="adm" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
           <div class="mb-3">
             <input type="text" name = "bID" class="form-control mt-3" placeholder="Please Enter Bed ID">
             <input type="text" name="reason" class="form-control mt-3" placeholder="Please Enter Admission Reason">
@@ -330,6 +338,8 @@
     document.getElementById("scandss").style.display="";
     document.getElementById("labdss").style.display = "none";
     document.getElementById("labdss").style.visibility = "hidden";
+
+    
    }else if(x.value == "Request Lab") {
     document.getElementById("labdss").style.visibility = "visible";
     document.getElementById("labdss").style.display="";
@@ -370,7 +380,6 @@
         document.getElementById("diag").style.display="none";
     }
    }
-
 
 
 </script>

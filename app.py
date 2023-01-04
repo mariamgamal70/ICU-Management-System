@@ -339,7 +339,7 @@ def getnursepatientdata():
    result['nursegender']=nurse[4]
    mycursor.execute('SELECT FirstName,LastName,patientID from inpatient join nurse on nurseID=nurseID where nurseID=%s',(nurseid))
    patient=mycursor.fetchone()
-   result['patientname']= patient[0] +patient[1]
+   result['patientname']= patient[0] + patient[1]
    result['patientid']= patient[2]
    session['patientid'] = patient[2]
    render_template('/nursehome',data=result)
@@ -368,7 +368,7 @@ def getdoctordata():
 
 
 
-@app.route("/patientrecord_doctor")#NEEDS FIXING
+@app.route("/patientrecord_doctor")
 def getpatientrecord():
    mycursor.execute('SELECT RecordID, patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,Pupils,Skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.Lname,Doctor_ID,PatientID from patient join patientrecord on Patient_PSSN=PSSN join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', ([1]))
    patient = mycursor.fetchone()
@@ -409,9 +409,26 @@ def receptionistHomePage():
 @app.route("/patientrecord_doctor/<int:file_id>", methods=["POST", "GET"])
 def admit(file_id):
    if request.method == "POST":
-      val = ((request.form.get("bID")), (request.form.get("admitdate")))
-      mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
-      mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
+      if "request" in request.form:
+         val = ((request.form.get("bID")), (request.form.get("admitdate")))
+         mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
+         mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
+
+      elif "request2" in request.form:
+         amin = request.form.getlist("sc")
+         str1 = ','.join(amin)
+         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN')
+         patient = mycursor.fetchone()
+         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type) VALUES (%s,%s,%s)", [patient[0], patient[1], str1])
+
+      elif "request1" in request.form:
+         amin = request.form.getlist("sc")
+         str1 = ','.join(amin)
+         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN')
+         patient = mycursor.fetchone()
+         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type) VALUES (%s,%s,%s)", [patient[0], patient[1], str1])
+         # mycursor.execute("INSERT INTO patientscans (Type) VALUES (%s)",[str1])
+        
 
       return redirect("/patientrecord_doctor")
    return render_template('/Doctor/patientrecord_doctor.html')
