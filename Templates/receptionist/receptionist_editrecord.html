@@ -17,166 +17,157 @@
 </head>
 
 <body>
-  {%extends sidebarhtml %}
   {%block content%}
+  {%if data%}
   <div class="container-fluid m-5">
 
     <div class="row row-bordered">
       <h1 class="font-weight-bold text-primary">Edit Record</h1>
     </div>
-
-    <div class="container mt-5">
-      <h4 class="font-weight-bold text-primary">Personal Information</h4>
-      <div class="row">
-        <div class="col">
-          <div class="m-3">
-            <label for="exampleFormControlInput1" class="form-label">First Name</label>
-            <input name="FirstName" value="{{Patient["FName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
-              placeholder="First Name" required>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="m-3">
-            <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-            <input name="MiddleName" value="{{Patient["MName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
-              placeholder="Middle Name" required>
-          </div>
-
-        </div>
-        <div class="col">
-          <div class="m-3">
-            <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-            <input name="LastName" value="{{Patient["LName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
-              placeholder="Last Name" required>
-          </div>
-        </div>
-//////////////////////////////////fix
-        <div class="col">
-          <div class="m-3">
-            <form method="post">
-              <label for="exampleFormControlInput1" class="form-label">Gender</label> <br>
-              <input name="Gender" type="radio" name="Gender" value="female" required> Female <br>
-              <input name="Gender" type="radio" name="Gender" value="male" required> Male
-            </form>
-
-          </div>
-        </div>
+    <form action="http://127.0.0.1:5000/receptionist_editrecord/{{data.4}}" method="get">
+      <div class="container mt-5">
+        <h4 class="font-weight-bold text-primary">Personal Information</h4>
         <div class="row">
-          <div class="col-4">
-            <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Record ID</label>
-              <input name="Record ID" value="{{Patient["RecordID"]}}" type="string" class="form-control" id="exampleFormControlInput1"
-                placeholder="Record ID" required>
+          <div class="col">
+            <div class="m-3">
+              <label for="exampleFormControlInput1" class="form-label">First Name</label>
+              <input name="FirstName" value="{{data.0}}" type="string" class="form-control"
+                id="exampleFormControlInput1" placeholder="First Name" required>
             </div>
           </div>
 
-          <div class="col-4">
-            <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Patient ID</label>
-              <input name="Patient ID" value="{{Patient["PatientID"]}}" type="string" class="form-control" id="exampleFormControlInput1" placeholder="ID"
-                required>
+          <div class="col">
+            <div class="m-3">
+              <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
+              <input name="MiddleName" value="{{data.1}}" type="string" class="form-control"
+                id="exampleFormControlInput1" placeholder="Middle Name" required>
+            </div>
+
+          </div>
+          <div class="col">
+            <div class="m-3">
+              <label for="exampleFormControlInput1" class="form-label">Last Name</label>
+              <input name="LastName" value="{{data.2}}" type="string" class="form-control" id="exampleFormControlInput1"
+                placeholder="Last Name" required>
             </div>
           </div>
 
-          <div class="col-4">
-            <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">SSN</label>
-              <input name="SSN" value="{{Patient["PSSN"]}}" type="string" class="form-control" id="exampleFormControlInput1" placeholder="SSN"
-                required>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="row">
-
-          <div class="col-4">
-            <div class=m-3>
-              <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
-              <input name="Birthdate" value="{{Patient["Birthdate"]}}" type="date" class="form-control" id="exampleFormControlInput1"
-                placeholder="YYYY/MM/DD" required>
-            </div>
-          </div>
-///////////////////////////////////////////fix
-          <div class="col-4">
+          <div class="col">
             <div class="m-3">
               <form method="post">
-                <label for="exampleFormControlInput1" class="form-label">Insurance</label> <br>
-                <input name="Gender" type="radio" name="Gender" value="female" required> yes <br>
-                <input name="Gender" type="radio" name="Gender" value="male" required> No
+                <label for="exampleFormControlInput1" class="form-label">Gender</label> <br>
+                <input name="Gender" type="radio" name="Gender" value="female" required> Female <br>
+                <input name="Gender" type="radio" name="Gender" value="male" required> Male
               </form>
+
             </div>
           </div>
-        </div>
-
-
-
-        <div class="container ">
-
-          <h4 class="font-weight-bold text-primary">Contact Information</h4>
           <div class="row">
-            <div class="col-4 m-3">
-              <label for="exampleFormControlInput1" class="form-label">Address</label>
-              <input name="Address" value="{{Patient["Address"]}}" type="string" class="form-control" id="exampleFormControlInput1"
-                placeholder="Address" required>
+            <div class="col-4">
+              <div class=m-3>
+                <label for="exampleFormControlInput1" class="form-label">Record ID</label>
+                <input name="RecordID" value="{{data.13}}" type="string" class="form-control"
+                  id="exampleFormControlInput1" placeholder="Record ID" required>
+              </div>
             </div>
-            <div class="col-4 m-3">
-              <label for="exampleFormControlInput1" class="form-label">Email</label>
-              <input name="Address" value="{{Patient["email"]}}" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
-                required>
+
+            <div class="col-4">
+              <div class=m-3>
+                <label for="exampleFormControlInput1" class="form-label">Patient ID</label>
+                <input name="PatientID" value="{{data.4}}" type="string" class="form-control"
+                  id="exampleFormControlInput1" placeholder="ID" required>
+              </div>
             </div>
-            <div class="col-4 m-3">
-              <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
-              <input name="PhoneNumber" value="{{Patient["Phone"]}}" type="tel" class="form-control" id="exampleFormControlInput1"
-                placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
-            </div>
-            <div class="col-4 m-3">
-              <label for="exampleFormControlInput1" class="form-label">Emergency Contact</label>
-              <input name="PhoneNumber" value="{{Patient["Emergency_Contact"]}}" type="tel" class="form-control" id="exampleFormControlInput1"
-                placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+
+            <div class="col-4">
+              <div class=m-3>
+                <label for="exampleFormControlInput1" class="form-label">SSN</label>
+                <input name="SSN" value="{{data.5}}" type="string" class="form-control" id="exampleFormControlInput1"
+                  placeholder="SSN" required>
+              </div>
             </div>
 
           </div>
-        </div>
 
-        <div class="container ">
+          <div class="row">
 
-          <h4 class="font-weight-bold text-primary">Assigned</h4>
-          <div class="d-flex justify-content-evenly">
-////////////////////////////////fix
-            <form method="GET">
-              <div class="input-group m-3">
-                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
-                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
-                  { % for doctornames in doctors % }
-                  <option value="{{Patient["Emergency_Contact"]}}">{{doctornames}}</option>
-                  { % endfor % }
-                 </select>
+            <div class="col-4">
+              <div class=m-3>
+                <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
+                <input name="Birthdate" type="text" value="{{data.6}}" class="form-control" id="exampleFormControlInput1"
+                  placeholder="YYYY/MM/DD" required>
               </div>
-            </form>
+            </div>
 
-            <form method="GET">
-              <div class="input-group m-3">
-                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
-                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
-                  { % for nursenames in nurses % }
-                  <option value="{{Patient["Emergency_Contact"]}}">{{nursenames}}</option>
-                  { % endfor % }
-                 </select>
+              <div class="col-4">
+                <div class="m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Insurance</label>
+                  <input name="insurance" type="string" value="{{data.14}}" class="form-control" id="exampleFormControlInput1"
+                    placeholder="Insurance" required>
+                </div>
               </div>
-            </form>
+            </div>
 
+            <div class="container ">
+
+              <h4 class="font-weight-bold text-primary">Contact Information</h4>
+              <div class="row">
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Address</label>
+                  <input name="Address" value="{{data.7}}" type="string" class="form-control"
+                    id="exampleFormControlInput1" placeholder="Address" required>
+                </div>
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Email</label>
+                  <input name="email" value="{{data.8}}" type="email" class="form-control"
+                    id="exampleFormControlInput1" placeholder="Email" required>
+                </div>
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
+                  <input name="PhoneNumber" value="{{data.9}}" type="tel" class="form-control"
+                    id="exampleFormControlInput1" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                    required>
+                </div>
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Emergency Contact</label>
+                  <input name="emergencyPhoneNumber" value="{{data.10}}" type="tel" class="form-control"
+                    id="exampleFormControlInput1" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                    required>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="container ">
+
+              <h4 class="font-weight-bold text-primary">Assigned</h4>
+              <div class="d-flex justify-content-evenly">
+
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Assign Doctor</label>
+                  <input name="doctorssn" value="{{data.11}}" type="tel" class="form-control"
+                    id="exampleFormControlInput1" placeholder="Assign Doctor" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                    required>
+                </div>
+                <div class="col-4 m-3">
+                  <label for="exampleFormControlInput1" class="form-label">Assign Nurse</label>
+                  <input name="nursessn" value="{{data.12}}" type="tel" class="form-control"
+                    id="exampleFormControlInput1" placeholder="Assign Nurse" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                    required>
+                </div>
+
+              </div>
+            </div>
           </div>
+          <form method="POST">
+            <div class="d-flex justify-content-center m-3">
+              <button type="submit" class="btn btn-primary btn-lg">Update</button>
+            </div>
+          </form>
         </div>
-      </div>
-      <form method="POST">
-      <div class="d-flex justify-content-center m-3">
-        <button type="submit" class="btn btn-primary btn-lg">Update</button>
-      </div>
-      </form>
-    </div>
+    </form>
   </div>
+  {% endif %}
   {% endblock %}
 </body>
 

@@ -498,19 +498,9 @@ def manage_records():
          }
          return render_template('/receptionist/receptionist_managerecords.html',data=data)
 
-# @app.route('/receptionist_editrecord/<int:id>',methods=['POST', 'GET'])
-# def editRecord(id):
-#    if request.method == 'POST': 
-#       mycursor.execute('UPDATE FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname from patient join record on PSSN=PatientSSN join Doctor on AssignedDrSSN=DoctorID join Nurse on AssignedNurse=NurseID where patientid=%s',(id))
-#       patient=mycursor.fetchone()
-#       return render_template('/receptionist_editrecord.html',data=patient)
-#    else:
-#       mycursor.execute('SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname from patient join record on PSSN=PatientSSN join Doctor on AssignedDrSSN=DoctorID join Nurse on AssignedNurse=NurseID where patientid=%s',(id))
-#       patient=mycursor.fetchone()
-#       return render_template('/receptionist_editrecord.html',data=patient)
 
-@app.route('/receptionist_addrecord', methods=['POST', 'GET'])
-def R_AddRecord():
+@app.route('/receptionist_editrecord/<int:id>',methods=['POST', 'GET'])
+def editRecord(id):
    if request.method == 'POST':
       FirstName = request.form.get('FirstName')
       MiddleName = request.form.get('MiddleName')
@@ -520,34 +510,64 @@ def R_AddRecord():
       PatientID = request.form.get('PatientID')
       SSN = request.form.get('SSN')
       formatted_date = request.form.get('Birthdate')  
-      Insurance = request.form.get('Insurance')
+      Insurance = request.form.get('insurance')
       Address = request.form.get('Address')
-      Email = request.form.get('Email')
+      Email = request.form.get('email')
       PhoneNumber = request.form.get('PhoneNumber')
-      EmergencyContact = request.form.get('PhoneNumber')
-      AssignedDoctorSSN = request.form.get('AssignedDoctorSSN')
-      AssignedNurseSSN = request.form.get('AssignedNurseSSN')
-      try:
-         sql = "INSERT INTO Patient(patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN) VALUES(%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
-         val = (SSN, FirstName, MiddleName, LastName, PatientID,Gender,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctorSSN,AssignedNurseSSN)
-         mycursor.execute(sql, val)
-         sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
-         val = (RecordID,Insurance)
-         mydb.commit()
-         return redirect(url_for('receptionist_addrecord'), message=FirstName + ' ' + LastName+" has been successfully added to the database")
-      except:
-            return redirect(url_for('receptionist_addrecord'), error="Invalid input!")
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      val1 = ((FirstName),(MiddleName), (LastName),(Gender), (PatientID),(SSN),(formatted_date), (Address), (Email),(PhoneNumber),(EmergencyContact),(AssignedDoctorSSN),(AssignedNurseSSN),(1))
+      mycursor.execute('UPDATE patient SET FName=%s,MName=%s,LName=%s,Sex=%s,PatientID=%s,PSSN=%s,Birthdate=%s,Address=%s,email=%s,Phone=%s,Emergency_Contact=%s,AssignedDrSSN=%s,AssignedNurseSSN=%s WHERE PatientID=%s',  val1) 
+      val2 = ((RecordID),(Insurance,SSN))
+      mycursor.execute('UPDATE patientrecord SET RecordID=%s,Insurance_Status=%s,Patient_Pssn=%s', val2) 
+    #   return redirect("/receptionist/receptionist_viewrecord")
+      return render_template('/receptionist/receptionist_editrecord.html')
    else:
-      mycursor.execute('SELECT Fname from Doctor')
+      mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN,RecordID,Insurance_Status from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where PatientID=%s' ,([1]))
+      patient=mycursor.fetchone()
+      return render_template('/receptionist/receptionist_editrecord.html',data=patient)
+
+@app.route('/receptionist_addrecord', methods=['POST', 'GET'])
+def R_AddRecord():
+   if request.method == 'GET':
+      mycursor.execute('SELECT DoctorSSN from Doctor')
       doctors=mycursor.fetchall()
-      mycursor.execute('SELECT Fname from Nurse')
+      mycursor.execute('SELECT Nurse_SSN from Nurse')
       nurses=mycursor.fetchall()
       data={
             'doctorssn':doctors,
             'nursessn':nurses
       }
       return render_template('/receptionist/receptionist_addrecord.html',data=data)
-
+   else:
+      FirstName = request.form.get('FirstName')
+      MiddleName = request.form.get('MiddleName')
+      LastName = request.form.get('LastName')
+      Gender = request.form.get('Gender')
+      RecordID = request.form.get('RecordID')
+      PatientID = request.form.get('PatientID')
+      SSN = request.form.get('SSN')
+      formatted_date = request.form.get('Birthdate')  
+      Insurance = request.form.get('insurance')
+      Address = request.form.get('Address')
+      Email = request.form.get('email')
+      PhoneNumber = request.form.get('PhoneNumber')
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      sql = "INSERT INTO Patient(patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN) VALUES(%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
+      val = (FirstName, MiddleName, LastName, Gender, PatientID,SSN,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctorSSN,AssignedNurseSSN)
+      mycursor.execute(sql, val)
+      sql2 = "INSERT INTO patientrecord(RecordID,Insurance_Status,Patient_Pssn) VALUES(%s, %s,%s)"
+      val2 = (RecordID,Insurance,SSN)
+      mycursor.execute(sql2, val2)
+      mydb.commit()
+      return render_template('/receptionist/receptionist_addrecord.html')
+      
+      #, message=FirstName + ' ' + LastName+" has been successfully added to the database")
+    #   except:
+    #         return redirect(url_for('receptionist_addrecord'), error="Invalid input!")
 #####################################################Run#############################################################
 if __name__ == "__main__":
    app.run(debug=True)
