@@ -17,7 +17,8 @@
 </head>
 
 <body>
-  <!-- {%extends sidebarhtml %} -->
+  {%extends sidebarhtml %}
+  {%block content%}
   <div class="container-fluid m-5">
 
     <div class="row row-bordered">
@@ -30,7 +31,7 @@
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">First Name</label>
-            <input name="FirstName" type="string" class="form-control" id="exampleFormControlInput1"
+            <input name="FirstName" value="{{Patient["FName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
               placeholder="First Name" required>
           </div>
         </div>
@@ -38,7 +39,7 @@
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">Middle Name</label>
-            <input name="MiddleName" value="{{Patien["PatientID"]}}" type="string" class="form-control" id="exampleFormControlInput1"
+            <input name="MiddleName" value="{{Patient["MName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
               placeholder="Middle Name" required>
           </div>
 
@@ -46,11 +47,11 @@
         <div class="col">
           <div class="m-3">
             <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-            <input name="LastName" type="string" class="form-control" id="exampleFormControlInput1"
+            <input name="LastName" value="{{Patient["LName"]}}" type="string" class="form-control" id="exampleFormControlInput1"
               placeholder="Last Name" required>
           </div>
         </div>
-
+//////////////////////////////////fix
         <div class="col">
           <div class="m-3">
             <form method="post">
@@ -65,7 +66,7 @@
           <div class="col-4">
             <div class=m-3>
               <label for="exampleFormControlInput1" class="form-label">Record ID</label>
-              <input name="Record ID" type="string" class="form-control" id="exampleFormControlInput1"
+              <input name="Record ID" value="{{Patient["RecordID"]}}" type="string" class="form-control" id="exampleFormControlInput1"
                 placeholder="Record ID" required>
             </div>
           </div>
@@ -73,7 +74,7 @@
           <div class="col-4">
             <div class=m-3>
               <label for="exampleFormControlInput1" class="form-label">Patient ID</label>
-              <input name="Patient ID" type="string" class="form-control" id="exampleFormControlInput1" placeholder="ID"
+              <input name="Patient ID" value="{{Patient["PatientID"]}}" type="string" class="form-control" id="exampleFormControlInput1" placeholder="ID"
                 required>
             </div>
           </div>
@@ -81,7 +82,7 @@
           <div class="col-4">
             <div class=m-3>
               <label for="exampleFormControlInput1" class="form-label">SSN</label>
-              <input name="SSN" type="string" class="form-control" id="exampleFormControlInput1" placeholder="SSN"
+              <input name="SSN" value="{{Patient["PSSN"]}}" type="string" class="form-control" id="exampleFormControlInput1" placeholder="SSN"
                 required>
             </div>
           </div>
@@ -93,11 +94,11 @@
           <div class="col-4">
             <div class=m-3>
               <label for="exampleFormControlInput1" class="form-label">Birthdate</label>
-              <input name="Birthdate" type="date" class="form-control" id="exampleFormControlInput1"
+              <input name="Birthdate" value="{{Patient["Birthdate"]}}" type="date" class="form-control" id="exampleFormControlInput1"
                 placeholder="YYYY/MM/DD" required>
             </div>
           </div>
-
+///////////////////////////////////////////fix
           <div class="col-4">
             <div class="m-3">
               <form method="post">
@@ -117,22 +118,22 @@
           <div class="row">
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Address</label>
-              <input name="Address" type="string" class="form-control" id="exampleFormControlInput1"
+              <input name="Address" value="{{Patient["Address"]}}" type="string" class="form-control" id="exampleFormControlInput1"
                 placeholder="Address" required>
             </div>
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Email</label>
-              <input name="Address" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
+              <input name="Address" value="{{Patient["email"]}}" type="email" class="form-control" id="exampleFormControlInput1" placeholder="Email"
                 required>
             </div>
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Phone Number</label>
-              <input name="PhoneNumber" type="tel" class="form-control" id="exampleFormControlInput1"
+              <input name="PhoneNumber" value="{{Patient["Phone"]}}" type="tel" class="form-control" id="exampleFormControlInput1"
                 placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
             </div>
             <div class="col-4 m-3">
               <label for="exampleFormControlInput1" class="form-label">Emergency Contact</label>
-              <input name="PhoneNumber" type="tel" class="form-control" id="exampleFormControlInput1"
+              <input name="PhoneNumber" value="{{Patient["Emergency_Contact"]}}" type="tel" class="form-control" id="exampleFormControlInput1"
                 placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
             </div>
 
@@ -143,50 +144,40 @@
 
           <h4 class="font-weight-bold text-primary">Assigned</h4>
           <div class="d-flex justify-content-evenly">
+////////////////////////////////fix
+            <form method="GET">
+              <div class="input-group m-3">
+                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
+                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
+                  { % for doctornames in doctors % }
+                  <option value="{{Patient["Emergency_Contact"]}}">{{doctornames}}</option>
+                  { % endfor % }
+                 </select>
+              </div>
+            </form>
 
-            <div class="input-group m-3">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                placeholder="Choose Doctor">
-              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Doctors</button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Dr Ahmed</a></li>
-                <li><a class="dropdown-item" href="#">Dr Mohamed</a></li>
-                <li><a class="dropdown-item" href="#">Dr Neymar</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Undetermined</a></li>
-              </ul>
-            </div>
-
-
-            <div class="input-group m-3">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                placeholder="Choose Nurse" required>
-              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Nurses</button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Sarah</a></li>
-                <li><a class="dropdown-item" href="#">Julia</a></li>
-                <li><a class="dropdown-item" href="#">Nermeen</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Undetermined</a></li>
-              </ul>
-            </div>
+            <form method="GET">
+              <div class="input-group m-3">
+                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
+                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
+                  { % for nursenames in nurses % }
+                  <option value="{{Patient["Emergency_Contact"]}}">{{nursenames}}</option>
+                  { % endfor % }
+                 </select>
+              </div>
+            </form>
 
           </div>
         </div>
       </div>
-
+      <form method="POST">
       <div class="d-flex justify-content-center m-3">
         <button type="submit" class="btn btn-primary btn-lg">Update</button>
       </div>
+      </form>
     </div>
-    </form>
   </div>
+  {% endblock %}
 </body>
 
 </html>

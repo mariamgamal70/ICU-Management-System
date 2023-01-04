@@ -17,7 +17,8 @@
 </head>
 
 <body>
-  <!-- {%extends sidebarhtml %} -->
+  {%extends sidebarhtml %}
+  {%block content%}
   <div class="container-fluid m-5">
 
     <div class="row row-bordered">
@@ -144,46 +145,48 @@
           <h4 class="font-weight-bold text-primary">Assigned</h4>
           <div class="d-flex justify-content-evenly">
    
+            <form method="GET">
               <div class="input-group m-3">
-                <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor">
-                <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                 aria-expanded="false">Doctors</button>
-                <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="#">Dr Ahmed</a></li>
-                  <li><a class="dropdown-item" href="#">Dr Mohamed</a></li>
-                  <li><a class="dropdown-item" href="#">Dr Neymar</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Undetermined</a></li>
-                </ul>
+                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
+                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
+                  { % for doctornames in doctors % }
+                  <option value="">{{doctornames}}</option>
+                  { % endfor % }
+                 </select>
               </div>
-              
+            </form>
 
-            <div class="input-group m-3">
-              <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                placeholder="Choose Nurse" required>
-              <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                aria-expanded="false">Nurses</button>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Sarah</a></li>
-                <li><a class="dropdown-item" href="#">Julia</a></li>
-                <li><a class="dropdown-item" href="#">Nermeen</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li><a class="dropdown-item" href="#">Undetermined</a></li>
-              </ul>
-            </div>
+            <form method="GET">
+              <div class="input-group m-3">
+                <!-- <input type="text" class="form-control" aria-label="Text input with dropdown button" placeholder="Choose Doctor" id="dd2"> -->
+                 <select name="" class="form-select border-primary text-secondary" id="dd" onchange="dropdown();">
+                  { % for nursenames in nurses % }
+                  <option value="">{{nursenames}}</option>
+                  { % endfor % }
+                 </select>
+              </div>
+            </form>
 
           </div>
         </div>
 
       </div>
+      <form method="POST">
       <div class="d-flex justify-content-center m-3">
         <button type="submit" class="btn btn-primary btn-lg">Add</button>
       </div>
-    </div>
     </form>
+    </div>
   </div>
+  {% endblock %}
+  <script>
+  function dropdown()
+  {
+    let d=document.getElementById("dd");
+    let text=d.options[d.selectedIndex].text;
+    document.getElementById("dd2").value=text;
+  }
+  </script>
 </body>
 
 </html>

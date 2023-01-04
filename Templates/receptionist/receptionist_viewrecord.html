@@ -15,13 +15,12 @@
     <title>Patient Record</title>
 </head>
 <body >
-    {%extends sidebarhtml %}
     {%block content%}
-    {% if data %}
+    {%if data%}
      <div class="main-container m-5">
         <dl class="row display-5">
             <dt class="col-sm-3 font-weight-bold text-primary">Record ID</dt>
-            <dd class="col-sm-9 font-weight-bold text-primary">{{data.patientRecordID}}</dd>
+            <dd class="col-sm-9 font-weight-bold text-primary">{{data.recordid}}</dd>
         </dl>
         <fieldset class="border p-2">
             <legend class="text-primary float-none w-auto">Basic Information</legend>
@@ -35,9 +34,9 @@
                 <dt class="col-sm-3">Birthdate</dt>
                 <dd class="col-sm-9">{{data.patientbirthdate}}</dd>
                 <dt class="col-sm-3">Age</dt>
-                <dd class="col-sm-9">{{data.patientage}}</dd>
+                <dd class="col-sm-9">{{data.patientid}}</dd>
                 <dt class="col-sm-3">Gender</dt>
-                <dd class="col-sm-9">{{data.patientgender}}</dd>
+                <dd class="col-sm-9">{{data.patientsex}}</dd>
                 <dt class="col-sm-3">Insurance</dt>
                 <dd class="col-sm-9">{{data.patientinsurance}}</dd>
     </dl>
@@ -46,7 +45,7 @@
     <legend class="text-primary float-none w-auto">Contact Information</legend>
     <dl class="row">
         <dt class="col-sm-3">Address</dt>
-        <dd class="col-sm-9">{{data.patientadress}}</dd>
+        <dd class="col-sm-9">{{data.patientaddress}}</dd>
         <dt class="col-sm-3">Email</dt>
         <dd class="col-sm-9">{{data.patientemail}}</dd>
         <dt class="col-sm-3">Phone Number</dt>
@@ -59,16 +58,16 @@
     <legend class="text-primary float-none w-auto">Assigned</legend>
     <dl class="row">
         <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">{{data.AttendingPhysicianName}}</dd>
+        <dd class="col-sm-9">{{data.assigneddoctor}}</dd>
         <dt class="col-sm-3">Attending Nurse</dt>
-        <dd class="col-sm-9">{{data.AttendingNurseName}}</dd>
+        <dd class="col-sm-9">{{data.assignednurse}}</dd>
         </dl>
     </fieldset>
-    {% endif %}
     <div class="d-flex justify-content-center m-5" >
         <a class="btn btn-primary mx-3" href="http://127.0.0.1:5000/receptionist_editrecord/{{data.patientid}}">Update Information</a>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 </body>
 </html>

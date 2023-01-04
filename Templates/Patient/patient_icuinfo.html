@@ -18,6 +18,8 @@
 </head>
 
 <body>
+  {%block content%}
+  {%if data%}
     <div class="main-container m-5">
         <div class="row row-bordered">
             <h1 class="font-weight-bold text-primary ">ICU Information</h1>
@@ -26,15 +28,15 @@
             <legend class="text-primary float-none w-auto mt-4">ICU Record</legend>
             <dl class="row">
                 <dt class="col-sm-3">Admittance date</dt>
-                <dd class="col-sm-9">XXXXX</dd>
+                <dd class="col-sm-9">{{data.0}}</dd>
                 <dt class="col-sm-3">Discharge date</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.1}}</dd>
                 <dt class="col-sm-3">Attending Physician</dt>
-                <dd class="col-sm-9">XXXXX</dd>
+                <dd class="col-sm-9">{{data.2}} {{data.3}}</dd>
                 <dt class="col-sm-3">Attending Nurse</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.4}} {{data.5}}</dd>
                 <dt class="col-sm-3">Diagnosis</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.6}}</dd>
 
             </dl>
         </fieldset>
@@ -53,33 +55,13 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% if medicine %}
                     <tr>
-                      <td>Dawa ko7a</td>
-                      <td>10ml</td>
-                      <td>3/day</td>
-                      <td>1/1/23</td>
-                      <td>1/10/23</td>
-                      <td>Before breakfast</td>
-    
+                      {% for details in medicine %}
+                      <td> {{ details }}</td>
+                      {% endfor %}
                     </tr>
-                    <tr>
-                      <td>Jacob</td>
-                      <td>Thornton</td>
-                      <td>@fat</td>
-                      <td>15</td>
-                      <td>15</td>
-                      <td>15</td>
-    
-                    </tr>
-                    <tr>
-                      <td>Larry</td>
-                      <td>the Bird</td>
-                      <td>@twitter</td>
-                      <td>15</td>
-                      <td>15</td>
-                      <td>15</td>
-    
-                    </tr>
+                    {% endif %}
                   </tbody>
                 </table>
               </div>
@@ -90,19 +72,21 @@
             <legend class="text-primary float-none w-auto mt-4">Payment</legend>
             <dl class="row">
                 <dt class="col-sm-3">Bill ID</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.7}}</dd>
                 <dt class="col-sm-3">Stay</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.10}}</dd>
                 <dt class="col-sm-3">Medications</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.11}}</dd>
                 <dt class="col-sm-3">Insurance Percentage</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.9}}</dd>
                 <dt class="col-sm-3">Total</dt>
-                <dd class="col-sm-9">XXXXXX</dd>
+                <dd class="col-sm-9">{{data.8}}</dd>
 
             </dl>
         </fieldset>
     </div>
+    {%endif%}
+    {% endblock %}
 </body>
 
 </html>

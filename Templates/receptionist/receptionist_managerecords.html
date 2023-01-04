@@ -17,7 +17,6 @@
 </head>
 
 <body>
-  {%extends sidebarhtml %}
   {%block content%}
   <div class="main-container m-5">
 
@@ -50,18 +49,16 @@
           </tr>
         </thead>
         <tbody>
-          { % for info in record % }
           <tr data-href="http://127.0.0.1:5000/receptionist_viewrecord">
-            { % for details in record % }
-            <td> { { details } }</td>
-            { % endfor % }
+            {% for details in data %}
+            <td>{{ details }}</td>
             <td>
               <a type="button" class="btn btn-outline-primary border border-primary" href="http://127.0.0.1:5000/receptionist_editrecord/{{ detail['id'] }}">
                 <i class="fa-solid fa-user-pen"></i>
               </a>
             </td>
+            {% endfor %}
           </tr>
-          { % endfor % }
         </tbody>
       </table>
     </div>

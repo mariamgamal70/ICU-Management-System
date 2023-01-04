@@ -26,9 +26,8 @@
 </head>
 
 <body>
-    {%extends sidebarhtml %}
     {%block content%}
-    {% if data %}
+    {%if data%}
     <div class="main-container m-5">
 
         <div class="row row-bordered">
@@ -52,10 +51,10 @@
                     <dd class="col-sm-6">{{data.receptionistgender}}</dd>
                 </dl>
             </div>
-    {% endif %}
             <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
-                <img src="../../Static/images/receptionist.jpg" alt="profile pic" style="height: 300px;">
+                <img src="{{ url_for('static', filename='/images/receptionist.jpg') }}" alt="profile pic" style="height: 300px;">
             </div>
+    {% endif %}
     {% endblock %}
 </body>
 
