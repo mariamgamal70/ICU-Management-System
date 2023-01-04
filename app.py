@@ -435,7 +435,8 @@ def nursehome():
    #  result['nursebirthdate'] = nurse[2]
    #  result['nursessn'] = nurse[3]
    #  result['nursegender'] = nurse[4]
-   mycursor.execute('SELECT patient.FName,patient.LName,PatientID from patient join  nurse on Assignednurse=Nurse_SSN where NurseID=%s', (nurse[5]))
+   mycursor.execute(
+       'SELECT patient.FName,patient.LName,PatientID from patient join  nurse on Assignednurse=Nurse_SSN where NurseID=%s', (nurseid))
    patient = mycursor.fetchone()
    # result['patientname'] = patient[0]+' '+patient[1]
    # result['patientid'] = patient[2]
@@ -445,7 +446,7 @@ def nursehome():
 
 @app.route("/patientrecord")#NEEDS FIXING
 def getpatientrecord():
-   mycursor.execute('SELECT patient.RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,pupils,skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.LName,Doctor_ID from patient join patientrecord on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', (session['patientid']))
+   mycursor.execute('SELECT patient.RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,pupils,skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.LName,Doctor_ID,patientID from patient join patientrecord on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', (session['patientid']))
    patient = mycursor.fetchone()
    return render_template('patientrecord.html', patient=patient)
 
@@ -490,35 +491,39 @@ def viewfile(file_id):
    return Response(file, mimetype='application/octet-stream')
 
 
-@app.route("/dailyassessment/<int:file_id>", methods=["POST", "GET"])
-def dailyassessment():
+@app.route("/dailyassessment/<int:patient_id>", methods=["POST", "GET"])
+def dailyassessment(patient_id):
    if request.method == "POST":
       val = ((request.form.get('consciousness')), (request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodtype')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get('respiratoryrate')), (request.form.get('oxygensaturation')), (request.form.get('heartrate')), (request.form.get('painlevel')), (request.form.get('ivaccess')), (request.form.get('ivaccessdate')), (request.form.get('heparin')))
-      mycursor.execute('UPDATE TABLE patient SET Level_of_consciousness=%s,pupils=%s,skin=%s,BloodGluecose=%s,Respiratoryrate=%s,OxygenSaturation=%s,HeartRate=%s,PainLevel=%s,IV_Access=%s,iv_Acess_date=%s,Takes_Heparin=%s', val)
-      return redirect("/dailyassessment")
+      mycursor.execute('UPDATE TABLE patient SET Level_of_consciousness=%s,pupils=%s,skin=%s,BloodGlucose=%s,Respiratoryrate=%s,OxygenSaturation=%s,PulseRateMin=%s,PainLevel=%s,IV_Access=%s,IV_Acess_date=%s,Takes_Heparin=%s', val)
+      return redirect("/dailyassessment/<int:patient_id>")
    return render_template('dailyassessment.html')
 
 @app.route("/prescriptiontable", methods=["POST", "GET"])
 def prescriptiontable():
-   mycursor.execute('SELECT medicine_id,medicine_name,Dosage,Frequency,COUNT(timestamp)as Noadmisntered,StartDate,EndDate from prescribed_medication join patient on patient_PSSN=PSSN join medicine_prescription_timestamps on medicine_id= medicine_prescription_id group by medicine_prescription_id where patientID=%s', (session['patientid']))
+   mycursor.execute('SELECT medicine_id,medicine_name,Dosage,Frequency,COUNT(timestamp)as Noadmisntered,StartDate,EndDate from prescribed_medication join patient on patient_PSSN=PSSN join medicine_prescription_timestamps on medicine_id= medicine_prescription_id group by medicine_id where patientID=%s', (session['patientid']))
    #TRANSFORMED LIST OF TUPLES INTO DICTIONARY VV ACCESSED BY KEYWORDS
 #    columns = [col[0] for col in mycursor.description]
 #    result = [dict(zip(columns, row)) for row in mycursor.fetchall()]
    prescriptions = mycursor.fetchall() #RETURNS LIST OF TUPLES, TUPLES ARE ACCESSED USING INDEXES
    return render_template('prescriptiontable.html', prescriptions=prescriptions)
 
-# @app.route('/prescriptiontable/<id:medicineid>')
-# def prescriptiontable(medicineid):
-#     mycursor.execute(
-#         'INSERT INTO medicine_prescription_timestamps (medicine_prescription_id, timestamp) values(%s, CURRENT_TIMESTAMP)', (medicineid))
-#     return redirect('prescriptionchecklist.html')
+@app.route('/prescriptiontable/<id:medicineid>')
+def prescriptiontable(medicineid):
+    mycursor.execute(
+        'INSERT INTO medicine_prescription_timestamps (medicine_prescription_id, timestamp) values(%s, CURRENT_TIMESTAMP)', (medicineid))
+    mydb.commit()
+    return render_template('prescriptiontable.html')
 
 
-# @app.route('/prescriptionchecklist/<id:medicineid>')
-# def prescriptiontable(medicineid):
-#    mycursor.execute('SELECT SUM(id),id,timestamp from medicine_prescription_timestamps group by id where medicine_prescription_id=%s', (medicineid))
-#    medicinetimestamps=mycursor.fetchall()
-#    return render_template('prescriptionchecklist.html',medicinetimestamps=medicinetimestamps)
+@app.route('/prescriptiontimestamps/<int:medicineid>')
+def prescriptiontable(medicineid):
+    mycursor.execute('SELECT COUNT(timestamp),medicine_prescription_id,medicine_name,timestamp from medicine_prescription_timestamps join prescribed_medicine on medicine_prescription_id=medicine_id WHERE medicine_prescription_id=%s GROUP BY medicine_prescription_id', (medicineid))
+    rows = mycursor.fetchall()
+    columns = [col[0] for col in mycursor.description]
+    medicinetimestamps = [dict(zip(columns, row)) for row in rows]
+    return render_template('prescriptionchecklist.html', medicinetimestamps=medicinetimestamps)
+
 
 
 @app.route('/nursenotifications')
