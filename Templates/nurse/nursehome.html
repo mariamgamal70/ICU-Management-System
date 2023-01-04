@@ -17,7 +17,6 @@
 <body>
     { % extends "index.html" % }
     {%block content%}
-    {% if data %}
     <div class="main-container m-5">
         <h1 class="text-primary">Home</h1>
         <hr class="mb-4">
@@ -40,7 +39,6 @@
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
                 <dd class="col-sm-6">{{patient[2]}}</dd>
             </dl>
-    {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
             
             <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">

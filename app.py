@@ -379,82 +379,71 @@ def nursehome():
 
 @app.route("/patientrecord")
 def getpatientrecord():
-    mycursor.execute(
-        'SELECT RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Gender,patient.SSN,patient.Address,patient.Phone,Emergency_Contact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,Unit_Rooms_RoomNumber,doctor.Fname,doctor.LName,Doctor_ID from patient join record on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN join beds on Beds_BedID=BedID join unit_room on Unit_Rooms_RoomNumber=RoomNumber where PatientID=%s', (session['patientid']))
-    patient = mycursor.fetchone()
-    render_template('patientrecord.html', patient=patient)
-
+   mycursor.execute(
+       'SELECT patient.RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Gender,patient.Emergency_Contact,MedicalStatus,AdmissionReason,DateofAdmittance,MedicalDiagnosis,Beds_BedID,doctor.Fname,doctor.LName,Doctor_ID from patient join record on PatientRecord_RecordID=RecordID join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', (session['patientid']))
+   patient = mycursor.fetchone()
+   render_template('patientrecord.html', patient=patient)
 
 @app.route("/patientlabsandscans", methods=["POST", "GET"])
 def getpatientlabsandscans():
-    if request.method == "POST":
-        if "uploadlab" in request.form:
+   if request.method == "POST":
+      if "uploadlab" in request.form:
             selected_radio = request.form.get('lab')
             file = request.files['existinglab']
             if selected_radio is None or not file:
-                flash('Please check the form again')
-                redirect('/patientlabsandscans')
-                file_contents = file.read()
-                val = (selected_radio, file_contents, request.method.get(
-                    'dataissued'), session['patientid'])
-                mycursor.execute(
-                    'INSERT INTO lab(type,labfile,dateissued,patientid) values()', val)
+               flash('Please check the form again')
+               redirect('/patientlabsandscans')
+               file_contents = file.read()
+               val = ((selected_radio, file_contents, request.method.get('dataissued')), (session['patientid']))
+               mycursor.execute('INSERT INTO labresults (Type,LabResult,DateIssued) values(%s) where Patient_PSSN in(SELECT PSSN FROM patient where PatientID=%s )', val)
+               mydb.commit()
+               render_template('patientlabsandscans.html')
             else:
-                selected_radio = request.form.get('imaging')
-                file = request.files['existing']
-                if selected_radio is None or not file:
-                    flash('Please check the form again')
-                    redirect('/patientlabsandscans')
-                val = (selected_radio, request.files['existinglab'], request.method.get(
-                    'dataissued'), session['patientid'])
-                mycursor.execute(
-                    'INSERT INTO scan (type,labfile,dateissued,patientid) values()', val)
-    mycursor.execute(
-        'SELECT Labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=checked', (session['patientid']))
-    checkedlabs = mycursor.fetchall()
-    mycursor.execute(
-        'SELECT labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
-    pendinglabs = mycursor.fetchall()
-    mycursor.execute(
-        'SELECT labfile,Type,DateIssued,TimeIssued from lab join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
-    checkedimaging = mycursor.fetchall
-    mycursor.execute(
-        'SELECT scanfile,Type,DateIssued,TimeIssued from scan join patient on patientid=patientid where patientid=%s and flag=pending', (session['patientid']))
-    pendingimaging = mycursor.fetchall()
+               selected_radio = request.form.get('imaging')
+               file = request.files['existing']
+               if selected_radio is None or not file:
+                  flash('Please check the form again')
+                  redirect('/patientlabsandscans')
+               val = ((selected_radio, request.files['existinglab'], request.method.get('dataissued')), (session['patientid']))
+               mycursor.execute('INSERT INTO patientscans (Type,LabResult,DateIssued) values(%s) where Patient_PSSN in(SELECT PSSN FROM patient where PatientID=%s )', val)
+               mydb.commit()
+               return render_template('patientlabsandscans.html')
+   mycursor.execute('SELECT LabResultID,Labfile,Type,DateIssued from labresults join patient on PSSN=Patient_PSSN where patientid=%s and flag=checked', (session['patientid']))
+   checkedlabs = mycursor.fetchall()
+   mycursor.execute('SELECT LabResultID,labfile,Type,DateIssued from labresults join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
+   pendinglabs = mycursor.fetchall()
+   mycursor.execute('SELECT PatientScanID,labfile,Type,DateIssued from PatientScans join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
+   checkedimaging = mycursor.fetchall
+   mycursor.execute('SELECT PatientScanID,scanfile,Type,DateIssued from PatientScans join patient on PSSN=Patient_PSSN where patientid=%s and flag=pending', (session['patientid']))
+   pendingimaging = mycursor.fetchall()
+   render_template('patientlabsandscans.html',checkedlabs=checkedlabs, pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
 
-    render_template('patientlabsandscans.html', checkedlabs=checkedlabs,
-                    pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
-
-"""
 @app.route('/patientlabsandscans/<int:file_id>')
 def viewfile(file_id):
-    mycursor.execute('SELECT file from lab where id=%s', (file_id))
-    file = mycursor.fetchone()
-    return Response(file, mimetype='application/octet-stream')
+   mycursor.execute('SELECT LabResults from labresults where id=%s', (file_id))
+   file = mycursor.fetchone()
+   return Response(file, mimetype='application/octet-stream')
 
 
-@app.route("/dailyassessment", methods=["POST", "GET"])
+@app.route("/dailyassessment/<int:file_id>", methods=["POST", "GET"])
 def dailyassessment():
-    if request.method == "POST":
-        val = ((request.form.get('consciousness')), (request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodtype')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get(
-            'respiratoryrate')), (request.form.get('oxygensaturation')), (request.form.get('heartrate')), (request.form.get('painlevel')), (request.form.get('ivaccess')), (request.form.get('ivaccessdate')), (request.form.get('heparin')))
-        mycursor.execute('UPDATE TABLE patient SET consciousness=%s,pupils=%s,skin=%s,bloodgluecose=%s,respiratoryrate=%s,oxygensaturation=%s,heartrate=%s,painlevel=%s,ivaccess=%s,ivaccessdate=%s,heparin=%s', val)
-        return redirect("/dailyassessment")
-    return render_template('dailyassessment.html')
-
+   if request.method == "POST":
+      val = ((request.form.get('consciousness')), (request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodtype')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get('respiratoryrate')), (request.form.get('oxygensaturation')), (request.form.get('heartrate')), (request.form.get('painlevel')), (request.form.get('ivaccess')), (request.form.get('ivaccessdate')), (request.form.get('heparin')))
+      mycursor.execute('UPDATE TABLE patient SET consciousness=%s,pupils=%s,skin=%s,bloodgluecose=%s,respiratoryrate=%s,oxygensaturation=%s,heartrate=%s,painlevel=%s,ivaccess=%s,ivaccessdate=%s,heparin=%s', val)
+      return redirect("/dailyassessment")
+   return render_template('dailyassessment.html')
 
 @app.route("/prescriptiontable", methods=["POST", "GET"])
 def prescriptiontable():
-    mycursor.execute(
-        'SELECT Name,Dosage,Frequency,Noadminsetered,StartDate,EndDate from prescription join patient on patient_PSSN=PSSN where patientID=%s', (session['patientid']))
-    prescriptions = mycursor.fetchall()
-    render_template('prescriptiontable.html', prescriptions=prescriptions)
+   mycursor.execute('SELECT Name,Dosage,Frequency,Noadminsetered,StartDate,EndDate from prescribed_medications join patient on patient_PSSN=PSSN where patientID=%s', (session['patientid']))
+   prescriptions = mycursor.fetchall()
+   render_template('prescriptiontable.html', prescriptions=prescriptions)
 
 
-@app.route('/prescriptionchecklist/<string:medicinename>')
-def prescriptiontable(medicinename):
+@app.route('/prescriptionchecklist/<id:medicineid>')
+def prescriptiontable(medicineid):
     mycursor.execute(
-        'SELECT Noadminsetered from prescription where Name=%s', (medicinename))
+        'SELECT Noadminsetered from prescribed_medications where Name=%s', (medicineid))
     noadminster = mycursor.fetchone()
     if request.method == "POST":
         checkedboxes = request.form.getlist('checklist')
@@ -464,7 +453,7 @@ def prescriptiontable(medicinename):
             noadminster = noadminster-counter
             mycursor.execute(
                 'UPDATE TABLE prescription SET Noadminsetered=noadminster where Name=%s', (medicinename))
-    return render_template('prescriptionchecklist.html', number=noadminster, name=medicinename)
+    return render_template('prescriptionchecklist.html', number=noadminster, medicineid=medicineid)
 
 
 @app.route('/nursenotifications')
