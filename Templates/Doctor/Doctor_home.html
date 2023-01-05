@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../../Static/css/sidebar.css">
   <link rel="stylesheet" href="../../Static/css/managerecords.css">
   <link rel="preconnect" href="https:/fonts.googleapis.com">
+  <link rel="stylesheet" href="{{ url_for('static', filename='/css/addrecord.css') }}">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
@@ -29,6 +30,8 @@
 
 <body>
 
+  {%include 'Doctor/navbar_doctor.html'%}
+  {%block content%}
   {% if data %}
     <div class="main-container m-5">
 
@@ -62,7 +65,7 @@
   </div>
 </div>
 {% endif %}
-
+{%endblock%}
 </body>
 
 </html>

@@ -9,6 +9,7 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/addrecord.css') }}">
     <link rel="stylesheet" href="../../Static/css/sidebar.css">
   <link rel="stylesheet" href="../../Static/css/managerecords.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -25,6 +26,8 @@
     <title>Patient Record</title>
 </head>
 <body >
+  {%include 'Doctor/navbar_doctor.html'%}
+  {%block content%}
     {% if patient %}
     <div class="main-container m-5">
       <div class="d-flex justify-content-sm-between flex-wrap">
@@ -400,5 +403,7 @@
 
 </script>
 
+
+{%endblock%}
 </body>
 </html>

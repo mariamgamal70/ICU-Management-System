@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../../Static/css/managerecords.css">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" href="{{ url_for('static', filename='/css/addrecord.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
   <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" 
@@ -29,6 +30,9 @@ integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShg
 </head>
 
 <body>
+  {%include 'Doctor/navbar_doctor.html'%}
+  {%block content%}
+  
   <div class="main-container m-5">
       <h1 class=" text-primary ">View Patients</h1>
       <hr>
@@ -79,6 +83,8 @@ integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShg
       })
     })
   </script>
+
+  {% endblock %}
 </body>
 
 </html>
