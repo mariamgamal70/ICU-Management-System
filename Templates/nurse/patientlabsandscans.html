@@ -15,8 +15,8 @@
     <title>Patient labs and scans</title>
 </head>
 <body>
-{ % extends "index.html" % }
-{%block content%}
+<!-- { % extends "index.html" % } -->
+<!-- {%block content%} -->
 <div class="main-container m-5">
 <h1 class="text-primary">Laboratory</h1>
 <hr class="mb-4">
@@ -38,15 +38,14 @@
                     <tr>
                         <th>File</th>
                         <th>Type</th>
-                        <th>Date Issued</th>
-                        <th>Time Issued</th>
+                        <th>Date and Time Issued</th>
                     </tr>
                     </thead>
                     <tbody>
-                    { % for checked in checkedlabs % }
+                    {% for checked in checkedlabs %}
                     <tr>
-                        <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ file.id }}">{{ checked[0] }}</a></td>
-                        <td> {{checked[1]}}</td>
+                        <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ checked[0] }}">{{ checked[0] }}</a></td>
+                        <!-- <td> {{checked[1]}}</td> -->
                         <td> {{checked[2]}}</td>
                         <td> {{checked[3]}}</td>
                         </tr>
@@ -69,7 +68,7 @@
         aria-labelledby="panelsStayOpen-headingTwo">
         <div class="accordion-body">
             <div class="table_wrapper">
-                <form action="/" method="post" enctype="multipart/form-data">
+                <form  method="post" enctype="multipart/form-data">
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -80,7 +79,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    { % for pending in pendingimaging % }
+                    { % for pending in pendinglabs % }
                     <tr>
                         <td>
                             <div class="custom-control custom-checkbox">
@@ -114,7 +113,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="/patientlabsandscans" method="POST">
+                    <form action="/patientlabsandscans" method="POST" name="uploadlab" enctype="multipart/form-data">
                     <input type="radio" name="lab" value="Complete blood count" > Complete blood count <br>
                     <input type="radio" name="lab" value="Basic metabolic panel" > Basic metabolic panel <br>
                     <input type="radio" name="lab" value="Comprehensive metabolic panel" > Comprehensive metabolic panel <br>
@@ -128,9 +127,8 @@
                     </label>
                     <div class="input-group my-3 ">
                     <input type="file" class="form-control" id="inputGroupFile02" name="existinglab">
-                    <input type="submit" class="btn btn-outline-primary" name="addexistinglab" value="Add">
+                    <!-- <input type="submit" class="btn btn-outline-primary" name="addexistinglab" value="Add"> -->
                 </div>
-                </form>
                 </div>
                 {% with messeges =get_flashed_messages() %}
                 {% if messeges %}
@@ -139,7 +137,6 @@
                     <i class='bx bx-error-circle'></i>
                     {{messege}}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </button>
                 </div>
                 {% endfor %}
                 {% endif %}
@@ -148,6 +145,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <input type="submit" value="Upload" name="uploadlab" class="btn btn-primary">
                 </div>
+            </form>
             </div>
         </div>
     </div>
@@ -179,7 +177,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    { % for checked in checkedimaging % }
+                    {% for checked in checkedimaging %}
                     <tr>
                     <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ file.id }}">{{ checked[0] }}</a></td>
                     <td> {{checked[1]}}</td>
@@ -248,7 +246,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/patientlabsandscans" method="post">
+                        <form action="/patientlabsandscans" method="post" name="uploadimaging">
                             <input type="radio" name="Imaging" value="CT-Scan" > CT-Scan<br>
                             <input type="radio" name="Imaging" value="MRI" > MRI<br>
                             <input type="radio" name="Imaging" value="PET Scan" > PET Scan<br>
@@ -261,10 +259,8 @@
                                 <input type="datetime-local" name="Book Lab Test"  >
                             </label>
                             <div class="input-group my-3 ">
-                            <input type="file" class="form-control" id="inputGroupFile02">
-                            <input type="submit" class="btn btn-outline-primary" name="addImagingform" value="Add">
+                            <input type="file" class="form-control" name="existingimaging" id="inputGroupFile02">
                         </div>
-                    </form>
                     </div>
                     {% with messeges =get_flashed_messages() %}
                     {% if messeges %}
@@ -273,14 +269,15 @@
                         <i class='bx bx-error-circle'></i>
                         {{messege}}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </button>
-                    </div>
-                    {% endfor %}
+                    </button>
+                </div>
+                {% endfor %}
                     {% endif %}
                     {% endwith %}
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <input type="submit" value="Upload" name="uploadimaging" class="btn btn-primary">
+                    </form>
                     </div>
                 </div>
             </div>
@@ -289,7 +286,7 @@
             
         </form> -->
     </div>
-    {% endblock %}
+    <!-- {% endblock %} -->
         <!-- <script>
             function showLabForm(){
                 if(document.getElementById('addlabform').style.display=='none')

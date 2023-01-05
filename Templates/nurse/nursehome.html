@@ -15,13 +15,12 @@
     <title>Nurse Homepage</title>
 </head>
 <body>
-    { % extends "index.html" % }
-    {%block content%}
-    {% if data %}
+    { % extends "sidebar.html" % }
+    { % block content % }
     <div class="main-container m-5">
         <h1 class="text-primary">Home</h1>
         <hr class="mb-4">
-    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data.nursename}}</span></b></h1>
+    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{nurse[0]+' ' + nurse[1]}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
@@ -40,7 +39,6 @@
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
                 <dd class="col-sm-6">{{patient[2]}}</dd>
             </dl>
-    {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
             
             <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">
@@ -66,7 +64,7 @@
             </form>
         </div>
         <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
-            <img src="/Static/images/nursepp2.jpg" alt="profile pic" style="height: 300px;">
+            <img src="{{ url_for('static', filename='/images/nursepp2.jpg') }}" alt="profile pic" style="height: 300px;">
         </div>
     </div>
 </div>
@@ -78,6 +76,6 @@
             document.getElementById('alertbutton').style.display = 'none'
         }
         </script>
-        {% endblock %}
+        { % endblock % }
 </body>
 </html>

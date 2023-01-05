@@ -24,22 +24,27 @@
     <table class="table table-hover">
         <thead>
             <tr>
-            <th>Medicine Name</th>
+            <th>ID</th>
+            <th>Name</th>
             <th>Dosage</th>
             <th>Frequency</th>
             <th>Times Adminstered</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Adminster Prescription</th>
+            <th>Adminster </th>
+            <th>Timestamps</th>
             </tr>
         </thead>
         <tbody>
-            { % for medicine in prescription % }
+            { % for prescription in prescriptions % }
             <tr>
-                { % for detail in medicine % }
-                <td> { { detail } }</td>
+                { % for medicine in prescription % }
+                <td> { { medicine } }</td>
                 { % endfor % }
-                <td><a href="http://127.0.0.1:5000/prescreptiontable/{{ detail['Name'] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-task' style="font-size:25px;"></i></a></td>
+                <td>
+                    <a href="http://127.0.0.1:5000/administer_in_prescription_table/{{ prescription[0] }}"  class="btn btn-outline-primary" style="font-size:20px;" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-plus-medical'></i></a>
+                </td>
+                <td><a href="http://127.0.0.1:5000/prescreptiontimestamps/{{ prescription[0] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View"><i class='bx bx-calendar-check' style="font-size:25px;"></i></a></td>
             </tr>
             { % endfor % }
         </tbody>

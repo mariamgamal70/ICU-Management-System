@@ -23,28 +23,23 @@
     { % extends "index.html" % }
     {%block content%}
     <div class="main-container m-5">
-    <h1 class=" text-primary">Please check each time you adminster a dosage</h1>
+    <h1 class=" text-primary">Medicine Timestamps</h1>
     <hr class="mb-4">
-    <h3>Checklist for {{name}} </h3>
+    <h4><span class="text-primary">Check Time list for </span><br> {{medicinetimestamps['medicine_name']}} <br> <span class="text-primary">ID </span>{{medicinetimestamps['medicine_prescription_id']}}</h4>
+    <h5 class="text-primary">Currently Adminstered <span class="text-dark">{{medicinetimestamps['COUNT(timestamp)']}}</span> times</h5>
         <form  method="POST">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Number of times remaining: {{ number }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    { % for no in number % }
-                    <tr>
-                        <td>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" name="checklist" id="customCheck1" >
-                                <label class="custom-control-label" for="customCheck1">Dose {{ no+1 }}</label>
-                            </div>
-                        </td>
-                    </tr>
-                    { % endfor % }
-                </tbody>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for time in medicine['timestamp'] %}
+                <tr>
+                    <td>{{ time }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
             </table>
             <div class="text-center"><input type="submit" value="Adminster" class="btn btn-primary"></div>
         </form>

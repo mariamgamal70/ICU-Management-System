@@ -72,10 +72,9 @@
       </a>
         </ul>
       </div>
-      <!-- <section class="home-section">
-          <div class="text">Home Page</div>
-      </section> -->
-      
+      <section class="home-section">
+        {% block content %}{% endblock %}
+      </section>
       <script>
       let sidebar = document.querySelector(".sidebar");
       let closeBtn = document.querySelector("#btn");
@@ -98,7 +97,6 @@
       }
 
       </script> 
-      {%block content%} {% endblock %}
 </body>
 </html>
 
