@@ -119,91 +119,47 @@ def Adminhome():
 @app.route('/AdminDr',methods=["GET"])
 def AdminDr():
     if request.method=="GET":
-        
-
-     mycursor.execute(
-      "SELECT Doctor_ID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Speciality,StartShift,EndShift FROM doctor ORDER BY Doctor_ID ")
+        mycursor.execute("SELECT Doctor_ID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Speciality,StartShift,EndShift FROM doctor ORDER BY Doctor_ID ")
     #row_headers = [x[0] for x in mycursor.description]
     doctors_data = mycursor.fetchall()
-
     Dr_Data = {
-      'records': doctors_data
-
-   }
-
-        
+    'records': doctors_data
+    }
     return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
-
-@app.route('/AdminDr',methods=["GET"])
-def AdminDr():
-    if request.method=="GET":
-        
-
-     mycursor.execute(
-      "SELECT Doctor_ID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Speciality,StartShift,EndShift FROM doctor ORDER BY Doctor_ID ")
-    #row_headers = [x[0] for x in mycursor.description]
-    doctors_data = mycursor.fetchall()
-
-    Dr_Data = {
-      'records': doctors_data
-
-   }
-
-        
-    return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
-
-
-
 
 
 @app.route('/Admin_Add_Dr',methods=["POST", "GET"])
 def Admin_Add_Dr():
     if request.method=="GET":
-     return render_template("/Admin/Admin_Add_Dr.html")
-        
-   
-        
+        return render_template("/Admin/Admin_Add_Dr.html")
     else: 
-       FirstName = request.form.get('FirstName')
-       Password=request.form.get('password')
-       Experience = request.form.get('Experience')
-       LastName = request.form.get('LastName')
-       Gender = request.form.get('gender')
-       Salary = request.form.get('Salary')
-       DoctorID = request.form.get('DoctorID')
-       SSN = request.form.get('ssn')
-       formatted_date = request.form.get('Birthdate')  # add age
-       Speciality = request.form.get('Speciality')
-       Address = request.form.get('Address')
-       Email = request.form.get('Email')
-       PhoneNumber = request.form.get('PhoneNumber')
+        FirstName = request.form.get('FirstName')
+        Password=request.form.get('password')
+        Experience = request.form.get('Experience')
+        LastName = request.form.get('LastName')
+        Gender = request.form.get('gender')
+        Salary = request.form.get('Salary')
+        DoctorID = request.form.get('DoctorID')
+        SSN = request.form.get('ssn')
+        formatted_date = request.form.get('Birthdate')  # add age
+        Speciality = request.form.get('Speciality')
+        Address = request.form.get('Address')
+        Email = request.form.get('Email')
+        PhoneNumber = request.form.get('PhoneNumber')
     try:
-
-       sql = "INSERT INTO doctor (DoctorSSN,Doctor_ID,FName,Lname,email,Sex,Birthdate, Phone, Address, Speciality,Experience,Salary) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)"
-       val = (SSN,DoctorID,FirstName,LastName,Email,Gender,formatted_date,PhoneNumber,Address,Speciality,Experience,Salary)
-       mycursor.execute(sql,val)
-       """
-       sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
-       val=(DoctorID,FirstName,Password,'Doctor',Email,SSN)
-       mycursor.execute(sql,val)
-       """
-       mydb.commit() 
-       return redirect(url_for('AdminDr'))
-   
+        sql = "INSERT INTO doctor (DoctorSSN,Doctor_ID,FName,Lname,email,Sex,Birthdate, Phone, Address, Speciality,Experience,Salary) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)"
+        val = (SSN,DoctorID,FirstName,LastName,Email,Gender,formatted_date,PhoneNumber,Address,Speciality,Experience,Salary)
+        mycursor.execute(sql,val)
+        """
+        sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
+        val=(DoctorID,FirstName,Password,'Doctor',Email,SSN)
+        mycursor.execute(sql,val)
+        """
+        mydb.commit() 
+        return redirect(url_for('AdminDr'))
     except:
         return render_template("/Admin/Admin_Add_Dr.html")
 
-       
-
-    
-    
-   
-
-
-        
-      
-
-       
 ######################################### ---ADMINEND---#################################################
 
 ######################################### ---INDEXSTART---#################################################
@@ -430,7 +386,6 @@ def contactus():
 
 ######################################### ---NURSESTART---#################################################
 
-"""
 @app.route("/nursehome", methods=["POST", "GET"])
 def nursehome():
     # nurseid = #session['id']
@@ -644,6 +599,5 @@ def R_AddRecord():
 
 ##################################################### Run#############################################################
  
-"""
 if __name__ == "__main__":
     app.run(debug=True)
