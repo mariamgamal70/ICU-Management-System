@@ -38,10 +38,10 @@ app.config["MAIL_USE_SSL"] = True
 mail = Mail()
 mail.init_app(app)
 mydb = mysql.connector.connect(
-   host="localhost",
-   user="root",
-   password="mysql",
-   database="icu_management_finalll"
+    host="localhost",
+    user="root",
+    password="lovelygirl12",
+    database="icu_management_finalll"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -49,6 +49,17 @@ mycursor = mydb.cursor()
 #functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
 #route("route",methods=["POST","GET"])
 # in case it is GET and POST you should check inside the function whether the incoming is a get or post request , if its a get ,return template, if its a post , send data do changes
+
+
+def countnotification():
+    messages = get_flashed_messages()
+    message_count = len(messages)
+    return {'notification_count': message_count}
+
+
+def notifynurse(notification):
+    string = notification['type']+'\n'+notification['info']
+    flash(string, 'warning')
 
 
 def sendmessage(result):
@@ -78,45 +89,96 @@ def index():
 @app.route('/AdminDashboard')
 def Adminhome():
 
-    
-    #mycursor.execute("SELECT FName FROM admin") Until we set our database
-    #name=mycursor.fetchone()
- 
-    
-    mydict={
-      "number1":2,
-      "number2":0,
-      "number3":3,
-      "number4":5
+    # mycursor.execute("SELECT FName FROM admin") Until we set our database
+    # name=mycursor.fetchone()
+
+    mydict = {
+        "number1": 2,
+        "number2": 0,
+        "number3": 3,
+        "number4": 5
     }
-    """
-    mycursor.execute("SELECT COUNT(NurseSSN) FROM Nurse")
-    x=mycursor.fetchone()
-    mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctors")
-    y=mycursor.fetchone()
-    mycursor.execute("SELECT COUNT(ReceptionistSSN) FROM Recptionist ")
-    z=mycursor.fetchone()
+
+    mycursor.execute("SELECT COUNT(Nurse_SSN) FROM Nurse")
+    n = mycursor.fetchone()[0]
+    print(n)
+    mycursor.execute("SELECT COUNT(DoctorSSN) FROM Doctor")
+    d = mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(Receptionist_SSN) FROM Receptionist ")
+    r = mycursor.fetchone()[0]
     mycursor.execute("SELECT COUNT(PSSN) FROM Patient ")
-    p=mycursor.fetchone()
-    Statistics={
-      "NurseNum":x,
-      "DoctorNum":y,
-      "RecepNum":z,
-      "PatientNum":p
+    p = mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(BedID) FROM Beds")
+    b = mycursor.fetchone()[0]
+    mycursor.execute("SELECT COUNT(RoomNumber) FROM Unit_Rooms")
+    U = mycursor.fetchone()[0]
+    mycursor.execute("SELECT SUM(TotalValue) FROM Bills")
+    V = mycursor.fetchone()[0]
+
+    Statistics = {
+        "NurseNum": n,  # Number of nurses in ICU
+        "DoctorNum": d,  # Number of doctors in ICU
+        "RecepNum": r,  # Number of Receptionists in ICU
+        "PatientNum": p,  # Number of Patients in ICU
+        "BedNum": b,  # Number of Beds in ICU
+        "RoomNum": U,  # Number of Rooms in ICU
+        "ICUIncome": V  # Income of ICU
+
     }
-    """
 
-    return render_template('/Admin/adminDashboard.html',Stats=mydict)
-
-@app.route("/Admin_Department")
-def ViewDepartmentInfo():
-   
-   return render_template('/Admin/ViewDep.html')
+    return render_template('/Admin/adminDashboard.html', Stats=Statistics)
 
 
+@app.route('/AdminDr',methods=["GET"])
+def AdminDr():
+    if request.method=="GET":
+        mycursor.execute("SELECT Doctor_ID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Speciality,StartShift,EndShift FROM doctor ORDER BY Doctor_ID ")
+    #row_headers = [x[0] for x in mycursor.description]
+    doctors_data = mycursor.fetchall()
+    Dr_Data = {
+    'records': doctors_data
+    }
+    return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
 
-#Modified version for user
-@app.route("/signin",methods=["POST","GET"])  # GET METHOD
+
+@app.route('/Admin_Add_Dr',methods=["POST", "GET"])
+def Admin_Add_Dr():
+    if request.method=="GET":
+        return render_template("/Admin/Admin_Add_Dr.html")
+    else: 
+        FirstName = request.form.get('FirstName')
+        Password=request.form.get('password')
+        Experience = request.form.get('Experience')
+        LastName = request.form.get('LastName')
+        Gender = request.form.get('gender')
+        Salary = request.form.get('Salary')
+        DoctorID = request.form.get('DoctorID')
+        SSN = request.form.get('ssn')
+        formatted_date = request.form.get('Birthdate')  # add age
+        Speciality = request.form.get('Speciality')
+        Address = request.form.get('Address')
+        Email = request.form.get('Email')
+        PhoneNumber = request.form.get('PhoneNumber')
+    try:
+        sql = "INSERT INTO doctor (DoctorSSN,Doctor_ID,FName,Lname,email,Sex,Birthdate, Phone, Address, Speciality,Experience,Salary) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)"
+        val = (SSN,DoctorID,FirstName,LastName,Email,Gender,formatted_date,PhoneNumber,Address,Speciality,Experience,Salary)
+        mycursor.execute(sql,val)
+        """
+        sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
+        val=(DoctorID,FirstName,Password,'Doctor',Email,SSN)
+        mycursor.execute(sql,val)
+        """
+        mydb.commit() 
+        return redirect(url_for('AdminDr'))
+    except:
+        return render_template("/Admin/Admin_Add_Dr.html")
+
+######################################### ---ADMINEND---#################################################
+
+######################################### ---INDEXSTART---#################################################
+# Modified version for user
+
+@app.route("/signin", methods=["POST", "GET"])  # GET METHOD
 def signin():
    if request.method == "POST":
       #PATIENT ONLY-----------------------------------------------------------------
@@ -314,36 +376,274 @@ def signin():
 """
 @app.route("/contactus",methods=["POST","GET"])  # GET METHOD
 def contactus():
-   if request.method == "POST":
-      result={}
-      result['firstname'] = request.form["FirstName"]
-      result['lastname'] = request.form["LastName"]
-      result['email'] = request.form["email"]
-      result['complaint']= request.form["complain"]
-      sendmessage(result)
-      flash('Email is successfully sent','success')
-      return redirect("/contactus")
-   return render_template("contactus.html")
+    if request.method == "POST":
+        result = {}
+        result['firstname'] = request.form["FirstName"]
+        result['lastname'] = request.form["LastName"]
+        result['email'] = request.form["email"]
+        result['complaint'] = request.form["complain"]
+        sendmessage(result)
+        flash('Email is successfully sent', 'success')
+        return redirect("/contactus")
+    return render_template("contactus.html")
+######################################### ---INDEXEND---#################################################
 
+# Nurse Page############################################3
+
+######################################### ---NURSESTART---#################################################
 
 @app.route("/nursehome", methods=["POST", "GET"])
-def getnursepatientdata():
-   nurseid=session['id']
-   result={}
-   mycursor.execute('SELECT FirstName,LastName,Birthdate,SSN,Gender from nurse where NurseID=%s',(nurseid))
-   nurse=mycursor.fetchone()
-   result['nurseid']=session['id']
-   result['nursename'] = nurse[0] + nurse[1]
-   result['nursebirthdate']=nurse[2]
-   result['nursessn']=nurse[3]
-   result['nursegender']=nurse[4]
-   mycursor.execute('SELECT FirstName,LastName,patientID from inpatient join nurse on nurseID=nurseID where nurseID=%s',(nurseid))
-   patient=mycursor.fetchone()
-   result['patientname']= patient[0] + patient[1]
-   result['patientid']= patient[2]
-   session['patientid'] = patient[2]
-   render_template('/nursehome',data=result)
+def nursehome():
+    # nurseid = #session['id']
+    result = {}
+    mycursor.execute(
+        'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex from nurse where NurseID=%s', ([1]))
+    nurse = mycursor.fetchone()
+    mycursor.execute(
+        'SELECT patient.FName,patient.LName,PatientID from patient join  nurse on AssignedNurseSSN=Nurse_SSN where NurseID=%s', ([1]))
+    patient = mycursor.fetchone()
+    return render_template('/nurse/nursehome.html', nurseid=1, nurse=nurse, patient=patient)
 
+
+@app.route("/patientrecord", methods=["POST", "GET"])
+def patientrecord():
+    mycursor.execute('SELECT RecordID,patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,Pupils,Skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.Lname,Doctor_ID,patient.PatientID from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s',([1]))
+    patients = mycursor.fetchone()
+    return render_template('/nurse/patientrecord.html', patient=patients)
+
+
+@app.route("/patientlabsandscans", methods=["POST", "GET"])
+def getpatientlabsandscans():
+    if request.method == "POST":
+        if "uploadlab" in request.form:
+            selected_radio = request.form.get('lab')
+            file = request.files['existinglab']
+            if selected_radio is None:
+                flash('Please check the form again')
+                return redirect('/patientlabsandscans')
+            file_contents = file.read()
+            val = (selected_radio, file_contents,request.form.get('dataissued'), 1)
+            mycursor.execute("INSERT INTO labresults (Type, LabResult, DateIssued, Patient_PSSN,Flag) VALUES (%s, %s, %s, (SELECT PSSN FROM patient WHERE PatientID=%s),'Checked')", val)
+            mydb.commit()
+            return redirect('/patientlabsandscans')
+        elif "uploadimaging" in request.form:
+            selected_radio = request.form.get('Imaging')
+            file = request.files['existingimaging']
+            file_contents = file.read()
+            if selected_radio is None:
+                flash('Please check the form again')
+                return redirect('/patientlabsandscans')
+            val = (selected_radio, file_contents, request.form.get('dataissued'), 1)
+            mycursor.execute("INSERT INTO patientscans(Type,PatientScans,DataIssued,Patient_PSSN,Flag) VALUES (%s, %s, %s, (SELECT PSSN FROM patient WHERE PatientID=%s),'Checked')", val)
+            mydb.commit()
+            return redirect('/patientlabsandscans')
+    mycursor.execute(
+        "SELECT LabResultID,LabResult,Type,DateIssued from labresults join patient on Patient_PSSN=PSSN where PatientID=%s and Flag='Checked'", ([1]))
+    checkedlabs = mycursor.fetchall()
+    mycursor.execute(
+        "SELECT LabResultID,LabResult,Type,DateIssued from labresults join patient on Patient_PSSN=PSSN where PatientID=%s and Flag='Pending'", ([1]))
+    pendinglabs = mycursor.fetchall()
+    mycursor.execute(
+        "SELECT PatientScanID,PatientScans,Type,DataIssued from patientscans join patient on Patient_PSSN=PSSN where PatientID=%s and Flag='Checked'", ([1]))
+    checkedimaging = mycursor.fetchall()
+    mycursor.execute(
+        "SELECT PatientScanID,PatientScans,Type,DataIssued from patientscans join patient on Patient_PSSN=PSSN where PatientID=%s and Flag='Pending'", ([1]))
+    pendingimaging = mycursor.fetchall()
+    return render_template('/nurse/patientlabsandscans.html', checkedlabs=checkedlabs, pendinglabs=pendinglabs, checkedimaging=checkedimaging, pendingimaging=pendingimaging)
+
+
+@app.route('/patientlabsandscans/<int:file_id>')
+def viewfile(file_id):
+    mycursor.execute(
+        'SELECT LabResult from labresults where LabResultID=%s', ([file_id]))
+    file = mycursor.fetchone()
+    return Response(file, mimetype='application/octet-stream')
+
+
+@app.route("/dailyassessment/<int:patient_id>", methods=["POST", "GET"])
+def dailyassessment(patient_id):
+    if request.method == "POST":
+        val1 = ((request.form.get('consciousness')), (request.form.get('pupils')), (request.form.get('skin')), (request.form.get('bloodpressure')), (request.form.get('bloodglucose')), (request.form.get('respiratoryrate')),(request.form.get('oxygensaturation')), (request.form.get('heartrate')), (request.form.get('painlevel')), (request.form.get('ivaccess')), (request.form.get('ivaccessdate')), (request.form.get('heparin')), (patient_id))
+        val2 = ((request.form.get('bloodtype')), (patient_id))
+        mycursor.execute('UPDATE patientrecord SET Level_of_consiousness=%s,Pupils=%s,Bloodpressure=%s,Skin=%s,BloodGlucose=%s,Respiratoryrate=%s,OxygenSaturation=%s,PulseRateMin=%s,PainLevel=%s,IV_Access=%s,IV_Acess_date=%s,Takes_Heparin=%s where Patient_PSSN in(SELECT PSSN FROM patient WHERE PatientID=%s)', val1)
+        mycursor.execute('UPDATE patient SET Blood_Group=%s WHERE PatientID=%s',val2)
+        return redirect("/patientrecord")
+    return render_template('/nurse/dailyassessment.html')
+
+
+@app.route("/prescriptiontable", methods=["POST", "GET"])
+def prescriptiontable():
+    mycursor.execute('SELECT medicine_id,medicine_name,Dosage,Frequency,StartDate,EndDate from prescribed_medication join patient on Patient_PSSN=PSSN WHERE PatientID=%s', ([1]))
+    prescription = mycursor.fetchall()
+    mycursor.execute(
+        'SELECT COUNT(timestamps) from medicine_prescription_timestamps join prescribed_medication on medicine_id=medicine_prescription_id join patient on Patient_PSSN=PSSN WHERE PatientID=%s GROUP BY timestampid', ([1]))
+    timestamp=mycursor.fetchall()
+    return render_template('/nurse/prescriptiontable.html', prescriptionlist=prescription, timestamps=timestamp)
+
+
+@app.route('/administer_in_prescription_table/<int:medicineid>')
+def administer_in_prescription_table(medicineid):
+    mycursor.execute('INSERT INTO medicine_prescription_timestamps(medicine_prescription_id,timestamps) values(%s, CURRENT_TIMESTAMP)', [medicineid])
+    mydb.commit()
+    flash('Medicine adminstered','success')
+    return redirect('/prescriptiontable')
+
+@app.route('/prescriptiontimestamps/<int:medicineid>')
+def prescriptiontimestamps(medicineid):
+    mycursor.execute('SELECT COUNT(timestamps),medicine_prescription_id,medicine_name from medicine_prescription_timestamps join prescribed_medication on medicine_prescription_id=medicine_id WHERE medicine_prescription_id=%s GROUP BY medicine_prescription_id', [medicineid])
+    medicinetimestamps = mycursor.fetchone()
+    mycursor.execute(
+        'SELECT timestamps FROM medicine_prescription_timestamps where medicine_prescription_id=%s', [medicineid])
+    timestamps=mycursor.fetchall()
+    # columns = [col[0] for col in mycursor.description]
+    # medicinetimestamps = [dict(zip(columns, row)) for row in rows]
+    return render_template('/nurse/prescriptiontimestamps.html', medicinetimestamps=medicinetimestamps,timestamps=timestamps)
+
+
+@app.route('/nursenotifications')
+def notification():
+    return render_template('/nurse/nursenotifcations.html')
+
+
+@app.context_processor
+def inject_notification_count():
+    return countnotification()
+
+###################################################### Patient Page ############################################
+#Age
+@app.route('/patient_homepage')
+def patientRecord():
+#    patientid=session['id']
+   result={}
+   mycursor.execute('SELECT FName,MName,LName,Sex,PSSN,Address,email,Phone,Emergency_Contact,Birthdate,Insurance_Status,PatientID from patient join patientrecord on PSSN=Patient_PSSN where patientid=%s',([1]))
+   patient=mycursor.fetchone()
+   result['patientname'] = patient[0]+' '+patient[1]+' '+patient[2]
+   result['patientsex']=patient[3]
+   result['patientssn']=patient[4]
+   result['patientaddress']=patient[5]
+   result['patientemail']=patient[6]
+   result['patientphone']=patient[7]
+   result['patientemergencycontact']=patient[8]
+   result['patientbirthdate']=patient[9]
+   result['patientinsurance']=patient[10]
+   result['patientid']=patient[11]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from patient AS age')
+   patient=mycursor.fetchone()
+   result['patientage']=patient[0]
+   return render_template('/Patient/patient_homepage.html',data=result)
+
+#edit sum and groupby 
+@app.route('/patient_icuinfo')
+def ICUInfo():
+   mycursor.execute('SELECT Date_Admitted,Date_Discharged,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname,MedicalDiagnosis,Bills_ID,TotalValue,Insurance_Percent,SUM(Price_Day),SUM(Price) from patient join prescribed_medication on PSSN=Patient_PSSN join bills on PSSN=bills.Patient_PSSN join beds on Beds_BedID=BedID join patientrecord on PSSN=patientrecord.Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where patientid=%s' ,([1]))
+   patient=mycursor.fetchone()
+   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where PatientID=%s' ,([1]))
+   medicine=mycursor.fetchone()
+   return render_template('/Patient/patient_icuinfo.html',data=patient,medicine=medicine)
+
+# ###################################################### Receptionist Page ############################################
+@app.route('/receptionist_viewrecord')
+def R_ViewRecord():
+#   patientid=session['id']
+   result={}
+   mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PSSN,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,patient.Birthdate,Insurance_Status,PatientID,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname,RecordID from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where patientid=%s' ,([1]))
+   patient=mycursor.fetchone()
+   result['patientname'] = patient[0]+' '+patient[1]+' '+patient[2]
+   result['patientsex']=patient[3]
+   result['patientssn']=patient[4]
+   result['patientaddress']=patient[5]
+   result['patientemail']=patient[6]
+   result['patientphone']=patient[7]
+   result['patientemergencycontact']=patient[8]
+   result['patientbirthdate']=patient[9]
+   result['patientinsurance']=patient[10]
+   result['patientid']=patient[11]
+   result['assigneddoctor']=patient[12]+' '+patient[13]
+   result['assignednurse']=patient[14]+' '+patient[15]
+   result['recordid']=patient[16]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from patient AS age')
+   patient=mycursor.fetchone()
+   result['patientage']=patient[0]
+   return render_template('receptionist/receptionist_viewrecord.html',data=result)
+
+@app.route('/receptionist_homepage')
+def receptionistHome():
+   result={}
+   mycursor.execute('SELECT Fname,Lname,Receptionist_SSN,Sex,ReceptionistID from receptionist where receptionistID=%s',([123]))
+   receptionist=mycursor.fetchone()
+   result['receptionistid']=receptionist[4]
+   result['receptionistname'] = receptionist[0]+' '+receptionist[1]
+   result['receptionistfirstname'] = receptionist[0]
+   result['receptionistssn']=receptionist[2]
+   result['receptionistgender']=receptionist[3]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from receptionist AS age')
+   receptionist=mycursor.fetchone()
+   result['receptionistage']=receptionist[0]
+   return render_template('receptionist/receptionist_homepage.html',data=result)
+
+        # data = {
+        #     'message': "Data retrieved",
+        #     'recordinfo': recordinfo
+        #  }
+        # mycursor.execute(
+        #     "SELECT FirstName FROM from patient join patientrecord on PSSN=Patient_PSSN And ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # FirstName = patient[0]
+        # mycursor.execute(
+        #     "SELECT LastName from patient join patientrecord on PSSN=Patient_PSSN AND ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # LastName = patient[0]
+        # mycursor.execute("SELECT Date_Admitted FROM from patient join record on PSSN=PatientSSN AND ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # Date_Admitted = patient[0]
+@app.route('/receptionist_managerecords', methods=["POST", "GET"])
+def manage_records():
+       if request.method == 'POST':
+        ReportID = request.form.get['ReportID']
+        mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE ReportID=%s", (ReportID))
+        recordinfo = mycursor.fetchall()
+        data = {
+            'recordinfo': recordinfo
+         }
+        return render_template('/receptionist/receptionist_managerecords.html', data=data)
+       else:
+         mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE PatientID=%s", ([1]))
+         recordinfo=mycursor.fetchall()
+         data = {
+            'recordinfo': recordinfo
+         }
+         return render_template('/receptionist/receptionist_managerecords.html',data=data)
+
+
+@app.route('/receptionist_editrecord/<int:id>',methods=['POST', 'GET'])
+def editRecord(id):
+   if request.method == 'POST':
+      FirstName = request.form.get('FirstName')
+      MiddleName = request.form.get('MiddleName')
+      LastName = request.form.get('LastName')
+      Gender = request.form.get('Gender')
+      RecordID = request.form.get('RecordID')
+      PatientID = request.form.get('PatientID')
+      SSN = request.form.get('SSN')
+      formatted_date = request.form.get('Birthdate')  
+      Insurance = request.form.get('insurance')
+      Address = request.form.get('Address')
+      Email = request.form.get('email')
+      PhoneNumber = request.form.get('PhoneNumber')
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      val1 = ((FirstName),(MiddleName), (LastName),(Gender), (PatientID),(SSN),(formatted_date), (Address), (Email),(PhoneNumber),(EmergencyContact),(AssignedDoctorSSN),(AssignedNurseSSN),(1))
+      mycursor.execute('UPDATE patient SET FName=%s,MName=%s,LName=%s,Sex=%s,PatientID=%s,PSSN=%s,Birthdate=%s,Address=%s,email=%s,Phone=%s,Emergency_Contact=%s,AssignedDrSSN=%s,AssignedNurseSSN=%s WHERE PatientID=%s',  val1) 
+      val2 = ((RecordID),(Insurance),(SSN))
+      mycursor.execute('UPDATE patientrecord SET RecordID=%s,Insurance_Status=%s,Patient_Pssn=%s', val2) 
+      mydb.commit()
+    #   return redirect("/receptionist/receptionist_viewrecord")
+      return render_template('/receptionist/receptionist_editrecord.html')
+   else:
+      mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN,RecordID,Insurance_Status from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where PatientID=%s' ,([1]))
+      patient=mycursor.fetchone()
+      return render_template('/receptionist/receptionist_editrecord.html',data=patient)
 
 @app.route("/Doctor_home")
 def getdoctordata():  
@@ -465,13 +765,47 @@ def admit(file_id):
    return render_template('/Doctor/patientrecord_doctor.html')
 
 
-@app.route("/logout")
-def LogOut():
-   session.pop("id",None)
-   session.pop("name",None) 
-   session.pop("Permission",None)   
-   return redirect(url_for('/'))
-
+@app.route('/receptionist_addrecord', methods=['POST', 'GET'])
+def R_AddRecord():
+   if request.method == 'GET':
+      mycursor.execute('SELECT DoctorSSN from Doctor')
+      doctors=mycursor.fetchall()
+      mycursor.execute('SELECT Nurse_SSN from Nurse')
+      nurses=mycursor.fetchall()
+      data={
+            'doctorssn':doctors,
+            'nursessn':nurses
+      }
+      return render_template('/receptionist/receptionist_addrecord.html',data=data)
+   else:
+      FirstName = request.form.get('FirstName')
+      MiddleName = request.form.get('MiddleName')
+      LastName = request.form.get('LastName')
+      Gender = request.form.get('Gender')
+      RecordID = request.form.get('RecordID')
+      PatientID = request.form.get('PatientID')
+      SSN = request.form.get('SSN')
+      formatted_date = request.form.get('Birthdate')  
+      Insurance = request.form.get('insurance')
+      Address = request.form.get('Address')
+      Email = request.form.get('email')
+      PhoneNumber = request.form.get('PhoneNumber')
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      sql = "INSERT INTO Patient(patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN) VALUES(%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
+      val = (FirstName, MiddleName, LastName, Gender, PatientID,SSN,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctorSSN,AssignedNurseSSN)
+      mycursor.execute(sql, val)
+      sql2 = "INSERT INTO patientrecord(RecordID,Insurance_Status,Patient_Pssn) VALUES(%s, %s,%s)"
+      val2 = (RecordID,Insurance,SSN)
+      mycursor.execute(sql2, val2)
+      mydb.commit()
+      return render_template('/receptionist/receptionist_addrecord.html')
+      
+      #, message=FirstName + ' ' + LastName+" has been successfully added to the database")
+    #   except:
+    #         return redirect(url_for('receptionist_addrecord'), error="Invalid input!")
+#####################################################Run#############################################################
 if __name__ == "__main__":
    app.run(debug=True)
    #socketio.run(app, debug=True)

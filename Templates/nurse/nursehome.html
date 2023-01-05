@@ -10,37 +10,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel="stylesheet" href="/Static/css/nurse.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/nurse.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Nurse Homepage</title>
 </head>
 <body>
-    { % extends "index.html" % }
-    {%block content%}
-    {% if data %}
+    {% include 'nurse/sidebar.html' %}
+    {% block content %}
     <div class="main-container m-5">
         <h1 class="text-primary">Home</h1>
         <hr class="mb-4">
-    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{data['nursename']}}</span></b></h1>
+    <h1 class="text-center mb-4"><b>Welcome Nurse <span class="text-primary">{{nurse[0]}} {{nurse[1]}}</span></b></h1>
     <div class="d-flex flex-wrap justify-content-around w-100">
         <div class="w-75">
             <dl class="row w-100" style="font-size:1.5rem; width: fit-content; ">
                 <dt class="col-sm-4 text-primary">Nurse ID</dt>
-                <dd class="col-sm-6">{{data['nurseid']}}</dd>
+                <dd class="col-sm-6">{{nurseid}}</dd>
                 <dt class="col-sm-4 text-primary">Name</dt>
-                <dd class="col-sm-6">whatever Name</dd>
-                <dt class="col-sm-4 text-primary">Birthdate</dt>
-                <dd class="col-sm-6">{{data['nursebirthdate']}}</dd>
+                <dd class="col-sm-6">{{nurse[0]}}  {{nurse[1]}}</dd>
+                <dt class="col-sm-4 text-primary">Age</dt>
+                <dd class="col-sm-6">{{nurse[2]}}</dd>
                 <dt class="col-sm-4 text-primary">Social Security Number</dt>
-                <dd class="col-sm-6">{{data['nursessn']}}</dd>
+                <dd class="col-sm-6">{{nurse[3]}}</dd>
                 <dt class="col-sm-4 text-primary">Gender</dt>
-                <dd class="col-sm-6">{{data['nursegender']}}</dd>
+                <dd class="col-sm-6">{{nurse[4]}}</dd>
                 <dt class="col-sm-4 text-primary">Patient Name</dt>
-                <dd class="col-sm-6">{{data['patientname']}}</dd>
+                <dd class="col-sm-6">{{patient[0]}} {{patient[1]}}</dd>
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
-                <dd class="col-sm-6">{{data['patientid']}}</dd>
+                <dd class="col-sm-6">{{patient[2]}}</dd>
             </dl>
-    {% endif %}
             <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
             
             <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">
@@ -66,7 +64,7 @@
             </form>
         </div>
         <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
-            <img src="/Static/images/nursepp2.jpg" alt="profile pic" style="height: 300px;">
+            <img src="{{ url_for('static', filename='/images/nursepp2.jpg') }}" alt="profile pic" style="height: 300px;">
         </div>
     </div>
 </div>
