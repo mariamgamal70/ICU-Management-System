@@ -2,18 +2,33 @@
 
 {% block addl_css %}
 
-<link rel="stylesheet" href="{{ url_for('static', filename='css/AdminDr.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/AdminReceptionist.css') }}">
 
 {% endblock %}
 
 {% block content %}
 <div class="main-container m-5">
+  <!--
+  {%with messages = get_flashed_messages()%}
+  {%if messages%}
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissable" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+      <span aria-hidden="true">x</span>
+      </button>
+      {{message }}
+    </div>
+
+  {%endfor%}
+  {%endif%}
+  {%endwith%}
+  -->
 
     <div class="row row-bordered">
-      <h1 class="font-weight-bold text-primary">Doctors Records</h1>
+      <h1 class="font-weight-bold text-primary">Receptionists Records</h1>
     </div>
     <div class="d-flex justify-content-between mt-5">
-      <a type="button" class="btn btn-primary border border-primary mx-1" href="">
+      <a type="button" class="btn btn-primary border border-primary mx-1" href="{{url_for('Admin_Add_Receptionist')}}">
         <i class="fa-solid fa-user-plus p-1"></i>
         Add New Record</a>
       <form class="form-inline">
@@ -31,12 +46,12 @@
         <thead>
           <tr>
             
-            <th scope="col">Doctor_ID </th>
+            <th scope="col">Receptionist_ID </th>
             <th scope="col">Fname </th>
             <th scope="col">Lname </th>
             <th scope="col">Sex </th>
             <th scope="col">Age </th>
-            <th scope="col">Speciality</th>
+            <th scope="col">Experience </th>
             <th scope="col">StartShift </th>
             <th scope="col">EndShift </th>
             <th scope="col">Action </th>
@@ -45,7 +60,8 @@
           </tr>
         </thead>
         <tbody>
-    {% for d in Doc_data.records %}
+      
+    {% for d in RECEP_data.records %}
          <tr data-href="">
             {% for data in d %}
             <td> {{data}} </td>
@@ -63,7 +79,7 @@
     </div>
   </div>
  
-  <script src="{{ url_for('static', filename='/AdminDr.js') }}"></script>
+  <script src="{{ url_for('static', filename='/AdminReceptionist.js') }}"></script>
 </body>
 
 </html>
