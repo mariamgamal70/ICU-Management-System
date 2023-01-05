@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="../../Static/css/sidebar.css">
   <link rel="preconnect" href="https:/fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
@@ -15,57 +14,60 @@
     <title>Patient Record</title>
 </head>
 <body >
-    <!-- {%block content%} -->
+    {%include 'receptionist/navbar.html'%}
+    {%block content%}
+    {%if data%}
      <div class="main-container m-5">
         <dl class="row display-5">
             <dt class="col-sm-3 font-weight-bold text-primary">Record ID</dt>
-            <dd class="col-sm-9 font-weight-bold text-primary">XXXXXXX</dd>
+            <dd class="col-sm-9 font-weight-bold text-primary">{{data.recordid}}</dd>
         </dl>
         <fieldset class="border p-2">
             <legend class="text-primary float-none w-auto">Basic Information</legend>
             <dl class="row">
                 <dt class="col-sm-3">Name</dt> 
-                <dd class="col-sm-9">XXXXXXX</dd>
+                <dd class="col-sm-9">{{data.patientname}}</dd>
                 <dt class="col-sm-3">Patient ID</dt>
-                <dd class="col-sm-9">XXXXXXX</dd>
+                <dd class="col-sm-9">{{data.patientid}}</dd>
                 <dt class="col-sm-3">Social Security Number</dt>
-                <dd class="col-sm-9">XXXXXXXX</dd>
+                <dd class="col-sm-9">{{data.patientssn}}</dd>
                 <dt class="col-sm-3">Birthdate</dt>
-                <dd class="col-sm-9">DD/MM/YYYY </dd>
+                <dd class="col-sm-9">{{data.patientbirthdate}}</dd>
                 <dt class="col-sm-3">Age</dt>
-                <dd class="col-sm-9">XX</dd>
+                <dd class="col-sm-9">{{data.patientid}}</dd>
                 <dt class="col-sm-3">Gender</dt>
-                <dd class="col-sm-9">XXXX</dd>
+                <dd class="col-sm-9">{{data.patientsex}}</dd>
                 <dt class="col-sm-3">Insurance</dt>
-                <dd class="col-sm-9">XXXXXXX</dd>
+                <dd class="col-sm-9">{{data.patientinsurance}}</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">Contact Information</legend>
     <dl class="row">
         <dt class="col-sm-3">Address</dt>
-        <dd class="col-sm-9">XXXXXXX/dd>
+        <dd class="col-sm-9">{{data.patientaddress}}</dd>
         <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9">XXXXXXX/dd>
+        <dd class="col-sm-9">{{data.patientemail}}</dd>
         <dt class="col-sm-3">Phone Number</dt>
-        <dd class="col-sm-9">XXXXXXXXX</dd>
+        <dd class="col-sm-9">{{data.patientphone}}</dd>
         <dt class="col-sm-3">Emergency Contact</dt>
-        <dd class="col-sm-9">XXXXXXXXX</dd>
+        <dd class="col-sm-9">{{data.patientemergencycontact}}</dd>
     </dl>
 </fieldset>
 <fieldset class="border p-2">
     <legend class="text-primary float-none w-auto">Assigned</legend>
     <dl class="row">
         <dt class="col-sm-3">Attending Physician</dt>
-        <dd class="col-sm-9">XXXXX</dd>
+        <dd class="col-sm-9">{{data.assigneddoctor}}</dd>
         <dt class="col-sm-3">Attending Nurse</dt>
-        <dd class="col-sm-9">XXXXXX</dd>
+        <dd class="col-sm-9">{{data.assignednurse}}</dd>
         </dl>
     </fieldset>
     <div class="d-flex justify-content-center m-5" >
-        <a class="btn btn-primary mx-3" href="/Templates/receptionist/editrecord.html">Update Information</a>
+        <a class="btn btn-primary mx-3" href="http://127.0.0.1:5000/receptionist_editrecord/{{data.patientid}}">Update Information</a>
     </div>
 </div>
-<!-- {% endblock %} -->
+{% endif %}
+{% endblock %}
 </body>
 </html>

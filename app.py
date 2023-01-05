@@ -1,32 +1,42 @@
-from flask import get_flashed_messages
-from flask import Flask, render_template, redirect, url_for, request, session, flash, Response
+from flask import Flask, render_template, redirect, url_for, request,session,flash
 from flask_session import Session
 import mysql.connector
 from flask_mail import Mail, Message
-from werkzeug.utils import secure_filename
+# from flask_socketio import SocketIO
+
+# from google.auth.transport.requests import Request
+# from google.oauth2.credentials import Credentials
+# from google_auth_oauthlib.flow import InstalledAppFlow
+# from googleapiclient.discovery import build
+# from googleapiclient.errors import HttpError
+# scopes = ['https://www.googleapis.com/auth/calendar']
+# flow = InstalledAppFlow.from_client_secrets_file("client_secret.json", scopes=scopes)
+#flow.run_console()
+# app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
+# socketio = SocketIO(app)
 
 from datetime import datetime
-current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+now = datetime.now()
+formatted_date = now.strftime('%Y-%d-%m %H:%M:%S')
 
 app = Flask(__name__)
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_PERMANENT"]=False
+app.config["SESSION_TYPE"]="filesystem"
 Session(app)
 
 # Session encryption key
 app.config["SECRET_KEY"] = "zf_b1JkWCAQneZoA0Xe8Gw"
 
 
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_SERVER"]="smtp.gmail.com"
 app.config["MAIL_PORT"] = 465
-app.config["MAIL_USERNAME"] = "mariamgamal70@gmail.com"  # senders email
-app.config["MAIL_PASSWORD"] = "azaesjimhgtnsydq"  # senders password
+app.config["MAIL_USERNAME"] = "mariamgamal70@gmail.com" #senders email
+app.config["MAIL_PASSWORD"] = "azaesjimhgtnsydq" #senders password
 app.config["MAIL_USE_TLS"] = False
 app.config["MAIL_USE_SSL"] = True
 mail = Mail()
 mail.init_app(app)
-
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -34,10 +44,10 @@ mydb = mysql.connector.connect(
     database="icu_management_finalll"
 )
 mycursor = mydb.cursor()
-# GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
-# get function route("route)
-# functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
-# route("route",methods=["POST","GET"])
+#GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
+#get function route("route)
+#functions are GET only by default, to make it GET and POST , u should define it as a parameter in route
+#route("route",methods=["POST","GET"])
 # in case it is GET and POST you should check inside the function whether the incoming is a get or post request , if its a get ,return template, if its a post , send data do changes
 
 
@@ -53,18 +63,27 @@ def notifynurse(notification):
 
 
 def sendmessage(result):
-    msg = Message(subject="Inquiry/Complaint",
-                  sender=result['email'], recipients=["mariamgamal70@gmail.com"])
-    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] + \
-        ' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
-    mail.send(msg)
+   msg = Message(subject="Inquiry/Complaint", sender=result['email'], recipients=["mariamgamal70@gmail.com"])
+   msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
+   mail.send(msg)
+
+notifications={}
+notificationcounter=0
+def updatenotifications(notification):
+   notificationcounter = notificationcounter+1
+   notifications['count'] = notificationcounter
+   notifications['typeofnotification']=notification
+   
 
 
-@app.route("/")  # GET METHOD
+@app.route("/")#GET METHOD
 def index():
-    return render_template("index.html")
+   return render_template("index.html")
 
-#################################################### Admin##################################
+
+
+
+
 
 
 @app.route('/AdminDashboard')
@@ -161,111 +180,114 @@ def Admin_Add_Dr():
 
 @app.route("/signin", methods=["POST", "GET"])  # GET METHOD
 def signin():
-    if request.method == "POST":
-        # -------------------------------PATIENT ONLY----------------------------------
-        if "patient" in request.form:
-            patientid = request.form["patientID"]
-            patientpassword = request.form["patientpassword"]
+   if request.method == "POST":
+      #PATIENT ONLY-----------------------------------------------------------------
+      if "patient" in request.form:
+         patientid = request.form["patientID"]
+         patientpassword = request.form["patientpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+         account = mycursor.fetchone()
+         if account:
             mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
-                patientname = mycursor.fetchone()
-                session["name"] = account["Username"]
-                session["name"] = patientname  # to reference patient name
-                session["id"] = patientid
-                session["Permision"] = "Patient"  # Permision_level
-                return render_template("patienthome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
-        # ----------------------------------ENDPATIENT---------------------------------------
-        # ---------------------------------DOCTORONLY-----------------------------------------
-        elif "doctor" in request.form:
-            doctorid = request.form["doctorID"]
-            doctorpassword = request.form["doctorpassword"]
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+            patientname=mycursor.fetchone()
+            session["name"]=patientname        #to reference patient name   
+            session["id"]=patientid
+            session["Permision"]="Patient"     #Permision_level 
+            return render_template("patienthome.html")
+         else: 
+            flash('ID/Password is incorrect','warning')
+            return redirect('/signin')
+      #ENDPATIENT-------------------------------------------------------------------------
+      #DOCTORONLY--------------------------------------------------------------------------
+      elif "doctor" in request.form:
+         doctorid = request.form["doctorID"]
+         doctorpassword = request.form["doctorpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (doctorid, doctorpassword,))
+         account = mycursor.fetchone()
+         if account:
             mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (doctorid, doctorpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE doctorid = %s AND doctorpassword = %s", (doctorid, doctorpassword,))
-                doctorname = mycursor.fetchone()
-                session["name"] = doctorname
-                session["id"] = doctorid
-                session["Permision"] = "Doctor"
-                return render_template("doctorhome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
-        # ------------------------------------ENDDOCTOR-------------------------------------------
-        # -------------------------------------NURSEONLY------------------------------------------
-        elif "nurse" in request.form:
-            nurseid = request.form["nurseID"]
-            nursepassword = request.form["nursepassword"]
+            "SELECT Username FROM user WHERE doctorid = %s AND doctorpassword = %s", (doctorid, doctorpassword,))
+            doctorname=mycursor.fetchone()
+            session["name"]=doctorname
+            session["id"]=doctorid
+            session["Permision"]="Doctor"
+            return render_template("doctorhome.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ENDDOCTOR-------------------------------------------------------------------------------
+      #NURSEONLY-------------------------------------------------------------------------------
+      elif "nurse" in request.form:
+         nurseid = request.form["nurseID"]
+         nursepassword = request.form["nursepassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+         account = mycursor.fetchone()
+         if account:
             mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM useer WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
-                nursename = mycursor.fetchone()
-                session["id"] = doctorid
-                session["name"] = nursename
-                session["Permision"] = "Nurse"
-                return render_template("doctorhome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
-        # ----------------------------------------ENDNURSE---------------------------------------------
-        # --------------------------------------ADMINONLY----------------------------------------------
-        elif "admin" in request.form:
-            adminid = request.form["adminID"]
-            adminpassword = request.form["adminpassword"]
+            "SELECT Username FROM useer WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+            nursename=mycursor.fetchone()
+            session["id"]=doctorid
+            session["name"]=nursename
+            session["Permision"]="Nurse"
+            return render_template("doctorhome.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ENDNURSE-------------------------------------------------------------------------------------
+      #ADMINONLY------------------------------------------------------------------------------------
+      elif "admin" in request.form:
+         adminid = request.form["adminID"]
+         adminpassword = request.form["adminpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+         account = mycursor.fetchone()
+         if account:
             mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
-                adminname = mycursor.fetchone()
-                session["id"] = adminid
-                session["name"] = adminname
-                session["Permision"] = "Admin"
-                return render_template("AdminMain.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
-        # ----------------------------------------ADMINEND-----------------------------------------------
-        # ------------------------------------RECEPTIONISTSONLY------------------------------------------
-        elif "receptionist" in request.form:
-            receptionistid = request.form["receptionistID"]
-            receptionistpassword = request.form["receptionistpassword"]
-            mycursor.execute("SELECT * FROM user WHERE UserID = %s AND Password = %s",
-                             (receptionistid, receptionistpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute("SELECT Username FROM user WHERE UserID = %s AND Password = %s", (
-                    receptionistid, receptionistpassword,))
-                receptionistname = mycursor.fetchone()
-                session["id"] = receptionistid
-                session["name"] = receptionistname
-                session["Permision"] = "Receptionist"
-                return render_template("receptionist1.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
-        # ------------------------------------RECEPTIONISTEND-------------------------------------------
-    return render_template('signin.html')
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+            adminname=mycursor.fetchone()
+            session["id"]=adminid
+            session["name"]=adminname
+            session["Permision"]="Admin"
+            return render_template("AdminMain.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #ADMINEND---------------------------------------------------------------------------------------
+      #RECEPTIONISTSONLY------------------------------------------------------------------------------
+      elif "receptionist" in request.form:
+         receptionistid = request.form["receptionistID"]
+         receptionistpassword = request.form["receptionistpassword"]
+         mycursor.execute(
+             "SELECT * FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+         account = mycursor.fetchone()
+         if account:
+            mycursor.execute(
+            "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+            receptionistname=mycursor.fetchone()
+            session["id"]=receptionistid
+            session["name"]=receptionistname
+            session["Permision"]="Receptionist"
+            return render_template("receptionist1.html")
+         else:
+            flash('ID/Password is incorrect', 'warning')
+            return redirect('/signin')
+      #RECEPTIONISTEND-------------------------------------------------------------------------------
+   return render_template('signin.html')
+
+
+
 
 
 """
+
 @app.route("/signin",methods=["POST","GET"])  # GET METHOD
 def signin():
    if request.method == "POST":
-      #-------------------------------PATIENT ONLY----------------------------------
+      #PATIENT ONLY-----------------------------------------------------------------
       if "patient" in request.form:
          patientid = request.form["patientID"]
          patientpassword = request.form["patientpassword"]
@@ -281,8 +303,8 @@ def signin():
          else: 
             flash('ID/Password is incorrect','warning')
             return redirect('/signin')
-      #----------------------------------ENDPATIENT---------------------------------------
-      #---------------------------------DOCTORONLY-----------------------------------------
+      #ENDPATIENT-------------------------------------------------------------------------
+      #DOCTORONLY--------------------------------------------------------------------------
       elif "doctor" in request.form:
          doctorid = request.form["doctorID"]
          doctorpassword = request.form["doctorpassword"]
@@ -298,8 +320,8 @@ def signin():
          else:
             flash('ID/Password is incorrect', 'warning')
             return redirect('/signin')
-      #------------------------------------ENDDOCTOR-------------------------------------------
-      #-------------------------------------NURSEONLY------------------------------------------
+      #ENDDOCTOR-------------------------------------------------------------------------------
+      #NURSEONLY-------------------------------------------------------------------------------
       elif "nurse" in request.form:
          nurseid = request.form["nurseID"]
          nursepassword = request.form["nursepassword"]
@@ -315,8 +337,8 @@ def signin():
          else:
             flash('ID/Password is incorrect', 'warning')
             return redirect('/signin')
-      #----------------------------------------ENDNURSE---------------------------------------------
-      #--------------------------------------ADMINONLY----------------------------------------------
+      #ENDNURSE-------------------------------------------------------------------------------------
+      #ADMINONLY------------------------------------------------------------------------------------
       elif "admin" in request.form:
          adminid = request.form["adminID"]
          adminpassword = request.form["adminpassword"]
@@ -332,8 +354,8 @@ def signin():
          else:
             flash('ID/Password is incorrect', 'warning')
             return redirect('/signin')
-      #----------------------------------------ADMINEND-----------------------------------------------
-      #------------------------------------RECEPTIONISTSONLY------------------------------------------
+      #ADMINEND---------------------------------------------------------------------------------------
+      #RECEPTIONISTSONLY------------------------------------------------------------------------------
       elif "receptionist" in request.form:
          receptionistid = request.form["receptionistID"]
          receptionistpassword = request.form["receptionistpassword"]
@@ -349,20 +371,10 @@ def signin():
          else:
             flash('ID/Password is incorrect', 'warning')
             return redirect('/signin')
-      #------------------------------------RECEPTIONISTEND-------------------------------------------
+      #RECEPTIONISTEND-------------------------------------------------------------------------------
    return render_template('signin.html')
 """
-
-
-@app.route("/logout")
-def LogOut():
-    session.pop("id", None)
-    session.pop("name", None)
-    session.pop("Permission", None)
-    return redirect(url_for('/'))
-
-
-@app.route("/contactus", methods=["POST", "GET"])  # GET METHOD
+@app.route("/contactus",methods=["POST","GET"])  # GET METHOD
 def contactus():
     if request.method == "POST":
         result = {}
@@ -497,93 +509,183 @@ def notification():
 def inject_notification_count():
     return countnotification()
 
-######################################### ---NURSEEND---#################################################
-############################################## sidebar#####################################
-############################################### Patient Page ############################################
-# Age
+###################################################### Patient Page ############################################
+#Age
+@app.route('/patient_homepage')
+def patientRecord():
+#    patientid=session['id']
+   result={}
+   mycursor.execute('SELECT FName,MName,LName,Sex,PSSN,Address,email,Phone,Emergency_Contact,Birthdate,Insurance_Status,PatientID from patient join patientrecord on PSSN=Patient_PSSN where patientid=%s',([1]))
+   patient=mycursor.fetchone()
+   result['patientname'] = patient[0]+' '+patient[1]+' '+patient[2]
+   result['patientsex']=patient[3]
+   result['patientssn']=patient[4]
+   result['patientaddress']=patient[5]
+   result['patientemail']=patient[6]
+   result['patientphone']=patient[7]
+   result['patientemergencycontact']=patient[8]
+   result['patientbirthdate']=patient[9]
+   result['patientinsurance']=patient[10]
+   result['patientid']=patient[11]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from patient AS age')
+   patient=mycursor.fetchone()
+   result['patientage']=patient[0]
+   return render_template('/Patient/patient_homepage.html',data=result)
 
-
-@app.route("/patient/homepage")
-def PatientRecord():
-    mycursor.execute(
-        'SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status from patient join record on PSSN=PatientSSN where patientid=%s', ([1]))
-    patient = mycursor.fetchone()
-    render_template('/patient/homepage', data=patient)
-
-# edit sum and groupby
-
-
-@app.route("/patient/icuinfo")
+#edit sum and groupby 
+@app.route('/patient_icuinfo')
 def ICUInfo():
-    mycursor.execute(
-        'SELECT Date_Admitted,Date_Discharged,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName,Diagnosis,Bills_ID,TotalValue,Insurance_Percent,Price,Specifications,Frequency,Dosage,StartDate,EndDate from patient join Prescribed_Medication on PSSN=Patient_PSSN join bills on PSSN=Patient_PSSN join beds on Beds_BedID=BedID join record on SSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s', ([1]))
-    patient = mycursor.fetchone()
-    render_template('/patient/icuinfo', data=patient)
+   mycursor.execute('SELECT Date_Admitted,Date_Discharged,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname,MedicalDiagnosis,Bills_ID,TotalValue,Insurance_Percent,SUM(Price_Day),SUM(Price) from patient join prescribed_medication on PSSN=Patient_PSSN join bills on PSSN=bills.Patient_PSSN join beds on Beds_BedID=BedID join patientrecord on PSSN=patientrecord.Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where patientid=%s' ,([1]))
+   patient=mycursor.fetchone()
+   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where PatientID=%s' ,([1]))
+   medicine=mycursor.fetchone()
+   return render_template('/Patient/patient_icuinfo.html',data=patient,medicine=medicine)
 
-############################################# Receptionist Page ############################################
-
-
-@app.route("/receptionist/viewrecord")
+# ###################################################### Receptionist Page ############################################
+@app.route('/receptionist_viewrecord')
 def R_ViewRecord():
-    mycursor.execute(
-        'SELECT FirstName,MiddleName,LastName,Birthdate,Gender,PSSN,Address,email,PhoneNumber,EmergencyContact,PatientID,Insurance_Status,AttendingPhysicianFirstName,AttendingPhysicianLastName,AttendingPhysicianFirstName,AttendingNurseLastName from patient join record on PSSN=PatientSSN join Doctor on AttendingPhysicianID=DoctorID join Nurse on AttendingNurseID=NurseID where patientid=%s', ([1]))
-    patient = mycursor.fetchone()
-    render_template('/receptionist/viewrecord', data=patient)
+#   patientid=session['id']
+   result={}
+   mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PSSN,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,patient.Birthdate,Insurance_Status,PatientID,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname,RecordID from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where patientid=%s' ,([1]))
+   patient=mycursor.fetchone()
+   result['patientname'] = patient[0]+' '+patient[1]+' '+patient[2]
+   result['patientsex']=patient[3]
+   result['patientssn']=patient[4]
+   result['patientaddress']=patient[5]
+   result['patientemail']=patient[6]
+   result['patientphone']=patient[7]
+   result['patientemergencycontact']=patient[8]
+   result['patientbirthdate']=patient[9]
+   result['patientinsurance']=patient[10]
+   result['patientid']=patient[11]
+   result['assigneddoctor']=patient[12]+' '+patient[13]
+   result['assignednurse']=patient[14]+' '+patient[15]
+   result['recordid']=patient[16]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from patient AS age')
+   patient=mycursor.fetchone()
+   result['patientage']=patient[0]
+   return render_template('receptionist/receptionist_viewrecord.html',data=result)
+
+@app.route('/receptionist_homepage')
+def receptionistHome():
+   result={}
+   mycursor.execute('SELECT Fname,Lname,Receptionist_SSN,Sex,ReceptionistID from receptionist where receptionistID=%s',([123]))
+   receptionist=mycursor.fetchone()
+   result['receptionistid']=receptionist[4]
+   result['receptionistname'] = receptionist[0]+' '+receptionist[1]
+   result['receptionistfirstname'] = receptionist[0]
+   result['receptionistssn']=receptionist[2]
+   result['receptionistgender']=receptionist[3]
+   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from receptionist AS age')
+   receptionist=mycursor.fetchone()
+   result['receptionistage']=receptionist[0]
+   return render_template('receptionist/receptionist_homepage.html',data=result)
+
+        # data = {
+        #     'message': "Data retrieved",
+        #     'recordinfo': recordinfo
+        #  }
+        # mycursor.execute(
+        #     "SELECT FirstName FROM from patient join patientrecord on PSSN=Patient_PSSN And ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # FirstName = patient[0]
+        # mycursor.execute(
+        #     "SELECT LastName from patient join patientrecord on PSSN=Patient_PSSN AND ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # LastName = patient[0]
+        # mycursor.execute("SELECT Date_Admitted FROM from patient join record on PSSN=PatientSSN AND ReportID=%s", (ReportID))
+        # patient = mycursor.fetchone()
+        # Date_Admitted = patient[0]
+@app.route('/receptionist_managerecords', methods=["POST", "GET"])
+def manage_records():
+       if request.method == 'POST':
+        ReportID = request.form.get['ReportID']
+        mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE ReportID=%s", (ReportID))
+        recordinfo = mycursor.fetchall()
+        data = {
+            'recordinfo': recordinfo
+         }
+        return render_template('/receptionist/receptionist_managerecords.html', data=data)
+       else:
+         mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE PatientID=%s", ([1]))
+         recordinfo=mycursor.fetchall()
+         data = {
+            'recordinfo': recordinfo
+         }
+         return render_template('/receptionist/receptionist_managerecords.html',data=data)
 
 
-@app.route("/receptionist/homepage", methods=["POST", "GET"])
-def ReceptionistHomePage():
-    receptionistid = session['id']
-    result = {}
-    mycursor.execute(
-        'SELECT FirstName,LastName,Birthdate,SSN,Gender from receptionist where receptionistID=%s', (receptionistid))
-    receptionist = mycursor.fetchone()
-    result['receptionistid'] = session['id']
-    result['receptionistname'] = receptionist[0] + receptionist[1]
-    result['receptionistbirthdate'] = receptionist[2]
-    result['receptionistssn'] = receptionist[3]
-    result['receptionistgender'] = receptionist[4]
-    mycursor.execute(
-        'SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from receptionist AS age')
-    receptionist = mycursor.fetchone()
-    result['receptionistage'] = receptionist  # age
-    render_template('/receptionist/homepage', data=result)
+@app.route('/receptionist_editrecord/<int:id>',methods=['POST', 'GET'])
+def editRecord(id):
+   if request.method == 'POST':
+      FirstName = request.form.get('FirstName')
+      MiddleName = request.form.get('MiddleName')
+      LastName = request.form.get('LastName')
+      Gender = request.form.get('Gender')
+      RecordID = request.form.get('RecordID')
+      PatientID = request.form.get('PatientID')
+      SSN = request.form.get('SSN')
+      formatted_date = request.form.get('Birthdate')  
+      Insurance = request.form.get('insurance')
+      Address = request.form.get('Address')
+      Email = request.form.get('email')
+      PhoneNumber = request.form.get('PhoneNumber')
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      val1 = ((FirstName),(MiddleName), (LastName),(Gender), (PatientID),(SSN),(formatted_date), (Address), (Email),(PhoneNumber),(EmergencyContact),(AssignedDoctorSSN),(AssignedNurseSSN),(1))
+      mycursor.execute('UPDATE patient SET FName=%s,MName=%s,LName=%s,Sex=%s,PatientID=%s,PSSN=%s,Birthdate=%s,Address=%s,email=%s,Phone=%s,Emergency_Contact=%s,AssignedDrSSN=%s,AssignedNurseSSN=%s WHERE PatientID=%s',  val1) 
+      val2 = ((RecordID),(Insurance),(SSN))
+      mycursor.execute('UPDATE patientrecord SET RecordID=%s,Insurance_Status=%s,Patient_Pssn=%s', val2) 
+      mydb.commit()
+    #   return redirect("/receptionist/receptionist_viewrecord")
+      return render_template('/receptionist/receptionist_editrecord.html')
+   else:
+      mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN,RecordID,Insurance_Status from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where PatientID=%s' ,([1]))
+      patient=mycursor.fetchone()
+      return render_template('/receptionist/receptionist_editrecord.html',data=patient)
 
-
-@app.route('/receptionist/addrecord', methods=['POST', 'GET'])
+@app.route('/receptionist_addrecord', methods=['POST', 'GET'])
 def R_AddRecord():
-    if request.method == 'POST':
-        FirstName = request.form.get('FirstName')
-        MiddleName = request.form.get('MiddleName')
-        LastName = request.form.get('LastName')
-        Gender = request.form.get('Gender')
-        RecordID = request.form.get('RecordID')
-        PatientID = request.form.get('PatientID')
-        SSN = request.form.get('SSN')
-        formatted_date = request.form.get('Birthdate')  # add age
-        Insurance = request.form.get('Insurance')
-        Address = request.form.get('Address')
-        Email = request.form.get('Email')
-        PhoneNumber = request.form.get('PhoneNumber')
-        EmergencyContact = request.form.get('PhoneNumber')
-        AssignedDoctor = request.form.get('AssignedDoctor')
-        AssignedNurse = request.form.get('AssignedNurse')
-        try:
-            sql = "INSERT INTO Patient(PSSN,FirstName, MiddleName, LastName,PatientID, Sex, Birthdate,Address, Email, PhoneNumber,EmergencyContact,AssignedDoctor,AssignedNurse) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s)"
-            val = (SSN, FirstName, MiddleName, LastName, PatientID, Gender, formatted_date,
-                   Address, Email, PhoneNumber, EmergencyContact, AssignedDoctor, AssignedNurse)
-            mycursor.execute(sql, val)
-            sql = "INSERT INTO PatientRecord(RecordID,Insurance_Status) VALUES(%s, %s)"
-            val = (RecordID, Insurance)
-            mydb.commit()
-            return render_template('/receptionist/managerecords.html', message=FirstName + ' ' + LastName+" has been successfully added to the database")
-        except:
-            return render_template('/receptionist/addrecord.html', error="Invalid input!")
-
-    else:
-        return render_template('/receptionist/addrecord.html')
-
-##################################################### Run#############################################################
- 
+   if request.method == 'GET':
+      mycursor.execute('SELECT DoctorSSN from Doctor')
+      doctors=mycursor.fetchall()
+      mycursor.execute('SELECT Nurse_SSN from Nurse')
+      nurses=mycursor.fetchall()
+      data={
+            'doctorssn':doctors,
+            'nursessn':nurses
+      }
+      return render_template('/receptionist/receptionist_addrecord.html',data=data)
+   else:
+      FirstName = request.form.get('FirstName')
+      MiddleName = request.form.get('MiddleName')
+      LastName = request.form.get('LastName')
+      Gender = request.form.get('Gender')
+      RecordID = request.form.get('RecordID')
+      PatientID = request.form.get('PatientID')
+      SSN = request.form.get('SSN')
+      formatted_date = request.form.get('Birthdate')  
+      Insurance = request.form.get('insurance')
+      Address = request.form.get('Address')
+      Email = request.form.get('email')
+      PhoneNumber = request.form.get('PhoneNumber')
+      EmergencyContact = request.form.get('emergencyPhoneNumber')
+      AssignedDoctorSSN = request.form.get('doctorssn')
+      AssignedNurseSSN = request.form.get('nursessn')
+      sql = "INSERT INTO Patient(patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN) VALUES(%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
+      val = (FirstName, MiddleName, LastName, Gender, PatientID,SSN,formatted_date, Address, Email,PhoneNumber,EmergencyContact,AssignedDoctorSSN,AssignedNurseSSN)
+      mycursor.execute(sql, val)
+      sql2 = "INSERT INTO patientrecord(RecordID,Insurance_Status,Patient_Pssn) VALUES(%s, %s,%s)"
+      val2 = (RecordID,Insurance,SSN)
+      mycursor.execute(sql2, val2)
+      mydb.commit()
+      return render_template('/receptionist/receptionist_addrecord.html')
+      
+      #, message=FirstName + ' ' + LastName+" has been successfully added to the database")
+    #   except:
+    #         return redirect(url_for('receptionist_addrecord'), error="Invalid input!")
+#####################################################Run#############################################################
 if __name__ == "__main__":
-    app.run(debug=True)
+   app.run(debug=True)
+   #socketio.run(app, debug=True)
