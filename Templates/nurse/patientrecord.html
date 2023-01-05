@@ -18,6 +18,8 @@
     <title>Patient Record</title>
 </head>
 <body>
+    {% include 'nurse/sidebar.html' %}
+    {% block content %}
     <div class="main-container m-5">
         <div class="d-flex justify-content-sm-between flex-wrap">
         <div>
@@ -26,7 +28,7 @@
         </h1>
         </div>
         <div class="align-self-center">
-            <a href="http://127.0.0.1:5000/dailyassessment/{{patient[27]}}" class="btn btn-primary btn-lg mx-3">Update Daily Assessment</a>
+            <a href="http://127.0.0.1:5000/dailyassessment/{{ patient[27] }}" class="btn btn-primary btn-lg mx-3">Update Daily Assessment</a>
         </div>
     </div>
         <hr>
@@ -70,7 +72,8 @@
         <dd class="col-sm-9">{{ patient[16] }}</dd>
         <dt class="col-sm-3">IV Access</dt>
         <dd class="col-sm-9">{{ patient[17] }}</dd>
-        <dt class="col-sm-3">IV Access Date</dt>
+        <!-- HIDE DATE IF NULL -->
+        <dt class="col-sm-3">IV Access Date</dt> 
         <dd class="col-sm-9">{{ patient[18] }}</dd>
         <dt class="col-sm-3">Heparin</dt>
         <dd class="col-sm-9">{{ patient[19] }}</dd>
@@ -94,5 +97,6 @@
         </dl>
     </fieldset>
 </div>
+{% endblock %}
 </body>
 </html>

@@ -8,15 +8,26 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../../Static/css/nurse.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/nurse.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Prescription List</title>
 
 </head>
 <body>
-    { % extends "index.html" % }
-    {%block content%}
+    {% include 'nurse/sidebar.html' %}
+    {% block content %}
+    {% with messeges =get_flashed_messages() %}
+    {% if messeges %}
+    {%for messege in messeges%}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class='bx bxs-check-circle'></i>
+        {{messege}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     <div class="main-container m-5">
     <h1 class="text-primary">Prescription List</h1>
     <hr>
@@ -36,26 +47,27 @@
             </tr>
         </thead>
         <tbody>
-            { % for prescription in prescriptions % }
+            {% for prescription in prescriptionlist %}
             <tr>
-                { % for medicine in prescription % }
-                <td> { { medicine } }</td>
-                { % endfor % }
+                {% for medicine in prescription %}
+                <td> {{ medicine }}</td>
+                {% endfor %}
                 <td>
                     <a href="http://127.0.0.1:5000/administer_in_prescription_table/{{ prescription[0] }}"  class="btn btn-outline-primary" style="font-size:20px;" data-toggle="tooltip" data-placement="top" title="Adminster"><i class='bx bx-plus-medical'></i></a>
                 </td>
-                <td><a href="http://127.0.0.1:5000/prescreptiontimestamps/{{ prescription[0] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View"><i class='bx bx-calendar-check' style="font-size:25px;"></i></a></td>
+                <td><a href="http://127.0.0.1:5000/prescriptiontimestamps/{{ prescription[0] }}" class="btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="View"><i class='bx bx-calendar-check' style="font-size:25px;"></i></a></td>
             </tr>
-            { % endfor % }
+            {% endfor %}
         </tbody>
     </table>
+    
 </div>
 </div>
-    {% endblock %}
     <script>
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
+    {% endblock %}
 </body>
 </html>

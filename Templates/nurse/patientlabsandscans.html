@@ -9,14 +9,13 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="../../Static/css/nurse.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="../../Static/css/nurse.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/nurse.css') }}">
     <title>Patient labs and scans</title>
 </head>
 <body>
-<!-- { % extends "index.html" % } -->
-<!-- {%block content%} -->
+{% include 'nurse/sidebar.html' %}
+{% block content %}
 <div class="main-container m-5">
 <h1 class="text-primary">Laboratory</h1>
 <hr class="mb-4">
@@ -74,8 +73,7 @@
                     <tr>
                         <th>#</th>
                         <th>Type</th>
-                        <th>Date Issued</th>
-                        <th>Time Issued</th>
+                        <th>Date and Time Issued</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -172,15 +170,14 @@
                     <tr>
                         <th>File</th>
                         <th>Type</th>
-                        <th>Date Issued</th>
-                        <th>Time Issued</th>
+                        <th>Date and TimeIssued</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for checked in checkedimaging %}
                     <tr>
-                    <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{ file.id }}">{{ checked[0] }}</a></td>
-                    <td> {{checked[1]}}</td>
+                    <td><a href="http://127.0.0.1:5000/patientlabsandscans/{{checked[0]}}">{{ checked[0] }}</a></td>
+                    <!-- <td> {{checked[1]}}</td> -->
                     <td> {{checked[2]}}</td>
                     <td> {{checked[3]}}</td>
                     </tr>
@@ -203,7 +200,7 @@
                 aria-labelledby="panelsStayOpen-headingFour">
                 <div class="accordion-body">
                     <div class="table_wrapper">
-                    <form action="/" method="post">
+                    <form action="/" method="post" >
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -246,7 +243,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/patientlabsandscans" method="post" name="uploadimaging">
+                        <form action="/patientlabsandscans" method="post" name="uploadimaging" enctype="multipart/form-data">
                             <input type="radio" name="Imaging" value="CT-Scan" > CT-Scan<br>
                             <input type="radio" name="Imaging" value="MRI" > MRI<br>
                             <input type="radio" name="Imaging" value="PET Scan" > PET Scan<br>
@@ -256,10 +253,10 @@
                             <input type="radio" name="Imaging" value="Angiography" > Angiography<br>
                             <input type="radio" name="Imaging" value="ECG" > ECG<br><br>
                             <label for="Book Lab Test">Choose date and time: <br>
-                                <input type="datetime-local" name="Book Lab Test"  >
+                                <input type="datetime-local" name="dataissued"  >
                             </label>
                             <div class="input-group my-3 ">
-                            <input type="file" class="form-control" name="existingimaging" id="inputGroupFile02">
+                            <input type="file" class="form-control" id="inputGroupFile02" name="existingimaging">
                         </div>
                     </div>
                     {% with messeges =get_flashed_messages() %}
@@ -282,24 +279,7 @@
                 </div>
             </div>
         </div>
-        <!-- <form action="" method="POST" id="addImagingform" style="display: none;" class="m-3">
-            
-        </form> -->
     </div>
-    <!-- {% endblock %} -->
-        <!-- <script>
-            function showLabForm(){
-                if(document.getElementById('addlabform').style.display=='none')
-                document.getElementById('addlabform').style.display = 'block';
-                else
-                document.getElementById('addlabform').style.display = 'none';
-            }
-            function showImagingForm(){
-                if(document.getElementById('addImagingform').style.display=='none')
-                document.getElementById('addImagingform').style.display = 'block';
-                else
-                document.getElementById('addImagingform').style.display = 'none';
-            }
-            </script> -->
+    {% endblock %}
 </body>
 </html>

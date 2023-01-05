@@ -10,39 +10,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https:/fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="../../Static/css/nurse.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/nurse.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <title>Prescription Adminsteration</title> 
     <style>
-
     </style>
-    <title>Prescription Adminsteration</title>
-    
 </head>
-<body >
-    { % extends "index.html" % }
-    {%block content%}
+<body>
+    {% include 'nurse/sidebar.html' %}
+    {% block content %}
     <div class="main-container m-5">
-    <h1 class=" text-primary">Medicine Timestamps</h1>
+    <h1 class=" text-primary">Medicine Timestamps for {{ medicinetimestamps[2] }} </h1>
     <hr class="mb-4">
-    <h4><span class="text-primary">Check Time list for </span><br> {{medicinetimestamps['medicine_name']}} <br> <span class="text-primary">ID </span>{{medicinetimestamps['medicine_prescription_id']}}</h4>
-    <h5 class="text-primary">Currently Adminstered <span class="text-dark">{{medicinetimestamps['COUNT(timestamp)']}}</span> times</h5>
-        <form  method="POST">
-            <thead>
-                <tr>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for time in medicine['timestamp'] %}
-                <tr>
-                    <td>{{ time }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            </table>
-            <div class="text-center"><input type="submit" value="Adminster" class="btn btn-primary"></div>
-        </form>
+    <table class="table table-hover">
+        <thead>
+        <th>Currently adminstered <span class="text-dark">{{ medicinetimestamps[0] }}</span> <b>times</b></th>
+        </thead>
+        <tbody>
+            {% for time in timestamps %}
+            <tr><td>{{time[0].strftime('%B %d, %Y %I:%M:%S %p')}}</td></tr>
+            {% endfor %}
+    </table>
     </div>
     {% endblock %}
 </body>
