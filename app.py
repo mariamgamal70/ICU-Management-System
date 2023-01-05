@@ -30,8 +30,8 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="lovelygirl12",
-    database="icu_management_neww"
+    password="Eng_8730667",
+    database="icu_management_lastttt"
 )
 mycursor = mydb.cursor()
 # GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -111,24 +111,29 @@ def Adminhome():
       "RoomNum": U,  # Number of Rooms in ICU
       "ICUIncome": V  # Income of ICU
 
-   }
+    }
 
-   return render_template('/Admin/adminDashboard.html', Stats=Statistics)
+return render_template('/Admin/adminDashboard.html', Stats=Statistics)
 
 
-@app.route('/AdminDr')
+@app.route('/AdminDr',methods=["GET"])
 def AdminDr():
+    if request.method=="GET":
+        
 
-   mycursor.execute(
-      "SELECT Doctor_ID,Fname,Lname,Sex,(SELECT TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age FROM doctor),Speciality,StartShift,EndShift FROM doctor")
-   #row_headers = [x[0] for x in mycursor.description]
-   doctors_data = mycursor.fetchall()
-   Dr_Data = {
-      #'header': row_headers,
+     mycursor.execute(
+      "SELECT Doctor_ID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Speciality,StartShift,EndShift FROM doctor ORDER BY Doctor_ID ")
+    #row_headers = [x[0] for x in mycursor.description]
+    doctors_data = mycursor.fetchall()
+
+    Dr_Data = {
       'records': doctors_data
 
    }
-   return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
+
+        
+    return render_template("/Admin/AdminDr.html", Doc_data=Dr_Data)
+
 
 
 
@@ -186,12 +191,170 @@ def AddDr():
     except:
         return redirect(url_for('AddDr'))
     
+@app.route('/AdminReceptionist',methods=["GET"])
+def AdminReceptionist():
+    if request.method=="GET":
+        
+
+     mycursor.execute(
+      "SELECT ReceptionistID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Experience,StartShift,EndShift FROM receptionist ORDER BY ReceptionistID ")
+    #row_headers = [x[0] for x in mycursor.description]
+    recep_data = mycursor.fetchall()
+
+    R_DATA = {
+      'records': recep_data
+
+   }
+
+        
+    return render_template("/Admin/AdminReceptionist.html", RECEP_data=R_DATA)
+
+
+
+
+@app.route('/Admin_Add_Receptionist',methods=["POST", "GET"])
+def Admin_Add_Receptionist():
+    if request.method=="GET":
+     return render_template("/Admin/Admin_Add_Receptionist.html")
+        
    
+        
+    else: 
+       FirstName = request.form.get('FirstName')
+       Password=request.form.get('password')
+       Experience = request.form.get('Experience')
+       LastName = request.form.get('LastName')
+       Gender = request.form.get('gender')
+       Salary = request.form.get('Salary')
+       recepID = request.form.get('RecepID')
+       SSN = request.form.get('ssn')
+       formatted_date = request.form.get('Birthdate')  # add age
+       Address = request.form.get('Address')
+       Email = request.form.get('Email')
+       PhoneNumber = request.form.get('PhoneNumber')
+    try:
+
+       sql = "INSERT INTO receptionist (Receptionist_SSN,ReceptionistID,Fname,Lname,email,Salary, Sex, Birthdate, Phone,Address,Experience) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)"
+       val = (SSN,recepID,FirstName,LastName,Email,Salary,Gender,formatted_date,PhoneNumber,Address,Experience)
+       mycursor.execute(sql,val)
+       """
+       sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
+       val=(DoctorID,FirstName,Password,'Doctor',Email,SSN)
+       mycursor.execute(sql,val)
+       """
+       mydb.commit() 
+       return redirect(url_for('AdminReceptionist'))
+   
+    except:
+        return render_template("/Admin/Admin_Add_Receptionist.html")
+
+    """
+@app.route('/AdminReceptionist',methods=["GET"])
+def AdminReceptionist():
+    if request.method=="GET":
+        
+
+     mycursor.execute(
+      "SELECT ReceptionistID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Experience,StartShift,EndShift FROM receptionist ORDER BY ReceptionistID ")
+    #row_headers = [x[0] for x in mycursor.description]
+    recep_data = mycursor.fetchall()
+
+    R_DATA = {
+      'records': recep_data
+
+   }
+
+        
+    return render_template("/Admin/AdminReceptionist.html", RECEP_data=R_DATA)
+"""
+
+@app.route('/AdminViewPatient',methods=["GET"])
+def AdminViewPatient():
+    if request.method=="GET":
+        mycursor.execute("SELECT PSSN,FName,MName,LName,Sex,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) as Age,Date_Admitted,Date_Discharged,Beds_BedID,AssignedDrSSN,AssignedNurseSSN,COUNT(PatientScans)  FROM patient JOIN patientscans  ON PSSN=Patient_PSSN GROUP BY PSSN ORDER BY PSSN ")
+        Patient_info=mycursor.fetchall()
+        data={
+            'Patientdata':Patient_info
+            
+        }
+        
+        return render_template('/Admin/AdminPatient.html',Pat_inf=data)
+    
+   
+        
+    else: 
+       FirstName = request.form.get('FirstName')
+       Password=request.form.get('password')
+       Experience = request.form.get('Experience')
+       LastName = request.form.get('LastName')
+       Gender = request.form.get('gender')
+       Salary = request.form.get('Salary')
+       recepID = request.form.get('RecepID')
+       SSN = request.form.get('ssn')
+       formatted_date = request.form.get('Birthdate')  # add age
+       Address = request.form.get('Address')
+       Email = request.form.get('Email')
+       PhoneNumber = request.form.get('PhoneNumber')
+    try:
+
+       sql = "INSERT INTO receptionist (Receptionist_SSN,ReceptionistID,Fname,Lname,email,Salary, Sex, Birthdate, Phone,Address,Experience) VALUES(%s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)"
+       val = (SSN,recepID,FirstName,LastName,Email,Salary,Gender,formatted_date,PhoneNumber,Address,Experience)
+       mycursor.execute(sql,val)
+       """
+       sql="INSERT INTO user(UserID,Username,Password,Permission,email,Doctor_DoctorSSN)"
+       val=(DoctorID,FirstName,Password,'Doctor',Email,SSN)
+       mycursor.execute(sql,val)
+       """
+       mydb.commit() 
+       return redirect(url_for('AdminReceptionist'))
+   
+    except:
+        return render_template("/Admin/Admin_Add_Receptionist.html")
+
+    """
+@app.route('/AdminReceptionist',methods=["GET"])
+def AdminReceptionist():
+    if request.method=="GET":
+        
+
+     mycursor.execute(
+      "SELECT ReceptionistID,Fname,Lname,Sex, TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS Age,Experience,StartShift,EndShift FROM receptionist ORDER BY ReceptionistID ")
+    #row_headers = [x[0] for x in mycursor.description]
+    recep_data = mycursor.fetchall()
+
+    R_DATA = {
+      'records': recep_data
+
+   }
+
+        
+    return render_template("/Admin/AdminReceptionist.html", RECEP_data=R_DATA)
+"""
+
+@app.route('/AdminViewPatient',methods=["GET"])
+def AdminViewPatient():
+    if request.method=="GET":
+        mycursor.execute("SELECT PSSN,FName,MName,LName,Sex,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) as Age,Date_Admitted,Date_Discharged,Beds_BedID,AssignedDrSSN,AssignedNurseSSN,COUNT(PatientScans)  FROM patient JOIN patientscans  ON PSSN=Patient_PSSN GROUP BY PSSN ORDER BY PSSN ")
+        Patient_info=mycursor.fetchall()
+        data={
+            'Patientdata':Patient_info
+            
+        }
+        
+        return render_template('/Admin/AdminPatient.html',Pat_inf=data)
+    
 
 
         
       
-
+@app.route("/AdminPayment")
+def viewadminpayment():
+   mycursor.execute('SELECT * from bills')
+   payments=mycursor.fetchall()
+   data={
+       'pay':payments
+   }
+   return render_template('/Admin/AdminPayment.html',Payments=data)
        
 ######################################### ---ADMINEND---#################################################
 
