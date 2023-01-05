@@ -41,7 +41,7 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="mysql",
-   database="icu_management_last"
+   database="icu_management_finalll"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -349,14 +349,14 @@ def getnursepatientdata():
 def getdoctordata():  
    #doctorid = session["id"]
    result = {}
-   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",([1]))
+   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",([123]))
    doctor = mycursor.fetchone()
    result['doctorid'] = doctor[5]
    result['doctorname'] = doctor[0] + doctor[1]
    result['doctorbirthdate'] = doctor[2]
    result['doctorssn'] = doctor[3]
    result['doctorgender'] = doctor[4]
-   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s',([1]))#(doctorid)))
+   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s',([123]))#(doctorid)))
    count = mycursor.fetchone()
    result['patientsnumber'] = count[0]
    mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from doctor AS age')
@@ -364,6 +364,18 @@ def getdoctordata():
    result['doctorage'] = doctora[0]
 
    return render_template('/Doctor/Doctor_home.html', data = result)
+
+
+@app.route("/View_patients")
+def viewpatientdata():  
+   #doctorid = session["id"]
+   mycursor.execute("SELECT PatientID, patient.FName, patient.LName, MedicalStatus, Level_of_consiousness from patient join doctor on AssignedDrSSN = DoctorSSN join patientrecord on PSSN = Patient_PSSN where PatientID = %s",([1]))
+   patient = mycursor.fetchone()
+   return render_template('/Doctor/View_patients.html', patient = patient)
+
+
+
+
 
 
 
@@ -413,21 +425,25 @@ def admit(file_id):
          val = ((request.form.get("bID")), (request.form.get("admitdate")))
          mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
          mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
+         mydb.commit()
+
+      elif "request1" in request.form:
+         amin = request.form.getlist("lb")
+         str1 = ','.join(amin)
+         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
+         patient = mycursor.fetchone()
+         date = request.form.get('labdate')
+         mycursor.execute("INSERT INTO labresults (LabResultID, Patient_PSSN,Type,DateIssued) VALUES (%s,%s,%s,%s)", [patient[0], patient[1], str1,date])
+         mydb.commit()
 
       elif "request2" in request.form:
          amin = request.form.getlist("sc")
          str1 = ','.join(amin)
-         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN')
+         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
          patient = mycursor.fetchone()
-         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type) VALUES (%s,%s,%s)", [patient[0], patient[1], str1])
-
-      elif "request1" in request.form:
-         amin = request.form.getlist("sc")
-         str1 = ','.join(amin)
-         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN')
-         patient = mycursor.fetchone()
-         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type) VALUES (%s,%s,%s)", [patient[0], patient[1], str1])
-         # mycursor.execute("INSERT INTO patientscans (Type) VALUES (%s)",[str1])
+         date = request.form.get('scandate')
+         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type, DataIssued) VALUES (%s,%s,%s,%s)", [patient[0], patient[1], str1,date])
+         mydb.commit()
         
 
       return redirect("/patientrecord_doctor")

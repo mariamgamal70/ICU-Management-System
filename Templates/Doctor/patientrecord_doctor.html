@@ -192,6 +192,8 @@
           </div>
         </div>
       </div>
+
+      {% if patient %}
     
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -213,32 +215,33 @@
                 <form name="lab" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
                 <div id="labdss">
                     <label for="Complete blood count">
-                        <input type="checkbox" name="Complete blood count" id=""> Complete blood count</label><br>
+                        <input type="checkbox" name="lb" id="" value="Complete blood count"> Complete blood count</label><br>
                         <label for="Basic metabolic panel">
-                        <input type="checkbox" name="Basic metabolic panel" id=""> Basic metabolic panel</label><br>
+                        <input type="checkbox" name="lb" id="" value="Basic metabolic panel"> Basic metabolic panel</label><br>
                         <label for="Comprehensive metabolic panel">
-                        <input type="checkbox" name="Comprehensive metabolic panel" id=""> Comprehensive metabolic panel</label><br>
+                        <input type="checkbox" name="lb" id="" value="Comprehensive metabolic panel"> Comprehensive metabolic panel</label><br>
                         <label for="Lipid panel">
-                        <input type="checkbox" name="Lipid panel" id=""> Lipid panel</label><br>
+                        <input type="checkbox" name="lb" id="" value="Lipid panel"> Lipid panel</label><br>
                         <label for="Thyroid panel">
-                        <input type="checkbox" name="Thyroid panel" id=""> Thyroid panel</label><br>
+                        <input type="checkbox" name="lb" id="" value="Thyroid panel"> Thyroid panel</label><br>
                         <label for="Cardiac biomarkers">
-                        <input type="checkbox" name="Cardiac biomarkers" id=""> Cardiac biomarkers</label><br>
+                        <input type="checkbox" name="lb" id="" value="Cardiac biomarkers"> Cardiac biomarkers</label><br>
                         <label for="Coagulation panel">
-                        <input type="checkbox" name="Coagulation panel" id=""> Coagulation panel</label><br>
+                        <input type="checkbox" name="lb" id="" value="Coagulation panel"> Coagulation panel</label><br>
                         <label for="C-reactive protein test">
-                        <input type="checkbox" name=" C-reactive protein test" id=""> C-reactive protein test</label>
+                        <input type="checkbox" name="lb" id="" value="C-reactive protein test"> C-reactive protein test</label>
                         <br>
                         <label for="date" class="mt-3">Date</label>
-                        <input type="datetime-local" class="form-control">
+                        <input type="datetime-local" name="labdate" class="form-control">
 
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
-                          <input type="submit" class="btn btn-primary" name="request1"></button>
+                          <button type="submit" class="btn btn-primary" name="request1"></button>
                         </div>
                 </div>
               </form>
 
+             
               <form name="scan" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
                 <div id="scandss">
                     <label for="CT-Scan">
@@ -246,30 +249,32 @@
                     <label for="BMRI">
                         <input type="checkbox" name="sc" value="MRI"> MRI</label><br>
                     <label for="PET Scan">
-                        <input type="checkbox" name="sc" id=""> PET Scan</label><br>
+                        <input type="checkbox" name="sc" id=""value="PET Scan"> PET Scan</label><br>
                     <label for="Ultrasound">
-                        <input type="checkbox" name="sc" id=""> Ultrasound</label><br>
+                        <input type="checkbox" name="sc" id=""value="Ultrasound"> Ultrasound</label><br>
                     <label for="X-Ray">
-                        <input type="checkbox" name="sc" id=""> X-Ray</label><br>
+                        <input type="checkbox" name="sc" id=""value="X-Ray"> X-Ray</label><br>
                     <label for="Sonar">
-                        <input type="checkbox" name="sc" id=""> Sonar</label><br>
+                        <input type="checkbox" name="sc" id=""value="Sonar"> Sonar</label><br>
                     <label for="Angiography">
-                        <input type="checkbox" name="sc" id=""> Angiography</label><br>
+                        <input type="checkbox" name="sc" id=""value="Angiography"> Angiography</label><br>
                     <label for="ECG">
-                        <input type="checkbox" name="sc" id=""> ECG</label>
+                        <input type="checkbox" name="sc" id=""value="ECG"> ECG</label>
                         <br>
                     <label for="date" class="mt-3">Date</label>
-                    <input type="datetime-local" class="form-control">
+                    <input type="datetime-local" name="scandate" class="form-control">
 
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
                       <input type="submit" class="btn btn-primary" name="request2"></button>
                     </div>
-                
+                    
               </div>
             </form>
-          </div>
 
+       
+          </div>
+          {% endif %}
 
         </div>
       </div>
