@@ -31,8 +31,8 @@ mail.init_app(app)
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="lovelygirl12",
-    database="icu_management_finalll"
+    password="adangneCUFE2025$",
+    database="icu_management_lastttt"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -635,7 +635,10 @@ def editRecord(id):
       mycursor.execute('SELECT patient.FName,patient.MName,patient.LName,patient.Sex,PatientID,PSSN,patient.Birthdate,patient.Address,patient.email,patient.Phone,patient.Emergency_Contact,AssignedDrSSN,AssignedNurseSSN,RecordID,Insurance_Status from patient join patientrecord on PSSN=Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where PatientID=%s' ,([1]))
       patient=mycursor.fetchone()
       return render_template('/receptionist/receptionist_editrecord.html',data=patient)
-
+##################################################doctor##############################################3
+@app.route("/calender")
+def viewCalender():
+   return render_template('/calender/calender.html')
 
 @app.route("/Doctor_home")
 def getdoctordata():
@@ -669,6 +672,7 @@ def viewpatientdata():
        "SELECT PatientID, patient.FName, patient.LName, MedicalStatus, Level_of_consiousness from patient join doctor on AssignedDrSSN = DoctorSSN join patientrecord on PSSN = Patient_PSSN where PatientID = %s", ([1]))
    patient = mycursor.fetchone()
    return render_template('/Doctor/View_patients.html', patient=patient)
+
 
 @app.route("/patientrecord_doctor")
 def getpatientrecord():
