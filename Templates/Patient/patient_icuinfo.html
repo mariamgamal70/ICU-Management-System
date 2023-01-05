@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../Static/css/sidebar.css">
-    <link rel="stylesheet" href="../../Static/css/icuinfo.css">
-    <link rel="stylesheet" href="../../Static/css/addrecord.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/icuinfo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/addrecord.css') }}">
     <link rel="preconnect" href="https:/fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
@@ -18,10 +17,13 @@
 </head>
 
 <body>
+
+  {%include 'patient/navbar.html'%}
+
   {%block content%}
   {%if data%}
     <div class="main-container m-5">
-        <div class="row row-bordered">
+        <div class="row row-bordered mt-5">
             <h1 class="font-weight-bold text-primary ">ICU Information</h1>
         </div>
         <fieldset class="border p-2">
