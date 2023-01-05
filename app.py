@@ -1,19 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, request,session,flash
+from flask import Flask, render_template, redirect, url_for, request,session,flash,Response
 from flask_session import Session
 import mysql.connector
 from flask_mail import Mail, Message
 # from flask_socketio import SocketIO
 
-# from google.auth.transport.requests import Request
-# from google.oauth2.credentials import Credentials
-# from google_auth_oauthlib.flow import InstalledAppFlow
-# from googleapiclient.discovery import build
-# from googleapiclient.errors import HttpError
-# scopes = ['https://www.googleapis.com/auth/calendar']
-# flow = InstalledAppFlow.from_client_secrets_file("client_secret.json", scopes=scopes)
-#flow.run_console()
-# app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
-# socketio = SocketIO(app)
+
 
 from datetime import datetime
 now = datetime.now()
@@ -51,15 +42,15 @@ mycursor = mydb.cursor()
 # in case it is GET and POST you should check inside the function whether the incoming is a get or post request , if its a get ,return template, if its a post , send data do changes
 
 
-def countnotification():
-    messages = get_flashed_messages()
-    message_count = len(messages)
-    return {'notification_count': message_count}
+# def countnotification():
+#     messages = get_flashed_messages()
+#     message_count = len(messages)
+#     return {'notification_count': message_count}
 
 
-def notifynurse(notification):
-    string = notification['type']+'\n'+notification['info']
-    flash(string, 'warning')
+# def notifynurse(notification):
+#     string = notification['type']+'\n'+notification['info']
+#     flash(string, 'warning')
 
 
 def sendmessage(result):
@@ -67,12 +58,12 @@ def sendmessage(result):
    msg.body = 'from ' + result['email'] + '\n'+'Name: '+result['firstname'] +' '+result['lastname'] + '\n' 'Complaint: ' + result['complaint']
    mail.send(msg)
 
-notifications={}
-notificationcounter=0
-def updatenotifications(notification):
-   notificationcounter = notificationcounter+1
-   notifications['count'] = notificationcounter
-   notifications['typeofnotification']=notification
+# notifications={}
+# notificationcounter=0
+# def updatenotifications(notification):
+#    notificationcounter = notificationcounter+1
+#    notifications['count'] = notificationcounter
+#    notifications['typeofnotification']=notification
    
 
 
@@ -500,14 +491,14 @@ def prescriptiontimestamps(medicineid):
     return render_template('/nurse/prescriptiontimestamps.html', medicinetimestamps=medicinetimestamps,timestamps=timestamps)
 
 
-@app.route('/nursenotifications')
-def notification():
-    return render_template('/nurse/nursenotifcations.html')
+# @app.route('/nursenotifications')
+# def notification():
+#     return render_template('/nurse/nursenotifcations.html')
 
 
-@app.context_processor
-def inject_notification_count():
-    return countnotification()
+# @app.context_processor
+# def inject_notification_count():
+#     return countnotification()
 
 ###################################################### Patient Page ############################################
 #Age
