@@ -51,12 +51,6 @@ def notifynurse(notification):
     string = notification['type']+'\n'+notification['info']
     flash(string, 'warning')
 
-# def calculate_age(born):
-#    BORN SHOULD BE WRITTIN IN THIS FORMAT FIRST BEFORE PUTTING IT AS A PARAMETER
-#    born = datetime(1997, 5, 21)
-#    today = datetime.now()
-#    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
-
 
 def sendmessage(result):
     msg = Message(subject="Inquiry/Complaint",
@@ -393,17 +387,9 @@ def nursehome():
     mycursor.execute(
         'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex from nurse where NurseID=%s', ([1]))
     nurse = mycursor.fetchone()
-    #  result['nurseid'] = session['id']
-    #  result['nursename'] = nurse[0]+' ' + nurse[1]
-    #  result['nursebirthdate'] = nurse[2]
-    #  result['nursessn'] = nurse[3]
-    #  result['nursegender'] = nurse[4]
     mycursor.execute(
         'SELECT patient.FName,patient.LName,PatientID from patient join  nurse on AssignedNurseSSN=Nurse_SSN where NurseID=%s', ([1]))
     patient = mycursor.fetchone()
-    # result['patientname'] = patient[0]+' '+patient[1]
-    # result['patientid'] = patient[2]
-    # [1] = patient[2]
     return render_template('/nurse/nursehome.html', nurseid=1, nurse=nurse, patient=patient)
 
 
