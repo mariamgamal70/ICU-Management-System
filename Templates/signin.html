@@ -73,7 +73,7 @@
 </div>
 
 <div id="patient" style="display:none;" class="container-fluid ">
-    <form class="p-5" action="http://127.0.0.1:5000/signin" method="POST">
+    <form class="p-5" action="http://127.0.0.1:5000/signin" method="POST" name="patient">
         <h2 class="text-center" style="color: black;">PATIENT SIGN IN</h2>
         <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/profile.png') }}" alt="doctorimg"></div>
         <h4>Enter the following</h4>
@@ -104,7 +104,7 @@
     </div>
 
     <div id="doctorform" style="display:none;" class="container-fluid  my-3">
-        <form class="p-5">
+        <form class="p-5" name="doctor" method="post">
                     <h2 class="text-center" style="color: black;">DOCTOR SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/doctor.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
@@ -123,7 +123,7 @@
     </div>
     
     <div id="nurseform" style="display:none;" class="container-fluid  my-3">
-        <form class="p-5">
+        <form class="p-5" name="nurse" method="post">
             <h2 class="text-center" style="color: black;">NURSE SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/nurse.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
@@ -142,7 +142,7 @@
     </div>
     
     <div id="adminform" style="display:none;" class="container-fluid my-3">
-        <form class="p-5">
+        <form class="p-5" name="admin" method="post">
             <h2 class="text-center" style="color: black;">ADMIN SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/admin.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">
@@ -161,7 +161,7 @@
     </div>
 
     <div id="receptionistform" style="display:none;" class="container-fluid my-3">
-        <form class="p-5">
+        <form class="p-5" name="receptionist" method="post">
                     <h2 class="text-center" style="color: black;">RECPTIONIST SIGN IN</h2>
             <div class="d-flex justify-content-center my-5"><img src="{{ url_for('static', filename='images/receptionist.png') }}" alt="doctorimg"></div>
             <div class="form-floating mb-3">

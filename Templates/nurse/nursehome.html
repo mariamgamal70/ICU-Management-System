@@ -39,9 +39,9 @@
                 <dt class="col-sm-4 text-primary">Patient ID</dt>
                 <dd class="col-sm-6">{{patient[2]}}</dd>
             </dl>
-            <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button>
+            <!-- <button class="btn btn-danger btn-lg shadow-lg" onclick="DisplayAlertForm()">Alert Doctor</button> -->
             
-            <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">
+            <!-- <form action="http://127.0.0.1:5000/nursehome" method="POST" class="my-5" id="alertbutton" style="display: none;">
                 <select class="form-select" required >
                     <option selected disabled>Reason for alerting</option>
                     <option value="Allergy">Allergy</option>
@@ -61,7 +61,7 @@
                     </div>
                     <br>    
                 <input class="btn btn-danger  shadow-lg" type="submit" value="Send" name="alert">
-            </form>
+            </form> -->
         </div>
         <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
             <img src="{{ url_for('static', filename='/images/nursepp2.jpg') }}" alt="profile pic" style="height: 300px;">

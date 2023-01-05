@@ -326,98 +326,98 @@ def signin():
     if request.method == "POST":
         # PATIENT ONLY-----------------------------------------------------------------
         if "patient" in request.form:
-            patientid = request.form["patientID"]
-            patientpassword = request.form["patientpassword"]
-            mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
-                patientname = mycursor.fetchone()
-                session["name"] = patientname  # to reference patient name
-                session["id"] = patientid
-                session["Permision"] = "Patient"  # Permision_level
-                return render_template("Patient/patienthome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
+            # patientid = request.form["patientID"]
+            # patientpassword = request.form["patientpassword"]
+            # mycursor.execute(
+            #     "SELECT * FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+            # account = mycursor.fetchone()
+            # if account:
+            #     mycursor.execute(
+            #         "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (patientid, patientpassword))
+            #     patientname = mycursor.fetchone()
+            #     session["name"] = patientname  # to reference patient name
+            #     session["id"] = patientid
+            #     session["Permision"] = "Patient"  # Permision_level
+                return redirect("/patient_homepage")
+            # else:
+            #     flash('ID/Password is incorrect', 'warning')
+            #     return redirect('/signin')
         # ENDPATIENT-------------------------------------------------------------------------
         # DOCTORONLY--------------------------------------------------------------------------
         elif "doctor" in request.form:
-            doctorid = request.form["doctorID"]
-            doctorpassword = request.form["doctorpassword"]
-            mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (doctorid, doctorpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE doctorid = %s AND doctorpassword = %s", (doctorid, doctorpassword,))
-                doctorname = mycursor.fetchone()
-                session["name"] = doctorname
-                session["id"] = doctorid
-                session["Permision"] = "Doctor"
-                return render_template("Doctor/doctorhome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
+            # doctorid = request.form["doctorID"]
+            # doctorpassword = request.form["doctorpassword"]
+            # mycursor.execute(
+            #     "SELECT * FROM user WHERE UserID = %s AND Password = %s", (doctorid, doctorpassword,))
+            # account = mycursor.fetchone()
+            # if account:
+            #     mycursor.execute(
+            #         "SELECT Username FROM user WHERE doctorid = %s AND doctorpassword = %s", (doctorid, doctorpassword,))
+            #     doctorname = mycursor.fetchone()
+            #     session["name"] = doctorname
+            #     session["id"] = doctorid
+            #     session["Permision"] = "Doctor"
+                return redirect("/Doctor_home")
+            # else:
+            #     flash('ID/Password is incorrect', 'warning')
+                # return redirect('/signin')
         # ENDDOCTOR-------------------------------------------------------------------------------
         # NURSEONLY-------------------------------------------------------------------------------
         elif "nurse" in request.form:
-            nurseid = request.form["nurseID"]
-            nursepassword = request.form["nursepassword"]
-            mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM useer WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
-                nursename = mycursor.fetchone()
-                session["id"] = doctorid
-                session["name"] = nursename
-                session["Permision"] = "Nurse"
-                return render_template("nurse/nursehome.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
+            # nurseid = request.form["nurseID"]
+            # nursepassword = request.form["nursepassword"]
+            # mycursor.execute(
+            #     "SELECT * FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+            # account = mycursor.fetchone()
+            # if account:
+            #     mycursor.execute(
+            #         "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (nurseid, nursepassword,))
+            #     nursename = mycursor.fetchone()
+            #     session["id"] = 14
+            #     session["name"] = nursename
+            #     session["Permision"] = "Nurse"
+                return redirect("/nursehome")
+            # else:
+            #     flash('ID/Password is incorrect', 'warning')
+            #     return redirect('/signin')
         # ENDNURSE-------------------------------------------------------------------------------------
         # ADMINONLY------------------------------------------------------------------------------------
         elif "admin" in request.form:
-            adminid = request.form["adminID"]
-            adminpassword = request.form["adminpassword"]
-            mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
-                adminname = mycursor.fetchone()
-                session["id"] = adminid
-                session["name"] = adminname
-                session["Permision"] = "Admin"
-                return render_template("Admin/AdminMain.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
+            # adminid = request.form["adminID"]
+            # adminpassword = request.form["adminpassword"]
+            # mycursor.execute(
+            #     "SELECT * FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+            # account = mycursor.fetchone()
+            # if account:
+            #     mycursor.execute(
+            #         "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (adminid, adminpassword,))
+            #     adminname = mycursor.fetchone()
+            #     session["id"] = adminid
+            #     session["name"] = adminname
+            #     session["Permision"] = "Admin"
+                return redirect("/AdminDashboard")
+            # else:
+            #     flash('ID/Password is incorrect', 'warning')
+            #     return redirect('/signin')
         # ADMINEND---------------------------------------------------------------------------------------
         # RECEPTIONISTSONLY------------------------------------------------------------------------------
         elif "receptionist" in request.form:
-            receptionistid = request.form["receptionistID"]
-            receptionistpassword = request.form["receptionistpassword"]
-            mycursor.execute(
-                "SELECT * FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
-            account = mycursor.fetchone()
-            if account:
-                mycursor.execute(
-                    "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
-                receptionistname = mycursor.fetchone()
-                session["id"] = receptionistid
-                session["name"] = receptionistname
-                session["Permision"] = "Receptionist"
-                return render_template("receptionist/receptionist_homepage.html")
-            else:
-                flash('ID/Password is incorrect', 'warning')
-                return redirect('/signin')
+            # receptionistid = request.form["receptionistID"]
+            # receptionistpassword = request.form["receptionistpassword"]
+            # mycursor.execute(
+            #     "SELECT * FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+            # account = mycursor.fetchone()
+            # if account:
+            #     mycursor.execute(
+            #         "SELECT Username FROM user WHERE UserID = %s AND Password = %s", (receptionistid, receptionistpassword,))
+            #     receptionistname = mycursor.fetchone()
+            #     session["id"] = receptionistid
+            #     session["name"] = receptionistname
+            #     session["Permision"] = "Receptionist"
+                return redirect("/receptionist_homepage")
+            # else:
+            #     flash('ID/Password is incorrect', 'warning')
+            #     return redirect('/signin')
         # RECEPTIONISTEND-------------------------------------------------------------------------------
     return render_template('signin.html')
 
@@ -540,12 +540,12 @@ def nursehome():
     # nurseid = #session['id']
     result = {}
     mycursor.execute(
-        'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex from nurse where NurseID=%s', ([1]))
+        'SELECT FName,LName,TIMESTAMPDIFF(YEAR, Birthdate, CURDATE()) AS age ,Nurse_SSN,Sex from nurse where NurseID=%s', ([21]))
     nurse = mycursor.fetchone()
     mycursor.execute(
-        'SELECT patient.FName,patient.LName,PatientID from patient join  nurse on AssignedNurseSSN=Nurse_SSN where NurseID=%s', ([1]))
+        'SELECT patient.FName,patient.LName,PatientID from patient join  nurse on AssignedNurseSSN=Nurse_SSN where NurseID=%s', ([21]))
     patient = mycursor.fetchone()
-    return render_template('/nurse/nursehome.html', nurseid=1, nurse=nurse, patient=patient)
+    return render_template('/nurse/nursehome.html', nurseid=21, nurse=nurse, patient=patient)
 
 
 @app.route("/patientrecord", methods=["POST", "GET"])
@@ -824,7 +824,7 @@ def getdoctordata():
     result['doctorgender'] = doctor[4]
     # (doctorid)))
     mycursor.execute(
-        'SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s', ([123]))
+        'SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s', ([14]))
     count = mycursor.fetchone()
     result['patientsnumber'] = count[0]
     mycursor.execute(
