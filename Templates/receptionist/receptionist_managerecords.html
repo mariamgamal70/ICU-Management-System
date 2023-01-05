@@ -30,7 +30,7 @@
         Add New Record</a>
       <form class="form-inline" action="http://127.0.0.1:5000/receptionist_managerecords" method="POST">
         <div class="d-flex" style="width: 400px;">
-          <input class="form-control mr-sm-2 border-primary" type="search" placeholder="Search by Report ID" aria-label="Search"
+          <input class="form-control mr-sm-2 border-primary" type="search" name="ReportID" placeholder="Search by Report ID" aria-label="Search"
             v-model="search" />
           <button class="btn btn-primary my-2 my-sm-0 mx-3 fw-bold border" type="submit" @click.prevent="searchData()">
             Search
@@ -56,7 +56,7 @@
             <td> {{details}} </td>
             {% endfor %}
             <td>
-              <a type="button" class="btn btn-outline-primary border border-primary" href="http://127.0.0.1:5000/receptionist_editrecord">
+              <a type="button" class="btn btn-outline-primary border border-primary" href="http://127.0.0.1:5000/receptionist_editrecord/1">
                 <i class="fa-solid fa-user-pen"></i>
               </a>
             </td>

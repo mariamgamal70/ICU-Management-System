@@ -41,7 +41,7 @@ mydb = mysql.connector.connect(
    host="localhost",
    user="root",
    password="adanGneCUFE2025$",
-   database="icu_management_last"
+   database="icu_management_finalll"
 )
 mycursor = mydb.cursor()
 #GET used when no info is sent(written in URL) , POST is used when info is sent(Ex:Sensitive info)(not written in URL)
@@ -421,8 +421,8 @@ def patientRecord():
 def ICUInfo():
    mycursor.execute('SELECT Date_Admitted,Date_Discharged,Doctor.Fname,Doctor.Lname,Nurse.Fname,Nurse.Lname,MedicalDiagnosis,Bills_ID,TotalValue,Insurance_Percent,SUM(Price_Day),SUM(Price) from patient join prescribed_medication on PSSN=Patient_PSSN join bills on PSSN=bills.Patient_PSSN join beds on Beds_BedID=BedID join patientrecord on PSSN=patientrecord.Patient_PSSN join Doctor on AssignedDrSSN=DoctorSSN join Nurse on AssignedNurseSSN=Nurse_SSN where patientid=%s' ,([1]))
    patient=mycursor.fetchone()
-   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where patientid=%s' ,([1]))
-   medicine=mycursor.fetchall()
+   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where PatientID=%s' ,([1]))
+   medicine=mycursor.fetchone()
    return render_template('/Patient/patient_icuinfo.html',data=patient,medicine=medicine)
 
 # ###################################################### Receptionist Page ############################################
@@ -491,7 +491,7 @@ def manage_records():
          }
         return render_template('/receptionist/receptionist_managerecords.html', data=data)
        else:
-         mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE patientid=%s", ([1]))
+         mycursor.execute("SELECT RecordID,FName,LName,Date_Admitted from patient join patientrecord on PSSN=Patient_PSSN WHERE PatientID=%s", ([1]))
          recordinfo=mycursor.fetchall()
          data = {
             'recordinfo': recordinfo
@@ -521,6 +521,7 @@ def editRecord(id):
       mycursor.execute('UPDATE patient SET FName=%s,MName=%s,LName=%s,Sex=%s,PatientID=%s,PSSN=%s,Birthdate=%s,Address=%s,email=%s,Phone=%s,Emergency_Contact=%s,AssignedDrSSN=%s,AssignedNurseSSN=%s WHERE PatientID=%s',  val1) 
       val2 = ((RecordID),(Insurance),(SSN))
       mycursor.execute('UPDATE patientrecord SET RecordID=%s,Insurance_Status=%s,Patient_Pssn=%s', val2) 
+      mydb.commit()
     #   return redirect("/receptionist/receptionist_viewrecord")
       return render_template('/receptionist/receptionist_editrecord.html')
    else:
