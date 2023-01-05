@@ -636,49 +636,49 @@ def editRecord(id):
       patient=mycursor.fetchone()
       return render_template('/receptionist/receptionist_editrecord.html',data=patient)
 
+
 @app.route("/Doctor_home")
-def getdoctordata():  
-   #doctorid = session["id"]
+def getdoctordata():
+   # doctorid = session["id"]
    result = {}
-   mycursor.execute("SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s",([123]))
+   mycursor.execute(
+       "SELECT Fname, Lname, Birthdate, DoctorSSN, Sex, Doctor_ID from doctor where Doctor_ID = %s", ([123]))
    doctor = mycursor.fetchone()
    result['doctorid'] = doctor[5]
    result['doctorname'] = doctor[0] + doctor[1]
    result['doctorbirthdate'] = doctor[2]
    result['doctorssn'] = doctor[3]
    result['doctorgender'] = doctor[4]
-   mycursor.execute('SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s',([123]))#(doctorid)))
+   # (doctorid)))
+   mycursor.execute(
+       'SELECT COUNT(PSSN) from patient join doctor on AssignedDrSSN = DoctorSSN where doctor_ID = %s', ([123]))
    count = mycursor.fetchone()
    result['patientsnumber'] = count[0]
-   mycursor.execute('SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from doctor AS age')
-   doctora=mycursor.fetchone()
+   mycursor.execute(
+       'SELECT TIMESTAMPDIFF (YEAR, Birthdate, CURDATE()) from doctor AS age')
+   doctora = mycursor.fetchone()
    result['doctorage'] = doctora[0]
 
-   return render_template('/Doctor/Doctor_home.html', data = result)
+   return render_template('/Doctor/Doctor_home.html', data=result)
 
 
 @app.route("/View_patients")
-def viewpatientdata():  
-   #doctorid = session["id"]
-   mycursor.execute("SELECT PatientID, patient.FName, patient.LName, MedicalStatus, Level_of_consiousness from patient join doctor on AssignedDrSSN = DoctorSSN join patientrecord on PSSN = Patient_PSSN where PatientID = %s",([1]))
+def viewpatientdata():
+   # doctorid = session["id"]
+   mycursor.execute(
+       "SELECT PatientID, patient.FName, patient.LName, MedicalStatus, Level_of_consiousness from patient join doctor on AssignedDrSSN = DoctorSSN join patientrecord on PSSN = Patient_PSSN where PatientID = %s", ([1]))
    patient = mycursor.fetchone()
-   return render_template('/Doctor/View_patients.html', patient = patient)
-
-
-
-
-
-
-
+   return render_template('/Doctor/View_patients.html', patient=patient)
 
 @app.route("/patientrecord_doctor")
 def getpatientrecord():
-   mycursor.execute('SELECT RecordID, patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,Pupils,Skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.Lname,Doctor_ID,PatientID from patient join patientrecord on Patient_PSSN=PSSN join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', ([1]))
+   mycursor.execute(
+      'SELECT RecordID, patient.FName,patient.LName,TIMESTAMPDIFF(YEAR, patient.Birthdate, CURDATE()),patient.Sex,patient.Emergency_Contact,MedicalStatus,MedicalHistory,Blood_Group,Level_of_consiousness,Pupils,Skin,BloodPressure,BloodGlucose,RespiratoryRate,OxygenSaturation,PulseRateMin,IV_Access,IV_Acess_Date,Takes_Heparin,MedicalDiagnosis,Admission_Reasoning,Date_Admitted,Beds_BedID,doctor.Fname,doctor.Lname,Doctor_ID,PatientID from patient join patientrecord on Patient_PSSN=PSSN join Doctor on AssignedDrSSN=DoctorSSN where PatientID=%s', ([1]))
    patient = mycursor.fetchone()
-   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where patientid=%s' ,([1]))
-   medicine=mycursor.fetchone()
-   return render_template('/Doctor/patientrecord_doctor.html', patient=patient, medicine = medicine)
-  
+   mycursor.execute('SELECT medicine_name,Dosage,Frequency,StartDate,EndDate,Specifications from patient join prescribed_medication on PSSN=Patient_PSSN where patientid=%s' , ([1]))
+   medicine = mycursor.fetchone()
+   return render_template('/Doctor/patientrecord_doctor.html', patient=patient, medicine=medicine)
+
 
 
 
@@ -714,46 +714,54 @@ def admit(file_id):
    if request.method == "POST":
 
       if "submit1" in request.form:
-         mycursor.execute('SELECT Patient_PSSN, DoctorSSN from patientrecord join patient on PSSN = Patient_PSSN join doctor on AssignedDrSSN = DoctorSSN where PatientID=%s' ,([1]))
+         mycursor.execute(
+             'SELECT Patient_PSSN, DoctorSSN from patientrecord join patient on PSSN = Patient_PSSN join doctor on AssignedDrSSN = DoctorSSN where PatientID=%s', ([1]))
          pat = mycursor.fetchone()
-         val = ((12),(request.form.get("Medicinename")), (request.form.get('Dosage')), (request.form.get('freq')),(request.form.get('startdatee')), (request.form.get('enddatee')),(request.form.get('instruction')),(pat[1]), pat[0])
+         val = ((12), (request.form.get("Medicinename")), (request.form.get('Dosage')), (request.form.get('freq')), (request.form.get(
+             'startdatee')), (request.form.get('enddatee')), (request.form.get('instruction')), (pat[1]), pat[0])
          # mycursor.execute('select PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
          mycursor.execute("INSERT INTO prescribed_medication (medicine_id,medicine_name,Dosage, Frequency, StartDate, EndDate, Specifications,Doctor_DoctorSSN,Patient_PSSN) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", val)
          mydb.commit()
 
-
       elif "submit2" in request.form:
          val = request.form.get("diagnosis")
-         mycursor.execute('UPDATE patientrecord SET MedicalDiagnosis = %s', [val])
+         mycursor.execute(
+             'UPDATE patientrecord SET MedicalDiagnosis = %s', [val])
          mydb.commit()
 
       elif "request" in request.form:
          val = ((request.form.get("bID")), (request.form.get("admitdate")))
-         mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
-         mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
+         mycursor.execute(
+             'UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s', val)
+         mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [
+                          request.form.get("reason")])
          mydb.commit()
 
       elif "request1" in request.form:
          amin = request.form.getlist("lb")
          str1 = ','.join(amin)
-         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
+         mycursor.execute(
+             'SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s', ([1]))
          patient = mycursor.fetchone()
          date = request.form.get('labdate')
-         mycursor.execute("INSERT INTO labresults (LabResultID, Patient_PSSN,Type,DateIssued) VALUES (%s,%s,%s,%s)", [patient[0], patient[1], str1,date])
+         mycursor.execute("INSERT INTO labresults (LabResultID, Patient_PSSN,Type,DateIssued) VALUES (%s,%s,%s,%s)", [
+                          patient[0], patient[1], str1, date])
          mydb.commit()
 
       elif "request2" in request.form:
          amin = request.form.getlist("sc")
          str1 = ','.join(amin)
-         mycursor.execute('SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
+         mycursor.execute(
+             'SELECT PatientID, PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s', ([1]))
          patient = mycursor.fetchone()
          date = request.form.get('scandate')
-         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type, DataIssued) VALUES (%s,%s,%s,%s)", [patient[0], patient[1], str1,date])
+         mycursor.execute("INSERT INTO patientscans (PatientScanID, Patient_PSSN,Type, DataIssued) VALUES (%s,%s,%s,%s)", [
+                          patient[0], patient[1], str1, date])
          mydb.commit()
-        
 
       return redirect("/patientrecord_doctor")
    return render_template('/Doctor/patientrecord_doctor.html')
+
 
 
 @app.route('/receptionist_addrecord', methods=['POST', 'GET'])
