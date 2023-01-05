@@ -156,7 +156,6 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Options</label>
                   <select  id="updte" class="form-select" required onchange="changevis2()">
@@ -166,29 +165,41 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <div id="med">
-                        <input type="text" class="form-control mt-3" name = "Medicine name" placeholder="Please Enter Name of Medicine">
+                    <form id="med" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
+                        <input type="text" class="form-control mt-3" name = "Medicinename" placeholder="Please Enter Name of Medicine">
                         <input type="text" class="form-control mt-3" name="Dosage" placeholder="Please Enter Dosage">
-                        <input type="text" class="form-control mt-3" placeholder="Please Enter Frequency">
+                        <input type="text" class="form-control mt-3" name='freq'  placeholder="Please Enter Frequency">
                         <label for="start date" class="col-form-label" >Start Date</label>
-                        <input type="date" name="start date" class="form-control">
+                        <input type="date" name="startdatee" class="form-control">
                         <label for="end date" class="col-form-label" >End Date</label>
-                        <input type="date" name="end date" class="form-control" placeholder="Enter Name of Medicine">
+                        <input type="date" name="enddatee" class="form-control" placeholder="Enter Name of Medicine">
                         <input type="text" name="instruction" class="form-control mt-3" placeholder="Please enter instructions">
 
-                    </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+                          <button type="submit" class="btn btn-primary" name="submit1">Submit</button>
+                        </div>
 
-                    <div id="diag">
+                    </form>
+
+
+
+                    
+
+                    <form id="diag" method="post" action="http://127.0.0.1:5000/patientrecord_doctor/{{patient.0}}">
                         <input type="text" class="form-control" name = "diagnosis" placeholder="Please enter diagnosis">
-                    </div>
+
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
+                          <button type="submit" class="btn btn-primary" name="submit2">Submit</button>
+                        </div>
+                    </form>
+
+                   
                 
                 </div>
-              </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close">Close</button>
-              <button type="submit" class="btn btn-primary" name="submit1">Submit</button>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -236,7 +247,7 @@
 
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
-                          <button type="submit" class="btn btn-primary" name="request1"></button>
+                          <input type="submit" class="btn btn-primary" name="request1"></input>
                         </div>
                 </div>
               </form>
@@ -266,7 +277,7 @@
 
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" name="close" >Close</button>
-                      <input type="submit" class="btn btn-primary" name="request2"></button>
+                      <input type="submit" class="btn btn-primary" name="request2"></input>
                     </div>
                     
               </div>

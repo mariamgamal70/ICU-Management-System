@@ -421,7 +421,22 @@ def receptionistHomePage():
 @app.route("/patientrecord_doctor/<int:file_id>", methods=["POST", "GET"])
 def admit(file_id):
    if request.method == "POST":
-      if "request" in request.form:
+
+      if "submit1" in request.form:
+         mycursor.execute('SELECT Patient_PSSN, DoctorSSN from patientrecord join patient on PSSN = Patient_PSSN join doctor on AssignedDrSSN = DoctorSSN where PatientID=%s' ,([1]))
+         pat = mycursor.fetchone()
+         val = ((12),(request.form.get("Medicinename")), (request.form.get('Dosage')), (request.form.get('freq')),(request.form.get('startdatee')), (request.form.get('enddatee')),(request.form.get('instruction')),(pat[1]), pat[0])
+         # mycursor.execute('select PSSN from patient join patientrecord on PSSN = Patient_PSSN where PatientID=%s' ,([1]))
+         mycursor.execute("INSERT INTO prescribed_medication (medicine_id,medicine_name,Dosage, Frequency, StartDate, EndDate, Specifications,Doctor_DoctorSSN,Patient_PSSN) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", val)
+         mydb.commit()
+
+
+      elif "submit2" in request.form:
+         val = request.form.get("diagnosis")
+         mycursor.execute('UPDATE patientrecord SET MedicalDiagnosis = %s', [val])
+         mydb.commit()
+
+      elif "request" in request.form:
          val = ((request.form.get("bID")), (request.form.get("admitdate")))
          mycursor.execute('UPDATE patient SET Beds_BedID =%s, Date_Admitted = %s' , val)
          mycursor.execute('UPDATE patientrecord SET Admission_Reasoning = %s', [request.form.get("reason")])
@@ -454,7 +469,7 @@ def admit(file_id):
 def LogOut():
    session.pop("id",None)
    session.pop("name",None) 
-   session.pop("Permission",None)
+   session.pop("Permission",None)   
    return redirect(url_for('/'))
 
 if __name__ == "__main__":
