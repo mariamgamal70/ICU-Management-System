@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='/css/addrecord.css') }}">
+    <link rel="stylesheet" href="../../Static/css/sidebar.css">
+    <link rel="stylesheet" href="../../Static/css/addrecord.css">
     <link rel="preconnect" href="https:/fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
@@ -25,11 +26,6 @@
 </head>
 
 <body>
-<<<<<<<< HEAD:Templates/receptionist/receptionist_homepage.html.html
-========
-    {%include 'receptionist/navbar.html'%}
-    {%block content%}
->>>>>>>> main:Templates/receptionist/receptionist_homepage.html
     {%if data%}
     <div class="main-container m-5">
 
@@ -55,13 +51,9 @@
                 </dl>
             </div>
             <div class="shadow border border-primary rounded border-5" style="height: fit-content;">
-                <img src="{{ url_for('static', filename='/images/receptionist.jpg') }}" alt="profile pic" style="height: 300px;">
+                <img src="../../Static/images/receptionist.jpg" alt="profile pic" style="height: 300px;">
             </div>
     {% endif %}
-<<<<<<<< HEAD:Templates/receptionist/receptionist_homepage.html.html
-========
-    {% endblock %}
->>>>>>>> main:Templates/receptionist/receptionist_homepage.html
 </body>
 
 </html>

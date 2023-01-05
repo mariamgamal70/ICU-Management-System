@@ -1,9 +1,4 @@
 {% extends "/admin/adminMain.html" %}
-
-{% block addl_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/admindashboard.css') }}">
-{% endblock %}
-
 {% block content %}
 <div class="container">
     <div class="row">
@@ -14,7 +9,7 @@
               <h6 class="m-b-20">Nurses</h6>
             </a>
             <br>
-            <h2 class="text-right"><i class="fas fa-user-nurse f-left" data-after="{{Stats["NurseNum"]}}" id="nurseicon"></i> 
+            <h2 class="text-right"><i class="fas fa-user-nurse f-left" data-after="{{Stats["number1"]}}" id="nurseicon"></i> 
               
             </h2>
   
@@ -29,7 +24,7 @@
               <h6 class="m-b-20">Patients</h6>
             </a>
             <br>
-            <h2 class="text-right"><i class="fas fa-user-plus f-left" data-after="{{Stats["PatientNum"]}}" id="patienticon"></i></h2>
+            <h2 class="text-right"><i class="fas fa-user-plus f-left" data-after="{{Stats["number2"]}}" id="patienticon"></i></h2>
           </div>
         </div>
       </div>
@@ -41,7 +36,7 @@
               <h6 class="m-b-20">Receptionists</h6>
             </a>
             <br>
-            <h2 class="text-right"><i class="fas fa-phone f-left" data-after="{{Stats["RecepNum"]}}" id="Recepicon"></i></h2>
+            <h2 class="text-right"><i class="fas fa-phone f-left" data-after="{{Stats["number3"]}}" id="Recepicon"></i></h2>
           </div>
         </div>
       </div>
@@ -53,48 +48,10 @@
               <h6 class="m-b-20">Doctors</h6>
             </a>
             <br>
-            <h2 class="text-right"><i class="fas fa-user-md f-left" data-after="{{Stats["DoctorNum"]}}" id="Doctoricon"></i></h2>
+            <h2 class="text-right"><i class="fas fa-user-md f-left" data-after="{{Stats["number4"]}}" id="Doctoricon"></i></h2>
           </div>
         </div>
       </div>
-
-      <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-yellow order-card">
-          <div class="card-block">
-            <a href="#">
-              <h6 class="m-b-20">Beds</h6>
-            </a>
-            <br>
-            <h2 class="text-right"><i class="fa-solid fa-bed f-left" data-after="{{Stats["BedNum"]}}" id="Recepicon"></i></h2>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-yellow order-card">
-          <div class="card-block">
-            <a href="#">
-              <h6 class="m-b-20">Rooms</h6>
-            </a>
-            <br>
-            <h2 class="text-right"><i class="fa-solid fa-person-booth f-left" data-after="{{Stats["RoomNum"]}}" id="Recepicon"></i></h2>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-xl-3">
-        <div class="card bg-c-yellow order-card">
-          <div class="card-block">
-            <a href="#">
-              <h6 class="m-b-20">Bills</h6>
-            </a>
-            <br>
-            <h2 class="text-right"><i class="fa-regular fa-credit-card f-left" data-after="{{Stats["ICUIncome"]}}" id="Recepicon"></i></h2>
-          </div>
-        </div>
-      </div>
-
-
     </div>
   </div>
 

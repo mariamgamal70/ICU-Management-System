@@ -28,7 +28,7 @@
     <title>Contact Us</title>
 </head>
 <body>
-    {% with messeges=get_flashed_messages() %}
+    {% with messeges =get_flashed_messages() %}
     {% if messeges %}
     {%for messege in messeges%}
     <div class="alert alert-primary alert-dismissible fade show" role="alert">
