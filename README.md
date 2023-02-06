@@ -6,5 +6,4 @@
  <li>Distributed privilage for each of: Doctor, patient, receptionist, patient, admin</li>
  <li>Almost completed backend using python and flask </li>
  <li>Created an ER model sketch:</li>
- <img src="https://user-images.githubusercontent.com/103899610/216860383-30c106ab-27d1-4ba9-a5fa-1a84fb858fc4.png
-">
+![image](https://user-images.githubusercontent.com/103899610/216860820-8e7b7149-47cc-4214-8425-141233e07685.png)
