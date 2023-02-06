@@ -7,3 +7,4 @@
  <li>Almost completed backend using python and flask </li>
  <li>Created an ER model sketch:</li>
 ![alt text](https://github.com/mariamgamal70/ICU-Management-System/blob/main/ERmodel.png?raw=true)
+<img src="../ERmodel.png">
